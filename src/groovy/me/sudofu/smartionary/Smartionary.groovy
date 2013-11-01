@@ -13,6 +13,70 @@ import me.sudofu.smartionary.domain.SmartionaryEntry
  * The primary progremmatic interface for
  * <b><code>Smartionary</code></b>.
  *
+ * <p>
+ * <b><code>Smartionary</code></b> provides a flexible and progremmatic
+ * interface for storing information in a <b>Grails</b> Domain that
+ * mimics the structure of a single-level <code>Map</code>.
+ * <p>
+ *
+ * <p>
+ * Instantiating the Domain information can be done directly via a
+ * <code>Map</code>, and/or updated individually. For example:
+ *
+ * <code><pre>
+ * Smartionary.set(
+ *     'mySmartionary',
+ *     'This is a sample Smartionary instantiation.',
+ *     myFirstElement: 'foo',
+ *     mySecondElement: 2,
+ *     myThirdElement: new Date(),
+ *     smartionaryDescriptions: [
+ *         _entryDescriptions: "Here is where you can put entry descriptions., but this one will be ignored since there is no key above that matches it."
+ *         myFirstElement: "My first element."
+ *         myThirdElement: "This will get converted to a human-readable timestamp, as all elements are converted to a String."
+ *     ]
+ * )
+ * </code></pre>
+ *
+ * The <code>Smartionary</code> can then retrieve the Domain as a
+ * <code>Map</code> later like so:
+ *
+ * <code><pre>
+ * Map myElements = Smartionary.get('mySmartionary')
+ *
+ * println myElements.myFirstElement
+ * </code></pre>
+ * </p>
+ *
+ * <p>
+ * <b>Note</b> that the Domains are instantiated dynamically. That is,
+ * <code><b>foo</b></code> would have been daynamically created with
+ * that call if it did not previously exist, and the key-value pairs
+ * associated to it. A subsequent call of that form would <i>update</i>
+ * any entries that are already associated with what were passed, and
+ * create new ones that were given.
+ * </p>
+ *
+ * <p>
+ * Descriptions can be omitted or included as desired. The
+ * <b><code>Smartionary</code></b> does not interface with retrieving
+ * descriptions, as that meant more for when observing the views
+ * (i.e. administratively). In the
+ * {@link #set(Map, String, String} method, the
+ * <code>smartionaryDescriptions</code> is a "reserved" keyword for
+ * telling the method to use entries in that key that have the same key
+ * as the outer level to include as descriptions. It ignores any keys
+ * that are not present when the method is passed; this is to prevent
+ * trying to update descriptions of entries that do not exist, and
+ * makes it clear that the value <code>null</code> cannot be implicitly
+ * set to an entry just by updating its description.
+ * </p>
+ *
+ * <p>
+ * Also provided are ways of interacting with JSON as reasonably easily
+ * as possible.
+ * </p>
+ *
  * @author Aaron Brown
  */
 class Smartionary {
@@ -27,7 +91,6 @@ class Smartionary {
      *
      * @return
      *
-     * <p>
      * <code>null</code> if the <code>smartionaryName</code> does not
      * correspond to a <code>Smartionary</code> domain Object; or a
      * <code>Map&lt;String, String&gt;, with the keys corresponding to
@@ -35,7 +98,6 @@ class Smartionary {
      * <code>SmartionaryEntry.value</code>. The values are <code>String</code>s,
      * so it may be necessary to convert these values to other built-in
      * datatypes (i.e. <code>Integer</code>) as desired / necessary.
-     * </p>
      */
     static Map get(String smartionaryName) {
         SmartionaryDomain smartionary = getDomain(smartionaryName)
@@ -64,10 +126,8 @@ class Smartionary {
      *
      * @return
      *
-     * <p>
      * The appropriate value for the given <code>key</code> in the
      * <code>Smartionary</code> datastructure; or <code>null</code>.
-     * </p>
      */
     static String get(String smartionaryName, String key) {
         Map smartionary = get(smartionaryName)
@@ -80,6 +140,22 @@ class Smartionary {
         return (smartionary[key])
     }
 
+    /**
+     * Retrieve a <code>Smartionary</code> as JSON.
+     *
+     * @param   smartionaryName
+     *
+     * The name of the <code>Smartionary</code> to retrieve as JSON.
+     *
+     * @param   pretty
+     *
+     * Optionally specify whether or not to return pretty-formatted
+     * JSON through {@link groovy.json.JsonBuilder#toPrettyString()}.
+     *
+     * @return
+     *
+     * <code>{"a":"apple","b":"banana","c","carrot"}</code>
+     */
     static String getAsJson(String smartionaryName, boolean pretty = false) throws IllegalArgumentException, JsonException {
         Map map = get('foo')
 
@@ -89,10 +165,79 @@ class Smartionary {
         return "${new JsonBuilder(map)}"
     }
 
+    /**
+     * Set a <code>Smartionary</code> without interfering with or
+     * creating any entries.
+     *
+     * @param   smartionaryName
+     *
+     * The <code>Smartionary.name</code> of an existing
+     * <code>Smartionary</code> Object; or, if no <code>Smartionary</code>
+     * exists by that name, it will be created.
+     *
+     * @param   smartionaryDesription
+     *
+     * An optional description to set with the object.
+     */
     static void set(String smartionaryName, String smartionaryDescription = null) {
         getCreateDomain(smartionaryName, smartionaryDescription).save(failOnError: true)
     }
 
+    /**
+     * Set a <code>Smartionary</code> with (or without)
+     * <code>SmartionaryEntries</code>.
+     *
+     * <p>
+     * Sample call
+     *
+     * <code><pre>
+     * String json = '{"a": "apple", "b": "banana", "c": "carrot"}'
+     *
+     * Smartionary.set('foo', json, 'Using JSON')
+     * </pre></code>
+     * </p>
+     *
+     * <p>
+     * <b>Note</b>: All datatypes are converted to
+     * <code>String</code> via the <code>toString()</code> method;
+     * therefore, <code>new Date()</code> would result in
+     * {@link java.util.Date#toString() Human-readable} date, whereas
+     * <code>new Date().getTime()</code> would result in
+     * {@link java.lang.Long#toString() long-timestamp} date.
+     * <p>
+     *
+     * @param   smartionaryName
+     *
+     * <p>
+     * The <code>Smartionary.name</code> of an existing
+     * <code>Smartionary</code> Object; or, if no <code>Smartionary</code>
+     * exists by that name, it will be created.
+     * </p>
+     *
+     * @param   json
+     *
+     * This JSON <code>Map</code> will correspond to
+     * <code>SmartionaryEntry</code> Objects. The keys will correspond to
+     * <code>SmartionaryEntry.key</code> and the values will correspond
+     * to <code>SmartionaryEntry.value</code>. Therefore, keys that do
+     * not exist will be created, and keys that already exist will be
+     * updated (just like a regular <code>Map</code>); <b>Note</b> that
+     * the keys and values will be converted to
+     * {@link java.lang.String Strings}.
+     *
+     * @param   smartionaryDesription
+     *
+     * An optional description to set with the object.
+     *
+     * @throws  IllegalArgumentException
+     *
+     * Thrown if any of the keys in the <code>entries</code>
+     * <b><code>Map</code></b> are not instances of <b><code>String</code></b>,
+     * or if any of the descriptions in the
+     * <code>entries.smartionaryDescriptions</code> field are not
+     * instances of <b><code>String</code></b>; also inherited from
+     * {@link groovy.json.JsonSlurper JsonSlurper}.
+     */
     static void fromJson(String smartionaryName, String json, String smartionaryDescription = null) throws IllegalArgumentException {
         try {
             Map entries = new JsonSlurper().parseText(json)
@@ -139,7 +284,6 @@ class Smartionary {
      *
      * @param   entries
      *
-     * <p>
      * This <code>Map</code> will correspond to <code>SmartionaryEntry</code>
      * Objects. The keys will correspond to <code>SmartionaryEntry.key</code>
      * and the values will correspond to <code>SmartionaryEntry.value</code>.
@@ -147,15 +291,16 @@ class Smartionary {
      * already exist will be updated (just like a regular
      * <code>Map</code>); <b>Note</b> that the keys and values will be
      * converted to {@link java.lang.String Strings}.
-     * </p>
      *
      * @param   smartionaryName
      *
-     * <p>
      * The <code>Smartionary.name</code> of an existing
      * <code>Smartionary</code> Object; or, if no <code>Smartionary</code>
      * exists by that name, it will be created.
-     * </p>
+     *
+     * @param   smartionaryDesription
+     *
+     * An optional description to set with the object.
      *
      * @throws  IllegalArgumentException
      *
@@ -214,6 +359,14 @@ class Smartionary {
      * @param   value
      *
      * The <code>SmartionaryEntry.value</code> to set.
+     *
+     * @param   entryDesription
+     *
+     * An optional description to set with the object.
+     *
+     * @param   smartionaryDesription
+     *
+     * An optional description to set with the object.
      */
     static void set(String smartionaryName, String key, Object value, String entryDescription = null, String smartionaryDescription = null) throws Exception {
 
@@ -229,6 +382,8 @@ class Smartionary {
     /**
      * Delete a <code>Smartionary</code> (and its
      * <code>SmartionaryEntries</code>).
+     *
+     * <p>No impact if called on a non-existant <code>Smartionary</code>.<p>
      *
      * @param   smartionaryName
      *
@@ -247,14 +402,20 @@ class Smartionary {
     /**
      * Delete an <code>SmartionaryEntry</code> from a <code>Smartionary</code>.
      *
+     * <p>
+     * No impact if called on a non-existant <code>Smartionary</code>,
+     * or if the <b><code>key</code></b> is not associated to an
+     * existing one.
+     * <p>
+     *
      * @param   smartionaryName
      *
      * The <code>Smartionary</code> to act upon.
      *
      * @param   key
      *
-     * The <code>SmartionaryEntry.key</code> of the <code>SmartionaryEntry</code> Object to
-     * delete.
+     * The <code>SmartionaryEntry.key</code> of the
+     * <code>SmartionaryEntry</code> Object to delete.
      */
     static void delete(String smartionaryName, String key) throws Exception {
         SmartionaryDomain domain = getDomain(smartionaryName)
@@ -273,7 +434,14 @@ class Smartionary {
     }
 
     /**
-     * Purge <code>null</code> entries from a <code>Smartionary</code>.
+     * Delete any <code>SmartionaryEntry</code> objects associated to
+     * a <code>Smartionary</code> that have <code>null</code> values.
+     *
+     * <p>
+     * No impact if the <code>Smartionary</code> does not exist, or if
+     * none of its <code>SmartionaryEntry</code> objects have
+     * <code>null</code> values.
+     * </p>
      *
      * @param   smartionaryName
      *
@@ -317,7 +485,21 @@ class Smartionary {
         return SmartionaryDomain.findByName(smartionaryName)
     }
 
-    static private SmartionaryDomain getCreateDomain(String smartionaryName, String description = null) {
+    /**
+     * Retrieve a <code>Smartionary</code> object by name, or
+     * create one if it does not exist.
+     *
+     * @param   smartionaryName
+     *
+     * The <code>Smartionary.name</code> of an existing
+     * <code>Smartionary</code> Object; or, if no <code>Smartionary</code>
+     * exists by that name, it will be created.
+     *
+     * @param   smartionaryDesription
+     *
+     * An optional description to set with the object.
+     */
+    static private SmartionaryDomain getCreateDomain(String smartionaryName, String description = null) throws Exception {
         SmartionaryDomain domain = getDomain(smartionaryName)
 
         if (domain == null) {
@@ -331,7 +513,37 @@ class Smartionary {
         return domain
     }
 
-    static private void _set(SmartionaryDomain domain, String key, Object value, String description = null) {
+    /**
+     * Set an individual <code>SmartionaryEntry.value</code> in a
+     * <code>Smartionary</code>, or create it if it does not exist.
+     *
+     * <p>
+     * <b>Note</b>: All datatypes are converted to
+     * <code>String</code> via the <code>toString()</code> method;
+     * therefore, <code>new Date()</code> would result in
+     * {@link java.util.Date#toString() Human-readable} date, whereas
+     * <code>new Date().getTime()</code> would result in
+     * {@link java.lang.Long#toString() long-timestamp} date.
+     * <p>
+     *
+     * @param   domain
+     *
+     * The <code>Smartionary</code> object to act on.
+     *
+     * @param   key
+     *
+     * The <code>SmartionaryEntry.key</code> identifier to set the value
+     * of (created if it does not exist).
+     *
+     * @param   value
+     *
+     * The <code>SmartionaryEntry.value</code> to set.
+     *
+     * @param   desription
+     *
+     * An optional description to set with the object.
+     */
+    static private void _set(SmartionaryDomain domain, String key, Object value, String description = null) throws Exception {
 
         // Search for the particular entry.
         SmartionaryEntry entry = domain.entries.find { key == it.key }
