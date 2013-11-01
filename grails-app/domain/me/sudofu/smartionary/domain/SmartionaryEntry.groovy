@@ -45,6 +45,7 @@ class SmartionaryEntry implements Comparable {
         key         (nullable: false, blank: false, unique: 'smartionary')
         value       (nullable: true, size: 1..8000)
         description (nullable: true, size: 1..8000)
+        smartionary ()
     }
 
     static mapping = {
