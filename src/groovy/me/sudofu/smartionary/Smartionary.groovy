@@ -97,6 +97,91 @@ import me.sudofu.smartionary.domain.SmartionaryEntry
 class Smartionary {
 
     /**
+     * Retrieve the number of <code>SmartionaryEntry</code> objects are
+     * associated with a <code>Smartionary</code>.
+     *
+     * @param   smartionaryName
+     *
+     * The name of the <code>Smartionary</code> to check.
+     *
+     * @return
+     *
+     * The number of entries associated to the <code>Smartionary</code>,
+     * or <b>0</b> if the <code>entries</code> field is <code>null</code>,
+     * or <b>-1</b> if the <code>Smartionary</code> does not exist.
+     */
+    static int size(String smartionaryName) {
+        SmartionaryDomain domain = getDomain(smartionaryName)
+
+        if (domain == null) {
+            return -1
+        }
+
+        if (domain.entries == null) {
+            return 0
+        }
+
+        return domain.entries.size()
+    }
+
+    /**
+     * Check if the <code>Smartionary</code> contains a
+     * <code>SmartionaryEntry</code> by a given value.
+     *
+     * @param   smartionaryName
+     *
+     * The name of the <code>Smartionary</code> to check.
+     *
+     * @param   value
+     *
+     * The <code>SmartionaryEntry.value</code> to check for (converted
+     * to <code>String</code>).
+     *
+     * @return
+     *
+     * <code>true</code> if and only if the <code>Smartionary</code>
+     * exists, and it is associated with a <code>SmartionaryEntry</code>
+     * in which the <code>value</code> field matches that which was passed.
+     */
+    static boolean contains(String smartionaryName, Object value) {
+        SmartionaryDomain domain = getDomain(smartionaryName)
+
+        if (domain == null || domain.entries == null || domain.entries.isEmpty()) {
+            return false
+        }
+
+        return domain.entries*.value.contains(value as String)
+    }
+
+    /**
+     * Check if the <code>Smartionary</code> contains a
+     * <code>SmartionaryEntry</code> by a given key.
+     *
+     * @param   smartionaryName
+     *
+     * The name of the <code>Smartionary</code> to check.
+     *
+     * @param   key
+     *
+     * The <code>SmartionaryEntry.key</code> to check for.
+     *
+     * @return
+     *
+     * <code>true</code> if and only if the <code>Smartionary</code>
+     * exists, and it is associated with a <code>SmartionaryEntry</code>
+     * in which the <code>key</code> field matches that which was passed.
+     */
+    static boolean containsKey(String smartionaryName, String key) {
+        SmartionaryDomain domain = getDomain(smartionaryName)
+
+        if (domain == null || domain.entries == null || domain.entries.isEmpty()) {
+            return false
+        }
+
+        return domain.entries*.key.contains(key)
+    }
+
+    /**
      * Retrieve a <code>Smartionary</code> domain and convert all of its
      * <code>SmartionaryEntries</code> into a <code>Map</code>.
      *
@@ -449,6 +534,47 @@ class Smartionary {
     }
 
     /**
+     * Delete an series of <code>SmartionaryEntry</code> objects from a
+     * <code>Smartionary</code>.
+     *
+     * <p>
+     * No impact if called on a non-existant <code>Smartionary</code>,
+     * or if the <b><code>key</code></b> is not associated to an
+     * existing one.
+     * <p>
+     *
+     * @param   smartionaryName
+     *
+     * The <code>Smartionary</code> to act upon.
+     *
+     * @param   keys
+     *
+     * The <code>SmartionaryEntry.key</code> of the
+     * <code>SmartionaryEntry</code> Objects to delete.
+     */
+    static void delete(String smartionaryName, String... keys) throws Exception {
+        SmartionaryDomain domain = getDomain(smartionaryName)
+
+        if (domain == null) {
+            return
+        }
+
+        keys.each { key ->
+
+            SmartionaryEntry entry = domain.entries.find { it.key == key }
+
+            if (entry != null) {
+                domain.removeFromEntries(entry)
+                entry.delete()
+            }
+        }
+
+        if (domain.isDirty('entries')) {
+            domain.save(flush: true)
+        }
+    }
+
+    /**
      * Delete any <code>SmartionaryEntry</code> objects associated to
      * a <code>Smartionary</code> that have <code>null</code> values.
      *
@@ -481,6 +607,31 @@ class Smartionary {
             domain.removeFromEntries(it)
             it.delete()
         }
+
+        domain.save(flush: true)
+    }
+
+    /**
+     * Delete <b>all</b> <code>SmartionaryEntry</code> objects associated
+     * to a <code>Smartionary</code>, leaving the <code>Smartionary</code>
+     * empty.
+     *
+     * <p>
+     * No impact if the <code>Smartionary</code> does not exist.
+     * </p>
+     *
+     * @param   smartionaryName
+     *
+     * The Name of the <code>Smartionary</code> to act on.
+     */
+    static void purge(String smartionaryName) throws Exception {
+        SmartionaryDomain domain = getDomain(smartionaryName)
+
+        if (domain == null || domain.entries == null || domain.entries.isEmpty()) {
+            return
+        }
+
+        domain.entries.clear()
 
         domain.save(flush: true)
     }

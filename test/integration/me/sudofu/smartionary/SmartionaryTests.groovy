@@ -328,6 +328,45 @@ class SmartionaryTests extends GroovyTestCase {
         assertNull(Smartionary.get('bar'))
     }
 
+    @Test
+    void testSize() {
+        assertEquals(-1, Smartionary.size('foo'))
+
+        Smartionary.set('foo')
+
+        assertEquals(0, Smartionary.size('foo'))
+
+        Smartionary.set(entries, 'foo')
+
+        assertEquals(4, Smartionary.size('foo'))
+    }
+
+    @Test
+    void testContains() {
+        assertFalse(Smartionary.contains('foo', 'baz'))
+
+        Smartionary.set('foo')
+
+        assertFalse(Smartionary.contains('foo', 'baz'))
+
+        Smartionary.set('foo', 'bar', 'baz')
+
+        assertTrue(Smartionary.contains('foo', 'baz'))
+    }
+
+    @Test
+    void testContainsKey() {
+        assertFalse(Smartionary.containsKey('foo', 'bar'))
+
+        Smartionary.set('foo')
+
+        assertFalse(Smartionary.containsKey('foo', 'bar'))
+
+        Smartionary.set('foo', 'bar', 'baz')
+
+        assertTrue(Smartionary.containsKey('foo', 'bar'))
+    }
+
     void testDelete() {
         assertNull(SmartionaryDomain.findByName('foo'))
         Smartionary.delete('foo')
@@ -377,5 +416,49 @@ class SmartionaryTests extends GroovyTestCase {
         }
 
         assertTrue(nonExistentEntries.isEmpty())
+    }
+
+    void testDeleteMany() {
+        Smartionary.set(entries, 'foo')
+
+        SmartionaryDomain domain = SmartionaryDomain.findByName('foo')
+        Map m = Smartionary.get('foo')
+
+        assertNotNull(m)
+        assertEquals(4, m.size())
+        assertTrue(m.keySet().containsAll(['time', 'ten', 'uuid']))
+
+        assertEquals(4, domain.entries.size())
+        assertTrue(domain.entries*.key.containsAll(['time', 'ten', 'uuid']))
+
+        Smartionary.delete('foo', 'time', 'ten', 'uuid', 'notAnEntry')
+
+        m = Smartionary.get('foo')
+
+        assertNotNull(m)
+        assertEquals(1, m.size())
+        assertFalse(m.keySet().containsAll(['time,', 'ten', 'uuid']))
+
+        assertEquals(1, domain.entries.size())
+        assertFalse(domain.entries*.key.containsAll(['time', 'ten', 'uuid']))
+    }
+
+    void testDeleteAll() {
+        Smartionary.set(entries, 'foo')
+
+        SmartionaryDomain domain = SmartionaryDomain.findByName('foo')
+        Map m = Smartionary.get('foo')
+
+        assertNotNull(m)
+        assertEquals(4, m.size())
+        assertEquals(4, domain.entries.size())
+
+        Smartionary.purge('foo')
+
+        m = Smartionary.get('foo')
+
+        assertNotNull(m)
+        assertTrue(m.isEmpty())
+        assertTrue(domain.entries.isEmpty())
     }
 }
