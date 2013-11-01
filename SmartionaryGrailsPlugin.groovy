@@ -20,7 +20,7 @@ of variable data.
 '''
 
     // URL to the plugin's documentation
-    def documentation = "http://grails.org/plugin/smartionary"
+    def documentation = ""
 
     // Extra (optional) plugin metadata
 
@@ -37,7 +37,7 @@ of variable data.
 //    def issueManagement = [ system: "JIRA", url: "http://jira.grails.org/browse/GPMYPLUGIN" ]
 
     // Online location of the plugin's browseable source code.
-//    def scm = [ url: "http://svn.codehaus.org/grails-plugins/" ]
+    def scm = [ url: "https://github.com/aaron-brown/grails-smartionary" ]
 
     def doWithWebDescriptor = { xml ->
         // TODO Implement additions to web.xml (optional), this event occurs before
