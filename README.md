@@ -30,6 +30,7 @@ support for automatically converting the values is possible.
 ## Controller links (for web-interface)
 
 Smartionary: `/smartionary`
+
 SmartionaryEntry: `/smartionaryEntry` or `/smartionary/entries`
 
 ## The `Smartionary` Object (for progremmatic-interface)
