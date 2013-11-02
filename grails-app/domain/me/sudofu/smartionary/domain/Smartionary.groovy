@@ -44,7 +44,7 @@ class Smartionary {
     static hasMany = [ entries: SmartionaryEntry ]
 
     static constraints = {
-        name        (nullable: false, blank: false, unique: true)
+        name        (blank: false, unique: true)
         description (nullable: true, size: 1..8000)
     }
 

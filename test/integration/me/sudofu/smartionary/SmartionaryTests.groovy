@@ -16,56 +16,30 @@
 package me.sudofu.smartionary
 
 import static org.junit.Assert.*
-import org.junit.*
-
-import me.sudofu.smartionary.Smartionary
 
 import me.sudofu.smartionary.domain.Smartionary as SmartionaryDomain
 import me.sudofu.smartionary.domain.SmartionaryEntry as Entry
 
-import groovy.json.JsonBuilder
-import groovy.json.JsonSlurper
-import groovy.json.JsonException
+import org.junit.Test
 
 class SmartionaryTests extends GroovyTestCase {
 
-    Date date
+    Date date = new Date(100000)
 
-    UUID uuid
+    UUID uuid = new UUID(12345, 67890)
 
-    Map entries
+    Map entries = [
+        ten: 4,
+        time: date,
+        uuid: uuid,
+        warGames: 'tic-tac-toe',
+    ]
 
-    Map entryDescriptions
-
-    @Before
-    void setUp() {
-        date = new Date(100000)
-
-        uuid = new UUID(12345, 67890)
-
-        entries = [
-            ten: 4,
-            time: date,
-            uuid: uuid,
-            warGames: 'tic-tac-toe',
-        ]
-
-        entryDescriptions = [
-            warGames: "A strange game. The only winning move is not to play.",
-            ten: "Code for confirmation in Radio communications.",
-            time: "A fixed timestamp."
-        ]
-    }
-
-    @After
-    void tearDown() {
-        // Tear down logic here
-    }
-
-    @Test
-    void testDefault() {
-        assert true
-    }
+    Map entryDescriptions = [
+        warGames: "A strange game. The only winning move is not to play.",
+        ten: "Code for confirmation in Radio communications.",
+        time: "A fixed timestamp."
+    ]
 
     @Test
     void testNullGets() {

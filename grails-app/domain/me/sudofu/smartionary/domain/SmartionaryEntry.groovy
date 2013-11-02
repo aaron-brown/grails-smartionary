@@ -22,7 +22,7 @@ import me.sudofu.smartionary.domain.Smartionary
  *
  * @author  Aaron Brown
  */
-class SmartionaryEntry implements Comparable {
+class SmartionaryEntry implements Comparable<SmartionaryEntry> {
     /**
      * The key by which the entry is accessed.
      */
@@ -42,7 +42,7 @@ class SmartionaryEntry implements Comparable {
     static belongsTo = [ smartionary: Smartionary ]
 
     static constraints = {
-        key         (nullable: false, blank: false, unique: 'smartionary')
+        key         (blank: false, unique: 'smartionary')
         value       (nullable: true, size: 1..8000)
         description (nullable: true, size: 1..8000)
         smartionary ()
@@ -53,7 +53,7 @@ class SmartionaryEntry implements Comparable {
         description type: "text"
     }
 
-    int compareTo(obj) {
+    int compareTo(SmartionaryEntry obj) {
         key.compareTo(obj.key)
     }
 

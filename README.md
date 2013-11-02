@@ -14,9 +14,9 @@ by administrative or non-technical hats.
 ## Limitations
 
 The Plugin is very simple, and so it does not support arbitrary Map depth or
-Lists. In otherwords, it should be treated like a single-level Map. 
+Lists. In otherwords, it should be treated like a single-level Map.
 
-All keys and values are Strings, so complex datatypes are not directly 
+All keys and values are Strings, so complex datatypes are not directly
 supported. JSON is supported in a limited fashion, as JSON uses simple
 Datatypes. When retrieving information, all values will be Strings. Future
 support for automatically converting the values is possible.
@@ -25,7 +25,9 @@ support for automatically converting the values is possible.
 
 ## Installation
 
-**Coming soon (use `grails install-plugin` locally)**
+Add a dependency in BuildConfig.groovy:
+
+    compile 'smartionary:1.0'
 
 ## Controller links (for web-interface)
 
@@ -40,7 +42,7 @@ SmartionaryEntry: `/smartionaryEntry` or `/smartionary/entries`
     // 'sample' will be dynamically created if it does not exist already in
     // Smartionary Domain.
     Smartionary.set(
-        'sample', 
+        'sample',
         'A sample smartionary.',
 
         first: "This gets converted into a SmartionaryEntry."
@@ -96,7 +98,7 @@ SmartionaryEntry: `/smartionaryEntry` or `/smartionary/entries`
 
     // Create a Smartionary from JSON.
     //
-    // Using anything other than a Map will result in an 
+    // Using anything other than a Map will result in an
     // IllegalArgumentException.
     //
     // Also, nested Maps are currently not supported...

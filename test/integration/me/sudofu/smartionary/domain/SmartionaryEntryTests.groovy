@@ -16,10 +16,11 @@
 package me.sudofu.smartionary.domain
 
 import static org.junit.Assert.*
-import org.junit.*
 
-import me.sudofu.smartionary.domain.Smartionary
 import me.sudofu.smartionary.domain.SmartionaryEntry as Entry
+
+import org.junit.Before
+import org.junit.Test
 
 class SmartionaryEntryTests {
 
@@ -29,16 +30,6 @@ class SmartionaryEntryTests {
     void setUp() {
         smartionary = new Smartionary( name: "footionary" )
         smartionary.save(flush: true)
-    }
-
-    @After
-    void tearDown() {
-
-    }
-
-    @Test
-    void testDefault() {
-        assert true
     }
 
     @Test
