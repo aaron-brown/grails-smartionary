@@ -16,27 +16,12 @@
 package me.sudofu.smartionary.domain
 
 import static org.junit.Assert.*
-import org.junit.*
 
-import me.sudofu.smartionary.domain.Smartionary
 import me.sudofu.smartionary.domain.SmartionaryEntry as Entry
 
+import org.junit.Test
+
 class SmartionaryTests {
-
-    @Before
-    void setUp() {
-
-    }
-
-    @After
-    void tearDown() {
-
-    }
-
-    @Test
-    void testDefault() {
-        assert true
-    }
 
     @Test
     void testSimpleSmartionary() {

@@ -1,29 +1,26 @@
-grails.project.class.dir = "target/classes"
-grails.project.test.class.dir = "target/test-classes"
-grails.project.test.reports.dir = "target/test-reports"
+grails.project.work.dir = 'target'
 
 grails.project.dependency.resolution = {
-    // inherit Grails' default dependencies
-    inherits("global") {
-        // uncomment to disable ehcache
-        // excludes 'ehcache'
-    }
-    log "warn" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
+
+    inherits 'global'
+    log 'warn'
+
     repositories {
         grailsCentral()
+        mavenLocal()
+        mavenCentral()
     }
 
     dependencies {
-
     }
 
     plugins {
-        build(":tomcat:$grailsVersion",
-              ":release:2.0.3") {
+
+        test(":hibernate:$grailsVersion") {
             export = false
         }
 
-        test(":hibernate:$grailsVersion") {
+        build ':release:2.2.1', ':rest-client-builder:1.0.3', {
             export = false
         }
     }

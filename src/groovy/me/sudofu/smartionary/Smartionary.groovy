@@ -143,10 +143,10 @@ class Smartionary {
      * exists, and it is associated with a <code>SmartionaryEntry</code>
      * in which the <code>value</code> field matches that which was passed.
      */
-    static boolean contains(String smartionaryName, Object value) {
+    static boolean contains(String smartionaryName, value) {
         SmartionaryDomain domain = getDomain(smartionaryName)
 
-        if (domain == null || domain.entries == null || domain.entries.isEmpty()) {
+        if (domain == null || !domain.entries) {
             return false
         }
 
@@ -174,7 +174,7 @@ class Smartionary {
     static boolean containsKey(String smartionaryName, String key) {
         SmartionaryDomain domain = getDomain(smartionaryName)
 
-        if (domain == null || domain.entries == null || domain.entries.isEmpty()) {
+        if (domain == null || !domain.entries) {
             return false
         }
 
@@ -237,7 +237,7 @@ class Smartionary {
             return null
         }
 
-        return (smartionary[key])
+        return smartionary[key]
     }
 
     /**
@@ -348,7 +348,6 @@ class Smartionary {
         }
     }
 
-
     /**
      * Set a <code>Smartionary</code> with (or without)
      * <code>SmartionaryEntries</code>.
@@ -410,12 +409,12 @@ class Smartionary {
      * <code>entries.smartionaryDescriptions</code> field are not
      * instances of <b><code>String</code></b>.
      */
-    static void set(Map<String, Object> entries, String smartionaryName, String smartionaryDescription = null) throws Exception, IllegalArgumentException {
-        if (entries.any { k, v -> ((k instanceof String) == false) }) {
+    static void set(Map<String, Object> entries, String smartionaryName, String smartionaryDescription = null) throws IllegalArgumentException {
+        if (entries.any { k, v -> !(k instanceof String) }) {
             throw new IllegalArgumentException("One or more keys in the 'entries' Map is not a String.")
         }
 
-        if (entries.smartionaryDescriptions.any {k, v -> ((v instanceof String) == false) }) {
+        if (entries.smartionaryDescriptions.any {k, v -> !(v instanceof String) }) {
             throw new IllegalArgumentException("One or more descriptions in the 'entries.smartionaryDescriptions' field is not a String.")
         }
 
@@ -468,7 +467,7 @@ class Smartionary {
      *
      * An optional description to set with the object.
      */
-    static void set(String smartionaryName, String key, Object value, String entryDescription = null, String smartionaryDescription = null) throws Exception {
+    static void set(String smartionaryName, String key, value, String entryDescription = null, String smartionaryDescription = null) {
 
         // Get Smartionary, or create if necessary.
         SmartionaryDomain domain = getCreateDomain(smartionaryName, smartionaryDescription)
@@ -491,12 +490,10 @@ class Smartionary {
      * also delete the <code>SmartionaryEntry</code> Objects associated
      * with it.
      */
-    static void delete(String smartionaryName) throws Exception {
+    static void delete(String smartionaryName) {
         SmartionaryDomain domain = getDomain(smartionaryName)
 
-        if (domain != null) {
-            domain.delete(flush: true)
-        }
+		  domain?.delete(flush: true)
     }
 
     /**
@@ -517,7 +514,7 @@ class Smartionary {
      * The <code>SmartionaryEntry.key</code> of the
      * <code>SmartionaryEntry</code> Object to delete.
      */
-    static void delete(String smartionaryName, String key) throws Exception {
+    static void delete(String smartionaryName, String key) {
         SmartionaryDomain domain = getDomain(smartionaryName)
 
         if (domain == null) {
@@ -552,7 +549,7 @@ class Smartionary {
      * The <code>SmartionaryEntry.key</code> of the
      * <code>SmartionaryEntry</code> Objects to delete.
      */
-    static void delete(String smartionaryName, String... keys) throws Exception {
+    static void delete(String smartionaryName, String... keys) {
         SmartionaryDomain domain = getDomain(smartionaryName)
 
         if (domain == null) {
@@ -588,7 +585,7 @@ class Smartionary {
      *
      * The Name of the <code>Smartionary</code> to act on.
      */
-    static void purgeNulls(String smartionaryName) throws Exception {
+    static void purgeNulls(String smartionaryName) {
         SmartionaryDomain domain = getDomain(smartionaryName)
 
         if (domain == null) {
@@ -624,10 +621,10 @@ class Smartionary {
      *
      * The Name of the <code>Smartionary</code> to act on.
      */
-    static void purge(String smartionaryName) throws Exception {
+    static void purge(String smartionaryName) {
         SmartionaryDomain domain = getDomain(smartionaryName)
 
-        if (domain == null || domain.entries == null || domain.entries.isEmpty()) {
+        if (domain == null || !domain.entries) {
             return
         }
 
@@ -665,13 +662,11 @@ class Smartionary {
      *
      * An optional description to set with the object.
      */
-    static private SmartionaryDomain getCreateDomain(String smartionaryName, String description = null) throws Exception {
+    static private SmartionaryDomain getCreateDomain(String smartionaryName, String description = null) {
         SmartionaryDomain domain = getDomain(smartionaryName)
 
         if (domain == null) {
-            domain = new SmartionaryDomain(
-                name: smartionaryName,
-            )
+            domain = new SmartionaryDomain(name: smartionaryName)
         }
 
         domain.description = (description ?: domain.description)
@@ -709,7 +704,7 @@ class Smartionary {
      *
      * An optional description to set with the object.
      */
-    static private void _set(SmartionaryDomain domain, String key, Object value, String description = null) throws Exception {
+    static private void _set(SmartionaryDomain domain, String key, value, String description = null) {
 
         // Search for the particular entry.
         SmartionaryEntry entry = domain.entries.find { key == it.key }
