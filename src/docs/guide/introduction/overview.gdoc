@@ -1,0 +1,79 @@
+This section will discuss the plugin's structure. There is no configuration 
+necessary. However, bear in mind the considrations of the @Datasource@ and 
+*Spring Core Security Plugin*.
+
+h3. Artifacts
+
+h4. Controllers
+
+The plugin comes with two @Controllers@:
+
+{code}
+me.sudofu.smartionary.controller.SmartionaryController
+me.sudofu.smartionary.controller.SmartionaryEntryController
+{code}
+
+The URIs for these controllers are:
+
+{code:text}
+/smartionary
+
+/smartionaryEntry
+/smartionary/entries
+{code}
+
+h4. Domains
+
+{note}
+It is not necessary to directly use the Domains. This is only provided for
+clarification purposes.
+
+See [Smartionary Interface|guide:using_the_smartionary_interface] for primary 
+usage.
+{note}
+
+The plugin comes with two @Domains@:
+
+{code}
+me.sudofu.smartionary.domain.Smartionary
+me.sudofu.smartionary.domain.SmartionaryEntry
+{code}
+
+These domains are meant to emulate @Map@ and @Map.Entry@.
+
+{note}
+@Smartionary@ *has many* @SmartionaryEntries@, and nothing more. Therefore,
+the @Map@-like structure is limited to a single level (no nesting).
+
+See [best-practices|guide:guidelines] for a possible workaround.
+{note}
+
+The following constraints apply to the Domains:
+
+* There can be no two @Smartionaries@ with the same name.
+* Within a @Smartionary@ there can be no two @SmartionaryEntries@ with the \
+same name.
+
+Here is a visual structure of what this would look like:
+
+{code:text}
+Map myMap = [:]
+
+myMap.myValue = "foo"
+  |      |        |
+  |------|--------|-----Smartionary.name
+         |        |
+         |--------|-----SmartionaryEntry.key
+                  |-----SmartionaryEntry.value
+{code}
+
+h3. The Smartionary Interface
+
+The _Smartionary Interface_ can be found in:
+
+{code}
+me.sudofu.smartionary.Smartionary
+{code}
+
+It is meant to be the primary way to interact with the @Domains@, as it gives
+very useful methods that follow the design philosphy of the plugin.

@@ -1,0 +1,6 @@
+h3. Version 1.0.0
+
+* Code Complete / Initial Release
+** Interaction with *Spring Core Security Plugin* has not been tested.
+** Interaction with custom @Datasource@ configurations (i.e. multiple \
+datasources) has not been tested.

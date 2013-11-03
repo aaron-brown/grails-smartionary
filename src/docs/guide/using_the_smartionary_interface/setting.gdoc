@@ -1,0 +1,109 @@
+Creating and updating @Domains@ is done via the s@et()@ method. There are
+several forms, but only the more complex (and flexible) ones will be discussed
+here.
+
+{note}
+Through all examples here use @Strings@, any @Object@ can be used just like a
+@Map@. The caveat is that it gets converted to a @String@ when placed in the
+@Domain@, and will be a @String@ when retrieved.
+
+See [@get()@|guide:getting] for details.
+{note}
+
+The primary strength of *Smartionary* is that it can convert a @Map@ directly
+into a @Smartionary@ domain:
+
+{code}
+Map toSmartionary = [
+    a: "apple",
+    b: "banana",
+    c: "cantaloupe",
+    d: "durian"
+]
+
+Smartionary.set(toSmartionary, 'fruits', 'A few fruits, by letter.')
+{code}
+
+That is a very straightforward approach, however just like when creating a
+@Domain@ object, the method signature allows you to put the @Map@ directly into
+the parameter body:
+
+{code}
+Smartionary.set(
+    'fruits',
+    'A few fruits, by letter',
+    a: "apple",
+    b: "banana",
+    c: "cantaloupe",
+    d: "durian")
+{code}
+
+In the above sample, the _description_ was moved to be the second positional
+parameter. This makes it a bit more readable than the explicit form.
+
+In the above case, s@et()@ does the following:
+
+# Retrieve the @Smartionary@ that exists by the name of _fruits_.
+** If it does not exist, create it.
+# Replace the values in the corresponding @SmartionaryEntries@.
+** If it does not exist, create it.
+
+Therefore, the same @Smartionary@ domain can be updated with a successive call,
+and a subset of values can be replaced, and others can be added:
+
+{code}
+Smartionary.set(
+    'fruits',
+    c: "cherry",
+    t: "tomato",
+    w: "watermelon")
+{code}
+
+{note}
+By using this method, it is impossible to encounter the unique naming
+constraints.
+{note}
+
+{warning}
+Due to the nature of setting, be very mindful if you wish to only update the
+_description_. For more information, read about 
+[setting Smartionary descriptons|guide:descriptions]
+{warning}
+
+h3. Setting from JSON
+
+An extension of the s@et()@ method is the @fromJson()@ method. This provides
+a convenient way of converting a JSON string which would describe a set of
+parameters or criteria into an equivalent @Smartionary@.
+
+{code}
+String json = '{"a": "apple", "b": "banana", "c": "carrot", "d": "durian"}'
+
+Smartionary.set('fruits', json, 'A few fruits, by letter.')
+
+json = '{"c": "cherry", "t": "tomato", "w": "watermelon"}'
+
+Smartionary.set('fruits', json)
+{code}
+
+{warning}
+Note that the order of the parameters differs. It is not shown here, but in
+all instances of s@et()@, the _smartionaryName_ is the first parameter with
+the exception of the example above. This is due to the way *Groovy* handles
+that particular method signature.
+{warn}
+
+{warning}
+When working with JSON, an array such as the following is not supported: 
+
+{code}
+'["apple", "banana", "cantaloupe", "durian"]'
+{code}
+
+This will throw an @IllegalArgumentException@.
+{warning}
+
+{note}
+Nested @Maps@ and @Lists@ inside the JSON will be converted to @Strings@, so
+this is not very appropriate for complex schemas.
+{note}

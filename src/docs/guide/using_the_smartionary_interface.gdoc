@@ -1,0 +1,16 @@
+From a progremmatic standpoint, the plugin tries to abstract the @Smartionary@
+domain into the overloaded @Smartionary@ object. The @Smartionary@ object
+provides an interface that abides by the following goals:
+
+* Be dyanamic
+** Automatically create @Domains@ as necessary.
+** Update @Domains@ that already exist.
+* Be flexible
+** Multiple ways to do the same thing.
+** Attempt to reduce the number of @Exceptions@ that would occur.
+* Don't mind the illogical
+** Deleting a @Domain@ that doesn't exist is just fine.
+* Pretend to be a @Map@
+** Treat interaction for the developer like they're working with a @Map@
+** Provide some @Map@-methods so they can be used without needing to work \
+with an actual @Map@.

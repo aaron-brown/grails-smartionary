@@ -1,0 +1,45 @@
+The Smartionary plugin for Grails provides a simple structure for storing
+and retrieving information to and from a @Domain@ with emphasis on treating it
+like a [Map|http://docs.oracle.com/javase/7/docs/api/java/util/Map.html].
+
+The goal of the plugin is to make it easy and convenient for developers and
+non-developers to be able to create, update, delete, and access bits of
+information.
+
+In a production environment, it may be necessary to have certain criteria or
+sets of information be accessible to administrative or management roles, while
+at the same time be available to the developer in a progremmatically convenient
+way.
+
+With the Smartionary, required information can be put into the domain by the
+developer during the development cycle. Once in production, if any modification
+of the present data needs to be made, a maintaner (not necessarily the
+developer) is able to alter the information without the need for downtime.
+
+This guide is intended to describe usage and best-practices for the plugin.
+There are no configurations necessary, however the 
+[Datasource|http://grails.org/doc/2.1.1/guide/single.html#dataSource] and, if
+used, the [Spring Core Security Plugin|http://grails-plugins.github.io/
+grails-spring-security-core/docs/manual.1273/guide/
+5%20Configuring%20Request%20Mappings%20to%20Secure%20URLs.html#
+5.1%20Defining%20Secured%20Annotations] 
+(Specifically, @controllerAnnotations.staticRules@) should be carefully tested
+to ensure the plugin is interacting with them appropriately (*this has not
+been explicitly tested*).
+
+{note}
+The term *Smartionary* is a bit overloaded (unfortunately).
+
+When referring to @me.sudofu.smartionary.domain.Smartionary@, which is a
+@Domain@ class, it will be referred to as such (i.e. *Smartionary domain*).
+
+When referring to @me.sudofu.smartionary.Smartionary@, which is the primary way
+to use the plugin, it will be referred to simply as *the Smartionary* or
+*Smartionary interface*.
+{note}
+
+h3. Resources
+
+# [Grails Plugin Page|http://grails.org/plugins/smartionary]
+
+# [Source|http://github.com/aaron-brown/grails-smartionary]

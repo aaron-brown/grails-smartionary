@@ -1,11 +1,7 @@
-grails.doc {
-    title = "Smartionary Plugin"
-    authors = [ "Aaron Brown" ]
-    license = "APACHE 2.0"
-    copyright = "Copyright Aaron Brown 2013"
-
-    images = new File("src/docs/images")
-}
+grails.doc.title = "Smartionary Plugin"
+grails.doc.authors = "Aaron Brown"
+grails.doc.license = "APACHE 2.0"
+grails.doc.images = new File("src/docs/images")
 
 log4j = {
     error 'org.codehaus.groovy.grails',

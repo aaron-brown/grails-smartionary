@@ -1,0 +1,21 @@
+The *Smartionary* comes with several basic @Map@-like functions, so that some
+operations can be performed directly, rather than making it necessary to
+retrieve @Map@ through [getting|guide:getting]
+
+They are exactly like their @Map@ counterpart, with one exception.
+
+{table}
+*Method*    | *example*
+contains    | {code}Smartionary.contains('fruits', 'apple'){code}
+containsKey | {code}Smartionary.containsKey('fruits', 'a'){code}
+size        | {code}Smartionary.size('fruits'){code}
+{table}
+
+The exception to this rule is the @size()@ method:
+
+{table}
+*Condition* | *Result*
+@Smartionary@ does not exist | @-1@
+@Smartionary@ exists, but @SmartionaryEntries@ do not | @0@
+Otherwise | Normal @size()@ behavior for @Map@.
+{table}

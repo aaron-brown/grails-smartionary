@@ -1,0 +1,55 @@
+There are certain considerations to bear in mind when it comes to the
+_descriptions_ of @Smartionary@ and @SmartionaryEntry@. Both @Domains@ allow
+for a description, which is primarily for when looking at the view. While
+developing, it is best-practice to put some form of description with the
+instances, even though the *Smartionary* has no methods to retrieve them.
+
+h3. @Smartionary@ Description
+
+The description for a @Smartionary@ can be set using any form of the @set()@ 
+method. There is no harm in omitting the description; if the domain already 
+has one, it will keep it.
+
+h3. @SmartionaryEntry@ Description
+
+The description for a @SmartionaryEntry@ can only be updated (via the
+*Smartionary*) by the @set()@ methods (or @fromJson()@). The explicit methods
+are fairly starightforward, but for the named-parameter signature there is a
+specific way:
+
+{code}
+Smartionary.set(
+    'fruits',
+    a: "apple",
+    b: "banana",
+    c: "cantaloupe",
+    d: "durian",
+    smartionaryDescriptions: [
+        a: "Can be green, yellow, or red; sour or sweet.",
+        b: 'Grows in bunches, called "hands."',
+        c: "A kind of melon with a lattuce skin.",
+        d: "A spiney fruit like a pineapple, that's really stinky.",
+        t: "A red, fragile bulb; debated to be a vegetable."
+    ]
+)
+{code}
+
+The @smartionaryDescriptions@ key is sort of a "reserved" key for this method.
+It follows a simple rule: _only update the keys that appear in the outer \
+@Map@_. In this example, the key @t@ does not appear in the outer @Map@,
+therefore, even if a @SmartionaryEntry@ exists for @t@, it will not be updated.
+
+The rationality behind this is two-fold:
+
+# Enforces awareness of value modification
+# Prevents accidental and ambiguous behavior when dealing with @null@.
+
+This behavior applies to all versions of @set()@ (as well as @fromJson()@). If
+it is necessary to update only the description, it is best and safer to use the
+web-interface.
+
+{warning}
+Should you choose to update the descriptions through the *Smartionary*, be
+aware that if you pass @null@ for the value of that key, then that is what will
+be written to the @Domain@.
+{warning}

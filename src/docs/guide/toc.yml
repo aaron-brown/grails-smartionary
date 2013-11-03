@@ -1,0 +1,12 @@
+introduction:
+    title: Introduction
+    overview: Overview
+    changes: Changelog
+using_the_smartionary_interface:
+    title: Using the Smartionary Interface
+    setting: 
+        title: Setting
+        descriptions: Setting Descriptions
+    getting: Getting
+    map_like: Map-like Interface
+guidelines: Guidelines and Best-Practice

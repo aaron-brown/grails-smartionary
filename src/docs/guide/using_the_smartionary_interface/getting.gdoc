@@ -1,0 +1,72 @@
+Accessing the information in a @Smartionary@ domain progremmatically is done
+via the @get()@ method.
+
+The @get()@ method _does not_ automatically create a @Smartionary@ domain if it
+does not exist (that can only be done by the [@set()@|guide:setting] methods).
+
+{code}
+Map data = Smartionary.get('fruits')
+{code}
+
+Depending on the state of the @Domain@, the following conditions apply:
+
+{table}
+*@Smartionary@ exists* | *Has @SmartionaryEntries@* | *Returns* 
+  | | @null@   
+!/tick.png!| | @\[:\]@
+!/tick.png!|!/tick.png!|@[a=apple, b=banana, c=cantaloupe, d=durian]@
+{table}
+
+The philosophy behind the plugin is that @get()@ is used more frequently than
+@set()@. While it may be tempting to cache or somehow store the information,
+that ruins the advantages of being able to change the values of a @Smartionary@
+while in production, on-the-fly. Therefore, the following _is not_ best
+practice:
+
+{warning}
+{code}
+class MyClass {
+    Map myInfo = Smartionary.get('myInfoParams')
+
+    private final static MyInfo INSTANCE = new MyInfo()
+
+    private myInfo() { }
+
+    static getInstance() { return INSTANCE }
+}
+{code}
+
+The contents of @myInfo@ can only be updated on application restart.
+{warning}
+
+h3. Getting as JSON
+
+Just like @withJson()@ there is a method for retrieving a @Smartionary@ as a
+JSON string directly. It uses the internal Groovy 
+[JsonBuilder|http://groovy.codehaus.org/gapi/groovy/json/JsonBuilder.html#
+JsonBuilder%28def%29] to fascilitate this:
+
+{code}
+try {
+    Smartionary.getAsJson('fruits')
+} catch (IllegalArgumentException e) {
+    // The Smartionary may not exist.
+} catch (JsonException e) {
+    // Something went awry.
+}
+{code}
+
+Please note the @try/catch@ statement.
+
+Since the @JsonBuilder@ is used, by passing @true@ (or explicitly @false@) you
+can specify that the @String@ should (not) be pretty-formatted:
+
+{code}
+try {
+    Smartionary.getAsJson('fruits', true)
+} catch (IllegalArgumentException e) {
+    // The Smartionary may not exist.
+} catch (JsonException e) {
+    // Something went awry.
+}
+{code}

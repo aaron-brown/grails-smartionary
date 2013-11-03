@@ -1,0 +1,91 @@
+There are a few guidelines / best-practices to bear in mind while working with
+the plugin.
+
+h3. Simple (Read: Limited)
+
+The plugin is very simple, especially in an early version. The @Smartionary@
+domain _does not_ support nested mapping, interpreting @Lists@, or complex
+datatypes. Therefore, it is limited to the very basic datatypes.
+
+That being said, here is a little trick that might at least make nested mapping
+somewhat doable:
+
+{code}
+Smartionary.set(
+    'computer.officeTerm1',
+    'Specs of Office Terminal #1',
+    cpu: 'Widget w12',
+    'cpu.cores': 4,
+    'cpu.speed': 2.2,
+    memory: 4096,
+    'memory.socket': 4,
+    'memory.type': 'DDR3',
+    'disk.1': 'OceanWall',
+    'disk.1.capacity': 1099515288913 
+    'disk.1.type': 'SSD',
+    'disk.1.mounted': true,
+    'disk.2.mounted': false
+    smartionaryDescriptions: [
+        'cpu.speed': 'GHz',
+        'disk.1.capacity': 'In Bytes (~1 TB)',
+        'disk.2.mounted': 'Unused'
+    ]
+)
+
+Map computerInfo = Smartionary.get('computer.officeTerm1')
+
+println computerInfo.'disk.1.capacity'
+{code}
+
+A bit cludgy, but doable if necessary.
+
+{note}
+@List@ and nested mapping _may_ be supported in later versions.
+{note}
+
+h3. Normalizes
+
+Anything goes in, but all that comes out are @Strings@. This is powerful, as it
+means that it automatically "normalizes" all of the data; at the same time it
+may be a bit tedious as there is no way to automatically convert that data
+back when [getting|guide:getting].
+
+Groovy has several @String@ [operations|http://groovy.codehaus.org/groovy-jdk/
+java/lang/String.html] (such as @isInteger()@ and @toInteger()@) that make
+converting this data back a little less painful.
+
+h3. Data is Volatile
+
+The plugin cannot assume the type of environment that it will be used in. It
+can only try to make programming around it a little easier. However, there may
+be a case where data is accidentally altered or deleted from the @Domains@,
+which could break functionality.
+
+That is not an issue with plugin, but rather the nature of the data management
+system that this plugin tries to convenience. The best that can be done (in any
+regard) is to either develope a solution that could become aware of and try to 
+mitigate the effects of entirely breaking, or use *Spring Core Security Plugin* 
+to make sure the web-interface is under supervision.
+
+A nice idea is put information in the description that might indicate whether
+or not a certain piece of data is requried or important for key functionality,
+and how to go about handling its modification.
+
+h3. Use Descriptions
+
+On the above note, use descriptions liberally. Descriptions can be done either
+[by code|guide:descriptions] or via the web-interface. It was made to hold as
+much data as possible, and supports readibility with newlines in both viewing
+and editing in the web-interface.
+
+h3. s@et()@ With Care; @get()@ With Abandon
+
+When [setting|guide:setting], be wary of the values you are using. @null@ is
+a perfectly valid value, and so do not commit the folly of trying to update
+just a description of a @SmartionaryEntry@ progremmatically.
+
+One of the plugin's advantages is that data can be altered during runtime
+without the need to restart. Therefore, it is against this advantage to design
+a solution such that you [get|guide:getting] only once. If that is the
+use-case, then there is no difference between the plugin and the
+@grails-app/conf/Config.groovy@ file, or hard-coding that data.
