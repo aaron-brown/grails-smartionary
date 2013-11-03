@@ -2,12 +2,12 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-    <title>1.1 Overview 1.0.0</title>
+    <title>Smartionary Plugin 1.0.0</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
-    <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
+    <link rel="stylesheet" href="../../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
+    <link rel="stylesheet" href="../../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
     <script type="text/javascript">
-function addJsClass() {
+function addJsClass(el) {
     var classes = document.body.className.split(" ");
     classes.push("js");
     document.body.className = classes.join(" ");
@@ -16,13 +16,14 @@ function addJsClass() {
 </head>
 
 <body class="body" onload="addJsClass();">
+
 <div id="navigation">
     <ul>
         <li>
             <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
                 <a href="../../guide/index.html" class="button">Table of contents</a>
 
-                <div id="nav-summary-childs" style="display:none;">
+                <div id="nav-summary-childs">
                     
                     <div class="toc-item" style="margin-left:0"><a href="../../guide/introduction.html"><strong>1</strong><span>Introduction</span></a>
                     </div>
@@ -54,63 +55,19 @@ function addJsClass() {
 <table id="colset" border="0" cellpadding="0" cellspacing="0">
     <tr>
         <td id="col1">
-            <div id="main" class="corner-all">
-
-                
+            <div id="main" class="reference corner-all">
 
                 <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
 
-                
-                    <div class="toc-item next-right"><a href="../../guide/using_the_smartionary_interface.html"><strong>2</strong><span>Using the Smartionary Interface</span> >></a></div>
-                
+                <h3>Purpose</h3><p class="paragraph"/>Delete a <code>Smartionary</code> and its <code>SmartionaryEntry</code> associates, or delete one
+or more <code>SmartionaryEntry</code> associates from a <code>Smartionary</code>.<p class="paragraph"/><h3>Examples</h3><p class="paragraph"/><div class="code"><pre>Smartionary.delete('fruits')</pre></div><p class="paragraph"/><div class="code"><pre>Smartionary.delete('fruits', 'a')</pre></div><p class="paragraph"/><div class="code"><pre>Smartionary.delete('fruits', 'a, 'b', 'd')</pre></div><p class="paragraph"/><h3>Description</h3><p class="paragraph"/>When given the <code>key</code> or <code>keys</code> parameter, <code>delete()</code> will only remove the
+specified <code>SmartionaryEntry</code> associates whose <code>key</code> field matches. If only
+the <code>smartionaryName</code> is passed, it will delete all <code>SmartionaryEntry</code>
+associates from the <code>Smartionary</code>, and then delete the <code>Smartionary</code>.<p class="paragraph"/>If any <code>key</code> does not exist, or if there is no <code>Smartionary</code> with the presented
+<code>smartionaryName</code>, then nothing is done (<strong class="bold">null</strong> design pattern).<p class="paragraph"/>For quickly deleting all <code>SmartionaryEntry</code> associates, see 
+<a href="../../ref/Smartionary Usage/purge.html" class="Smartionary Usage">purge</a>.<p class="paragraph"/>For quickly deleting <code>SmartionaryEntry</code> associates whose <code>value</code> is <code>null</code>,
+see <a href="../../ref/Smartionary Usage/purgeNull.html" class="Smartionary Usage">purgeNull</a>.
 
-
-                <div class="project">
-                    <h1>1.1 Overview - Reference Documentation</h1>
-
-                    <p><strong>Authors:</strong> Aaron Brown</p>
-
-                    <p><strong>Version:</strong> 1.0.0</p>
-
-                    
-                </div>
-
-                
-
-                
-
-<h2 id="overview">1.1 Overview</h2>
-This section will discuss the plugin's structure. There is no configuration 
-necessary. However, bear in mind the considrations of the <code>Datasource</code> and 
-<strong class="bold">Spring Core Security Plugin</strong>.<p class="paragraph"/><h3>Artifacts</h3><p class="paragraph"/><h4>Controllers</h4><p class="paragraph"/>The plugin comes with two <code>Controllers</code>:<p class="paragraph"/><div class="code"><pre>me.sudofu.smartionary.controller.SmartionaryController
-me.sudofu.smartionary.controller.SmartionaryEntryController</pre></div><p class="paragraph"/>The URIs for these controllers are:<p class="paragraph"/><div class="code"><pre>/smartionary<p class="paragraph"/>/smartionaryEntry
-/smartionary/entries</pre></div><p class="paragraph"/><h4>Domains</h4><p class="paragraph"/><blockquote class="note">
-It is not necessary to directly use the Domains. This is only provided for
-clarification purposes.<p class="paragraph"/>See <a href="../guide/single.html#using_the_smartionary_interface" class="guide">Smartionary Interface</a> for primary 
-usage.
-</blockquote><p class="paragraph"/>The plugin comes with two <code>Domains</code>:<p class="paragraph"/><div class="code"><pre>me.sudofu.smartionary.domain.Smartionary
-me.sudofu.smartionary.domain.SmartionaryEntry</pre></div><p class="paragraph"/>These domains are meant to emulate <code>Map</code> and <code>Map.Entry</code>.<p class="paragraph"/><blockquote class="note">
-<code>Smartionary</code> <strong class="bold">has many</strong> <code>SmartionaryEntries</code>, and nothing more. Therefore,
-the <code>Map</code>-like structure is limited to a single level (no nesting).<p class="paragraph"/>See <a href="../guide/single.html#guidelines" class="guide">best-practices</a> for a possible workaround.
-</blockquote><p class="paragraph"/>The following constraints apply to the Domains:
-<ul class="star">
-<li>There can be no two <code>Smartionaries</code> with the same name.</li>
-<li>Within a <code>Smartionary</code> there can be no two <code>SmartionaryEntries</code> with the &#10;same name.</li>
-</ul><p class="paragraph"/>Here is a visual structure of what this would look like:<p class="paragraph"/><div class="code"><pre>Map myMap = &#91;:&#93;<p class="paragraph"/>myMap.myValue = <span class="java&#45;quote">"foo"</span>
-  |      |        |
-  |&#45;&#45;&#45;&#45;&#45;&#45;|&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;|&#45;&#45;&#45;&#45;&#45;Smartionary.name
-         |        |
-         |&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;|&#45;&#45;&#45;&#45;&#45;SmartionaryEntry.key
-                  |&#45;&#45;&#45;&#45;&#45;SmartionaryEntry.value</pre></div><p class="paragraph"/><h3>The Smartionary Interface</h3><p class="paragraph"/>The  <em class="italic">Smartionary Interface</em>  can be found in:<p class="paragraph"/><div class="code"><pre>me.sudofu.smartionary.Smartionary</pre></div><p class="paragraph"/>It is meant to be the primary way to interact with the <code>Domains</code>, as it gives
-very useful methods that follow the design philosphy of the plugin.
-
-
-
-                <div style="clear:both;margin-top:15px;"></div>
-                
-                    <div class="toc-item next-right"><a href="../../guide/using_the_smartionary_interface.html"><strong>2</strong><span>Using the Smartionary Interface</span> >></a></div>
-                
-                <div style="clear:both"></div>
             </div>
         </td>
         <td id="col2">
@@ -121,8 +78,10 @@ very useful methods that follow the design philosphy of the plugin.
                 </div>
                 <div class="menu">
                     
-                    <div class="menu-block"><h1 class="menu-title" onclick="toggleRef(this.parentNode.childNodes[1])">Controllers</h1><div class="menu-sub">
-                        
+                    <div class="menu-block">
+                        <h1 class="menu-title" onclick="toggleRef(nextElement(this))">Controllers</h1>
+                        <div class="menu-sub">
+                            
                             
                             <div class="menu-item"><a href="../../ref/Controllers/Smartionary.html">Smartionary</a>
                             </div>
@@ -130,11 +89,13 @@ very useful methods that follow the design philosphy of the plugin.
                             <div class="menu-item"><a href="../../ref/Controllers/SmartionaryEntry.html">SmartionaryEntry</a>
                             </div>
                             
-                            </div>
+                        </div>
                     </div>
                     
-                    <div class="menu-block"><h1 class="menu-title" onclick="toggleRef(this.parentNode.childNodes[1])">Domains</h1><div class="menu-sub">
-                        
+                    <div class="menu-block">
+                        <h1 class="menu-title" onclick="toggleRef(nextElement(this))">Domains</h1>
+                        <div class="menu-sub">
+                            
                             
                             <div class="menu-item"><a href="../../ref/Domains/Smartionary.html">Smartionary</a>
                             </div>
@@ -142,11 +103,13 @@ very useful methods that follow the design philosphy of the plugin.
                             <div class="menu-item"><a href="../../ref/Domains/SmartionaryEntry.html">SmartionaryEntry</a>
                             </div>
                             
-                            </div>
+                        </div>
                     </div>
                     
-                    <div class="menu-block"><h1 class="menu-title" onclick="toggleRef(this.parentNode.childNodes[1])">Smartionary Usage</h1><div class="menu-sub">
-                        
+                    <div class="menu-block">
+                        <h1 class="menu-title" onclick="toggleRef(nextElement(this))">Smartionary Usage</h1>
+                        <div class="menu-sub selected">
+                            
                             
                             <div class="menu-item"><a href="../../ref/Smartionary%20Usage/contains.html">contains</a>
                             </div>
@@ -178,7 +141,7 @@ very useful methods that follow the design philosphy of the plugin.
                             <div class="menu-item"><a href="../../ref/Smartionary%20Usage/size.html">size</a>
                             </div>
                             
-                            </div>
+                        </div>
                     </div>
                     
                 </div>
@@ -192,7 +155,8 @@ very useful methods that follow the design philosphy of the plugin.
     
 </div>
 
-<script type="text/javascript" src="../js/docs.js"></script>
+
+<script type="text/javascript" src="../../js/docs.js"></script>
 
 </body>
 </html>
