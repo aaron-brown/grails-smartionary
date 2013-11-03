@@ -1,0 +1,31 @@
+h3 Purpose
+
+Delete *only* @SmartionaryEntry@ associates of a @SmartionaryEntry@ that have
+@null@ as their @value@.
+
+h3. Example
+
+{code}
+Smartionary.purgeNull('fruits')
+{code}
+
+h3. Description
+
+@purgeNull()@ is the equivalient of calling a specific kind of @find { }@
+closure:
+
+{code}
+Map fruits = [
+    a: "apple",
+    b: "banana",
+    c: "cantaloupe",
+    d: "durian",
+    t: null
+]
+
+fruits = fruits.findAll { k, v -> v != null }
+{code}
+
+For purging only *all* values, see [purge|Smartionary Usage].
+
+For more specific or drastic deletions, see [delete|Smartionary Usage].

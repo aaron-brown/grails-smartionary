@@ -1,0 +1,31 @@
+h3 Purpose
+
+Delete *all* @SmartionaryEntry@ associates of a @SmartionaryEntry@.
+
+h3. Example
+
+{code}
+Smartionary.purge('fruits')
+{code}
+
+h3. Description
+
+@purge()@ is the equivalient of re-assigning a previously instantiated @Map@
+to an empty @Map@:
+
+{code}
+Map fruits = [
+    a: "apple",
+    b: "banana",
+    c: "cantaloupe",
+    d: "durian"
+]
+
+fruits = [:]
+{code}
+
+The @Smartionary@ and its @description@ will remain, unaltered.
+
+For purging only @null@ values, see [purgeNull|Smartionary Usage].
+
+For more specific or drastic deletions, see [delete|Smartionary Usage].

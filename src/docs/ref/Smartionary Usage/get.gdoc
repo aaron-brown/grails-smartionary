@@ -1,0 +1,77 @@
+h3. Purpose
+
+Retrieve and convert a @Smartionary@ and its @SmartionaryEntry@ associations
+into a @Map@.
+
+h3. Examples
+
+{code}
+Map fruitsByLetter = Smartionary.get('fruits')
+{code}
+
+{code}
+String aEntry = Smartionary.get('fruits', 'a')
+{code}
+
+h3. Description
+
+When retrieving a @Smartionary@ the @get()@ method automatically converts it
+to a @Map@, providing convenience to the user. However, the return varies
+depending on that status of the @Smartionary@ and its @SmartionaryEntry@
+associations.
+
+When a @Smartionary@ does not exist the equivalient is the same as a @Map@
+that has not been instantiated with any data:
+
+{code}
+Map fruits
+{code}
+
+When the @Smartionary@ has no @SmartionaryEntry@ associations, it is the same
+as instantiating an empty @Map@:
+
+{code}
+Map fruits = [:]
+{code}
+
+When the @Smartionary@ has @SmartionaryEntry@ associations, it is the same as
+instantiating a @Map@ with data:
+
+{code}
+Map fruits = [
+    a: "apple",
+    b: "banana",
+    c: "cantaloupe",
+    d: "durian"
+]
+{code}
+
+In the second form, the desired @key@ is passed, which is the equivalent of
+attempting to get the @value@ associated with the @key@ of a @Map@, and
+behaves the same way.
+
+If the @key@ does not exist, it is @null@:
+
+{code}
+Map fruits = [
+    a: "apple",
+    b: "banana",
+    c: "cantaloupe",
+    d: "durian"
+]
+
+fruits.t
+{code}
+
+If the @key@ does exist, the @value@ is returned:
+
+{code}
+Map fruits = [
+    a: "apple",
+    b: "banana",
+    c: "cantaloupe",
+    d: "durian"
+]
+
+fruits.a
+{code}

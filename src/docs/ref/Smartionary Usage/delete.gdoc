@@ -1,0 +1,34 @@
+h3. Purpose
+
+Delete a @Smartionary@ and its @SmartionaryEntry@ associates, or delete one
+or more @SmartionaryEntry@ associates from a @Smartionary@.
+
+h3. Examples
+
+{code}
+Smartionary.delete('fruits')
+{code}
+
+{code}
+Smartionary.delete('fruits', 'a')
+{code}
+
+{code}
+Smartionary.delete('fruits', 'a, 'b', 'd')
+{code}
+
+h3. Description
+
+When given the @key@ or @keys@ parameter, @delete()@ will only remove the
+specified @SmartionaryEntry@ associates whose @key@ field matches. If only
+the @smartionaryName@ is passed, it will delete all @SmartionaryEntry@
+associates from the @Smartionary@, and then delete the @Smartionary@.
+
+If any @key@ does not exist, or if there is no @Smartionary@ with the presented
+@smartionaryName@, then nothing is done (*null* design pattern).
+
+For quickly deleting all @SmartionaryEntry@ associates, see 
+[purge|Smartionary Usage].
+
+For quickly deleting @SmartionaryEntry@ associates whose @value@ is @null@,
+see [purgeNull|Smartionary Usage].

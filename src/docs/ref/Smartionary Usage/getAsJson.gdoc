@@ -1,0 +1,41 @@
+h3. Purpose
+
+Retrieve and convert the @Smartionary@ into a JSON string.
+
+h3. Example
+
+{code}
+try {
+    Smartionary.getAsJson('fruits')
+} catch (IllegalArgumentException e) {
+    // Smartionary may not exist.
+} catch (JsonException e) {
+    // Something went awry.
+}
+{code}
+
+{code}
+try {
+    Smartionary.getAsJson('fruits', true)
+} catch (IllegalArgumentException e) {
+    // Smartionary may not exist.
+} catch (JsonException e) {
+    // Something went awry.
+}
+{code}
+
+h3. Description
+
+Uses the *Groovy* [JsonBuilder|http://groovy.codehaus.org/gapi/groovy/json/
+JsonBuilder.html] to convert the @Smartionary@ into JSON.
+
+When passed @true@, the JSON is pretty-formatted. By default, this condition
+is @false@.
+
+{warning}
+Calling @getAsJson()@ and providing a @smartionaryName@ that is not actually
+present in the @Smartionary@ domain will throw an @IllegalArgumentException@.
+
+If there is a chance that the @Smartionary@ may get deleted, then use a
+@try/catch@ statement.
+{warning}

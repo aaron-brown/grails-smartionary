@@ -1,0 +1,78 @@
+h3. Purpose
+
+_Create_ or _Update_ a @Smartionary@ and/or its @SmartionaryEntry@ associations
+directly from JSON.
+
+h3. Examples
+
+{code}
+String json = """\
+{
+    "a": "apple", 
+    "b": "banana",
+    "c": "cantaloupe",
+    "d": "durian"
+}"""
+
+try {
+    Smartionary.set("fruits", json, "A few fruits, by letter.")
+} catch (JsonException e) {
+    // Invalid JSON.
+}
+{code}
+
+{code}
+String json = """\
+{
+    "a": "apple", 
+    "b": "banana",
+    "c": "cantaloupe",
+    "d": "durian"
+    "smartionaryDescriptions": {
+        "a": "Can be green, yellow, or red; sour or sweet.",
+        "b": "Grows in bunches, called \"hands.\"",
+        "c": "A kind of melon with a lattuce skin.",
+        "d": "A spiney fruit like a pineapple, that's really stinky.",
+    }
+}"""
+
+try {
+    Smartionary.set("fruits", json, "A few fruits, by letter.")
+} catch (JsonException e) {
+    // Invalid JSON.
+}
+{code}
+
+h3. Description
+
+Uses the *Groovy* [JsonSlurper|http://groovy.codehaus.org/gapi/groovy/json/
+JsonSlurper.html] to convert JSON into a @Smartionary@.
+
+Format is similar to using the [set|Smartionary Usage] method by passing it
+an explicit @Map@.
+
+The @smartionaryDescriptions@ is a special key that tells the method to 
+associate those descriptions with the matching key in the outer layer 
+(non-matching keys are ignored).
+
+The @smartionaryDescriptions@ and @entryDescription@ are optional.
+
+{warning}
+Be mindful of use-cases where it may only be necessary 
+[to only update descriptions|guide:descriptions].
+{warning}
+
+{warning}
+When working with JSON, an array such as the following is not supported: 
+
+{code}
+'["apple", "banana", "cantaloupe", "durian"]'
+{code}
+
+This will throw an @IllegalArgumentException@.
+{warning}
+
+{note}
+Nested @Maps@ and @Lists@ inside the JSON will be converted to @Strings@, so
+this is not very appropriate for complex schemas.
+{note}

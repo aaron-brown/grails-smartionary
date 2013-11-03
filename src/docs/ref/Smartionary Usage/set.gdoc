@@ -1,0 +1,79 @@
+h3. Purpose
+
+_Create_ or _Update_ a [Smartionary|Domains] and/or its
+[SmartionaryEntry|Domains] associations.
+
+h3. Examples
+
+h4. Set Only @Smartionary@
+
+{code}
+Smartionary.set("fruits")
+{code}
+
+{code}
+Smartionary.set("fruits", "A few fruits, by letter.")
+{code}
+
+h4. Set Using @Map@
+
+{code}
+Map toSmartionary = [
+    a: "apple",
+    b: "banana",
+    c: "cantaloupe",
+    d: "durian",
+    smartionaryDescriptions: [
+        a: "Can be green, yellow, or red; sour or sweet.",
+        b: 'Grows in bunches, called "hands."',
+        c: "A kind of melon with a lattuce skin.",
+        d: "A spiney fruit like a pineapple, that's really stinky.",
+    ]
+]
+
+Smartionary.set(toSmartionary, "fruits", "A few fruits, by letter.")
+{code}
+
+{code}
+Smartionary.set(
+    'fruits',
+    'A few fruits, by letter.',
+    a: "apple",
+    b: "banana",
+    c: "cantaloupe",
+    d: "durian",
+    smartionaryDescriptions: [
+        a: "Can be green, yellow, or red; sour or sweet.",
+        b: 'Grows in bunches, called "hands."',
+        c: "A kind of melon with a lattuce skin.",
+        d: "A spiney fruit like a pineapple, that's really stinky.",
+    ]
+)
+{code}
+
+h4. Set Explicitly
+
+{code}
+Smartionary.set("fruits", "t", "tomato")
+{code}
+
+{code}
+Smartionary.set("fruits", "t", "tomato", "A red, fragile bulb; debated to be a vegetable.")
+{code}
+
+{code}
+Smartionary.set("fruits", "t", "tomato", "A red, fragile bulb; debated to be a vegetable.", "Letters associated to Fruits for teaching aide.")
+{code}
+
+h3. Description
+
+When setting with a @Map@ the @smartionaryDescriptions@ is a special key that
+tells the method to associate those descriptions with the matching key in the
+outer layer (non-matching keys are ignored).
+
+@smartionaryDescription@ and @entryDescription@ are optional parameters.
+
+{warning}
+Be mindful of use-cases where it may only be necessary 
+[to only update descriptions|guide:descriptions].
+{warning}

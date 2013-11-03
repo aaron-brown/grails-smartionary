@@ -1,0 +1,15 @@
+h3. Purprose
+
+Convenience method to emulate @Map@ functionality.
+
+h3. Example
+
+{code}
+Smartionary.contains('fruits', 'apple')
+{code}
+
+h3. Description
+
+@contains()@ returns @true@ if and only if the @Smartionary@ exists, and has a
+@SmartionaryEntry@ that has the specified *value*. Do not confuse it with
+[containsKey|Smartionary Usage].
