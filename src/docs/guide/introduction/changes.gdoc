@@ -1,6 +1,6 @@
 h3. Version 1.0.1
 
-* Mapped the [SmartionaryEntry|Domain] *key* field to the Database column \
+* Mapped the [SmartionaryEntry|Domains] *key* field to the Database column \
 *identifier*.
 
 h3. Version 1.0.0
