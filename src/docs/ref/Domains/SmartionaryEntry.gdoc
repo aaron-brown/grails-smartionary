@@ -25,3 +25,7 @@ h3. Constraints
 
 * A *key* is unique per @Smartionary@.
 * *key* cannot be @null@, but @null@ is a valid *value*.
+
+h3. Notes
+
+* The *key* field is mapped to the column *identifier* in the Database.
