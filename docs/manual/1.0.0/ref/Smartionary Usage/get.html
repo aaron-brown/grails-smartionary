@@ -1,0 +1,179 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <title>Smartionary Plugin 1.0.0</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="../../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
+    <link rel="stylesheet" href="../../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
+    <script type="text/javascript">
+function addJsClass(el) {
+    var classes = document.body.className.split(" ");
+    classes.push("js");
+    document.body.className = classes.join(" ");
+}
+    </script>
+</head>
+
+<body class="body" onload="addJsClass();">
+
+<div id="navigation">
+    <ul>
+        <li>
+            <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
+                <a href="../../guide/index.html" class="button">Table of contents</a>
+
+                <div id="nav-summary-childs">
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../../guide/introduction.html"><strong>1</strong><span>Introduction</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../../guide/using_the_smartionary_interface.html"><strong>2</strong><span>Using the Smartionary Interface</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../../guide/guidelines.html"><strong>3</strong><span>Guidelines and Best-Practice</span></a>
+                    </div>
+                    
+                </div>
+            </div>
+        </li>
+        <li class="separator selected">
+            <a id="ref-button" onclick="localToggle(); return false;" href="#">Quick Reference</a>
+        </li>
+    </ul>
+</div>
+<div id="header">
+    <div class="images clearfix">
+        
+        
+    </div>
+    <p>Facilitates externalizing a Map into a Domain, so that and app can support both programmatic and administrative modification of variable data.
+</p>
+</div>
+
+
+<table id="colset" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td id="col1">
+            <div id="main" class="reference corner-all">
+
+                <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
+
+                <h3>Purpose</h3><p class="paragraph"/>Retrieve and convert a <code>Smartionary</code> and its <code>SmartionaryEntry</code> associations
+into a <code>Map</code>.<p class="paragraph"/><h3>Examples</h3><p class="paragraph"/><div class="code"><pre>Map fruitsByLetter = Smartionary.get('fruits')</pre></div><p class="paragraph"/><div class="code"><pre><span class="java&#45;object">String</span> aEntry = Smartionary.get('fruits', 'a')</pre></div><p class="paragraph"/><h3>Description</h3><p class="paragraph"/>When retrieving a <code>Smartionary</code> the <code>get()</code> method automatically converts it
+to a <code>Map</code>, providing convenience to the user. However, the return varies
+depending on that status of the <code>Smartionary</code> and its <code>SmartionaryEntry</code>
+associations.<p class="paragraph"/>When a <code>Smartionary</code> does not exist the equivalient is the same as a <code>Map</code>
+that has not been instantiated with any data:<p class="paragraph"/><div class="code"><pre>Map fruits</pre></div><p class="paragraph"/>When the <code>Smartionary</code> has no <code>SmartionaryEntry</code> associations, it is the same
+as instantiating an empty <code>Map</code>:<p class="paragraph"/><div class="code"><pre>Map fruits = &#91;:&#93;</pre></div><p class="paragraph"/>When the <code>Smartionary</code> has <code>SmartionaryEntry</code> associations, it is the same as
+instantiating a <code>Map</code> with data:<p class="paragraph"/><div class="code"><pre>Map fruits = &#91;
+    a: <span class="java&#45;quote">"apple"</span>,
+    b: <span class="java&#45;quote">"banana"</span>,
+    c: <span class="java&#45;quote">"cantaloupe"</span>,
+    d: <span class="java&#45;quote">"durian"</span>
+&#93;</pre></div><p class="paragraph"/>In the second form, the desired <code>key</code> is passed, which is the equivalent of
+attempting to get the <code>value</code> associated with the <code>key</code> of a <code>Map</code>, and
+behaves the same way.<p class="paragraph"/>If the <code>key</code> does not exist, it is <code>null</code>:<p class="paragraph"/><div class="code"><pre>Map fruits = &#91;
+    a: <span class="java&#45;quote">"apple"</span>,
+    b: <span class="java&#45;quote">"banana"</span>,
+    c: <span class="java&#45;quote">"cantaloupe"</span>,
+    d: <span class="java&#45;quote">"durian"</span>
+&#93;<p class="paragraph"/>fruits.t</pre></div><p class="paragraph"/>If the <code>key</code> does exist, the <code>value</code> is returned:<p class="paragraph"/><div class="code"><pre>Map fruits = &#91;
+    a: <span class="java&#45;quote">"apple"</span>,
+    b: <span class="java&#45;quote">"banana"</span>,
+    c: <span class="java&#45;quote">"cantaloupe"</span>,
+    d: <span class="java&#45;quote">"durian"</span>
+&#93;<p class="paragraph"/>fruits.a</pre></div>
+
+            </div>
+        </td>
+        <td id="col2">
+            <div class="local clearfix">
+                <div class="local-title">
+                    <a href="../../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
+                </div>
+                <div class="menu">
+                    
+                    <div class="menu-block">
+                        <h1 class="menu-title" onclick="toggleRef(nextElement(this))">Controllers</h1>
+                        <div class="menu-sub">
+                            
+                            
+                            <div class="menu-item"><a href="../../ref/Controllers/Smartionary.html">Smartionary</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Controllers/SmartionaryEntry.html">SmartionaryEntry</a>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+                    <div class="menu-block">
+                        <h1 class="menu-title" onclick="toggleRef(nextElement(this))">Domains</h1>
+                        <div class="menu-sub">
+                            
+                            
+                            <div class="menu-item"><a href="../../ref/Domains/Smartionary.html">Smartionary</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Domains/SmartionaryEntry.html">SmartionaryEntry</a>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+                    <div class="menu-block">
+                        <h1 class="menu-title" onclick="toggleRef(nextElement(this))">Smartionary Usage</h1>
+                        <div class="menu-sub selected">
+                            
+                            
+                            <div class="menu-item"><a href="../../ref/Smartionary%20Usage/contains.html">contains</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Smartionary%20Usage/containsKey.html">containsKey</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Smartionary%20Usage/delete.html">delete</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Smartionary%20Usage/fromJson.html">fromJson</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Smartionary%20Usage/get.html">get</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Smartionary%20Usage/getAsJson.html">getAsJson</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Smartionary%20Usage/purge.html">purge</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Smartionary%20Usage/purgeNull.html">purgeNull</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Smartionary%20Usage/set.html">set</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Smartionary%20Usage/size.html">size</a>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div id="footer">
+    
+    
+</div>
+
+
+<script type="text/javascript" src="../../js/docs.js"></script>
+
+</body>
+</html>

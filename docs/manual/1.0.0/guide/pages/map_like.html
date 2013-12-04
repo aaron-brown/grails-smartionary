@@ -1,0 +1,182 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <title>2.3 Map-like Interface 1.0.0</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
+    <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
+    <script type="text/javascript">
+function addJsClass() {
+    var classes = document.body.className.split(" ");
+    classes.push("js");
+    document.body.className = classes.join(" ");
+}
+    </script>
+</head>
+
+<body class="body" onload="addJsClass();">
+<div id="navigation">
+    <ul>
+        <li>
+            <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
+                <a href="../../guide/index.html" class="button">Table of contents</a>
+
+                <div id="nav-summary-childs" style="display:none;">
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../../guide/introduction.html"><strong>1</strong><span>Introduction</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../../guide/using_the_smartionary_interface.html"><strong>2</strong><span>Using the Smartionary Interface</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../../guide/guidelines.html"><strong>3</strong><span>Guidelines and Best-Practice</span></a>
+                    </div>
+                    
+                </div>
+            </div>
+        </li>
+        <li class="separator selected">
+            <a id="ref-button" onclick="localToggle(); return false;" href="#">Quick Reference</a>
+        </li>
+    </ul>
+</div>
+<div id="header">
+    <div class="images clearfix">
+        
+        
+    </div>
+    <p>Facilitates externalizing a Map into a Domain, so that and app can support both programmatic and administrative modification of variable data.
+</p>
+</div>
+
+
+<table id="colset" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td id="col1">
+            <div id="main" class="corner-all">
+
+                
+                    <div class="toc-item prev-left"><a href="../../guide/introduction.html">&lt;&lt; <strong>1</strong><span>Introduction</span></a></div>
+                
+
+                <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
+
+                
+                    <div class="toc-item next-right"><a href="../../guide/guidelines.html"><strong>3</strong><span>Guidelines and Best-Practice</span> >></a></div>
+                
+
+
+                <div class="project">
+                    <h1>2.3 Map-like Interface - Reference Documentation</h1>
+
+                    <p><strong>Authors:</strong> Aaron Brown</p>
+
+                    <p><strong>Version:</strong> 1.0.0</p>
+
+                    
+                </div>
+
+                
+
+                
+
+<h2 id="map_like">2.3 Map-like Interface</h2>
+The <strong class="bold">Smartionary</strong> comes with several basic <code>Map</code>-like functions, so that some
+operations can be performed directly, rather than making it necessary to
+retrieve <code>Map</code> through <a href="../guide/single.html#getting" class="guide">getting</a><p class="paragraph"/>They are exactly like their <code>Map</code> counterpart, with one exception.<p class="paragraph"/><table class="wiki-table" cellpadding="0" cellspacing="0" border="0"><tr><th><strong class="bold">Method</strong></th><th><strong class="bold">example</strong></th></tr><tr class="table-odd"><td>contains</td><td><div class="code"><pre>Smartionary.contains('fruits', 'apple')</pre></div></td></tr><tr class="table-even"><td>containsKey</td><td><div class="code"><pre>Smartionary.containsKey('fruits', 'a')</pre></div></td></tr><tr class="table-odd"><td>size</td><td><div class="code"><pre>Smartionary.size('fruits')</pre></div></td></tr></table><p class="paragraph"/>The exception to this rule is the <code>size()</code> method:<p class="paragraph"/><table class="wiki-table" cellpadding="0" cellspacing="0" border="0"><tr><th><strong class="bold">Condition</strong></th><th><strong class="bold">Result</strong></th></tr><tr class="table-odd"><td><code>Smartionary</code> does not exist</td><td><code>-1</code></td></tr><tr class="table-even"><td><code>Smartionary</code> exists, but <code>SmartionaryEntries</code> do not</td><td><code>0</code></td></tr><tr class="table-odd"><td>Otherwise</td><td>Normal <code>size()</code> behavior for <code>Map</code>.</td></tr></table>
+
+
+
+                <div style="clear:both;margin-top:15px;"></div>
+                
+                    <div class="toc-item prev-left"><a href="../../guide/introduction.html">&lt;&lt; <strong>1</strong><span>Introduction</span></a></div>
+                
+                    <div class="toc-item next-right"><a href="../../guide/guidelines.html"><strong>3</strong><span>Guidelines and Best-Practice</span> >></a></div>
+                
+                <div style="clear:both"></div>
+            </div>
+        </td>
+        <td id="col2">
+            <div class="local clearfix">
+                <div class="local-title">
+                    <a href="../../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
+                </div>
+                <div class="menu">
+                    
+                    <div class="menu-block"><h1 class="menu-title" onclick="toggleRef(this.parentNode.childNodes[1])">Controllers</h1><div class="menu-sub">
+                        
+                            
+                            <div class="menu-item"><a href="../../ref/Controllers/Smartionary.html">Smartionary</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Controllers/SmartionaryEntry.html">SmartionaryEntry</a>
+                            </div>
+                            
+                            </div>
+                    </div>
+                    
+                    <div class="menu-block"><h1 class="menu-title" onclick="toggleRef(this.parentNode.childNodes[1])">Domains</h1><div class="menu-sub">
+                        
+                            
+                            <div class="menu-item"><a href="../../ref/Domains/Smartionary.html">Smartionary</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Domains/SmartionaryEntry.html">SmartionaryEntry</a>
+                            </div>
+                            
+                            </div>
+                    </div>
+                    
+                    <div class="menu-block"><h1 class="menu-title" onclick="toggleRef(this.parentNode.childNodes[1])">Smartionary Usage</h1><div class="menu-sub">
+                        
+                            
+                            <div class="menu-item"><a href="../../ref/Smartionary%20Usage/contains.html">contains</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Smartionary%20Usage/containsKey.html">containsKey</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Smartionary%20Usage/delete.html">delete</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Smartionary%20Usage/fromJson.html">fromJson</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Smartionary%20Usage/get.html">get</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Smartionary%20Usage/getAsJson.html">getAsJson</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Smartionary%20Usage/purge.html">purge</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Smartionary%20Usage/purgeNull.html">purgeNull</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Smartionary%20Usage/set.html">set</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Smartionary%20Usage/size.html">size</a>
+                            </div>
+                            
+                            </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div id="footer">
+    
+    
+</div>
+
+<script type="text/javascript" src="../js/docs.js"></script>
+
+</body>
+</html>
