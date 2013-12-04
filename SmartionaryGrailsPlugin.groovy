@@ -12,7 +12,12 @@ an app can support both programmatic and administrative modification \
 of variable data.
 '''
 
-    def documentation = "http://aaron-brown.github.io/grails-smartionary/docs/manual/index.html"
+    def pluginExcludes = [
+        "docs/",
+        "src/docs/"
+    ]
+
+    def documentation = "http://aaron-brown.github.io/grails-smartionary/docs/manual/latest/index.html"
     def license = "APACHE"
     def issueManagement = [ system: "GITHUB", url: "https://github.com/aaron-brown/grails-smartionary/issues" ]
     def scm = [ url: "https://github.com/aaron-brown/grails-smartionary" ]
