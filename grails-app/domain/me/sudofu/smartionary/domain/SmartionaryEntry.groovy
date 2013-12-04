@@ -49,6 +49,7 @@ class SmartionaryEntry implements Comparable<SmartionaryEntry> {
     }
 
     static mapping = {
+        key         column: 'identifier'
         value       type: "text"
         description type: "text"
     }
