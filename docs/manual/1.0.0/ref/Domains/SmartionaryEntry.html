@@ -47,7 +47,7 @@ function addJsClass(el) {
         
         
     </div>
-    <p>Facilitates externalizing a Map into a Domain, so that and app can support both programmatic and administrative modification of variable data.
+    <p>Facilitates externalizing a Map into a Domain, so that an app can support both programmatic and administrative modification of variable data.
 </p>
 </div>
 
@@ -59,7 +59,11 @@ function addJsClass(el) {
 
                 <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
 
-                
+                <h3>Purprose</h3><p class="paragraph"/>Emulates a key-value pair association (A <code>Map.Entry</code>).<p class="paragraph"/><h3>Fields</h3><p class="paragraph"/><table class="wiki-table" cellpadding="0" cellspacing="0" border="0"><tr><th><strong class="bold">Name</strong></th><th><strong class="bold">Description</strong></th></tr><tr class="table-odd"></tr><tr class="table-even"><td><code>key</code></td><td>&#10;The unique <strong class="bold">key</strong> (or identifier) by which the value is identified</td></tr><tr class="table-odd"></tr><tr class="table-even"><td><code>value</code></td><td>&#10;The <strong class="bold">value</strong> associated to a key</td></tr><tr class="table-odd"></tr><tr class="table-even"><td><code>description</code></td><td>&#10;(Optional) A human-readable description to help explain the value's purpose &#10;or instructions on how to maintain it</td></tr><tr class="table-odd"></tr><tr class="table-even"><td><code>smartionary</code></td><td>&#10;The <a href="../../ref/Domains/Smartionary.html" class="Domains">Smartionary</a> that this <strong class="bold">SmartionaryEntry</strong> belongs to.</td></tr></table><p class="paragraph"/><h3>Constraints</h3>
+<ul class="star">
+<li>A <strong class="bold">key</strong> is unique per <code>Smartionary</code>.</li>
+<li><strong class="bold">key</strong> cannot be <code>null</code>, but <code>null</code> is a valid <strong class="bold">value</strong>.</li>
+</ul><p class="paragraph"/>
             </div>
         </td>
         <td id="col2">
