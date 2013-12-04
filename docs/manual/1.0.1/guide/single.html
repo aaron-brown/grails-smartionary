@@ -1,0 +1,469 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+    <head>
+        <title>Smartionary Plugin 1.0.0</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8" />
+        <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8" />
+    <script type="text/javascript">
+function addJsClass(el) {
+    var classes = document.body.className.split(" ");
+    classes.push("js");
+    document.body.className = classes.join(" ");
+}
+    </script>
+    </head>
+
+    <body class="body" onload="addJsClass();">
+        <div id="navigation">
+            <ul>
+                <li>
+                    <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
+                        <a href="../guide/index.html" class="button">Table of contents</a>
+                        <div id="nav-summary-childs" style="display:none;">
+                            
+                            <div class="toc-item" style="margin-left:0"><a href="#introduction"><strong>1</strong><span>Introduction</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:0"><a href="#using_the_smartionary_interface"><strong>2</strong><span>Using the Smartionary Interface</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:0"><a href="#guidelines"><strong>3</strong><span>Guidelines and Best-Practice</span></a></div>
+                            
+                        </div>
+                    </div>
+                </li>
+                <li class="separator selected">
+                    <a id="ref-button" onclick="localToggle(); return false;" href="#">Quick Reference</a>
+                </li>
+            </ul>
+        </div>
+        <div id="header">
+            <div class="images clearfix">
+                
+                
+            </div>
+            <p>Facilitates externalizing a Map into a Domain, so that an app can support both programmatic and administrative modification of variable data.
+</p>
+        </div>
+
+
+        <table id="colset" border="0" cellpadding="0" cellspacing="0">
+            <tr>
+                <td id="col1">
+                    <div id="main" class="corner-all">
+
+                        <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
+
+                        <div class="project">
+                            <h1>Smartionary Plugin - Reference Documentation</h1>
+                            <p><strong>Authors:</strong> Aaron Brown</p>
+                            <p><strong>Version:</strong> 1.0.0</p>
+                            
+                        </div>
+
+                        
+                        <div id="table-of-content">
+                            <h2>Table of Contents</h2>
+                            
+                            <div class="toc-item" style="margin-left:0px"><a href="#introduction"><strong>1</strong><span>Introduction</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:10px"><a href="#overview"><strong>1.1</strong><span>Overview</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:10px"><a href="#changes"><strong>1.2</strong><span>Changelog</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:0px"><a href="#using_the_smartionary_interface"><strong>2</strong><span>Using the Smartionary Interface</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:10px"><a href="#setting"><strong>2.1</strong><span>Setting</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:20px"><a href="#descriptions"><strong>2.1.1</strong><span>Setting Descriptions</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:10px"><a href="#getting"><strong>2.2</strong><span>Getting</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:10px"><a href="#map_like"><strong>2.3</strong><span>Map-like Interface</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:0px"><a href="#guidelines"><strong>3</strong><span>Guidelines and Best-Practice</span></a></div>
+                            
+                            <div style="clear:both" ></div>
+                        </div>
+                        
+                        
+
+<h1 id="introduction">1 Introduction</h1>
+The Smartionary plugin for Grails provides a simple structure for storing
+and retrieving information to and from a <code>Domain</code> with emphasis on treating it
+like a <a href="http://docs.oracle.com/javase/7/docs/api/java/util/Map.html" target="blank">Map</a>.<p class="paragraph"/>The goal of the plugin is to make it easy and convenient for developers and
+non-developers to be able to create, update, delete, and access bits of
+information.<p class="paragraph"/>In a production environment, it may be necessary to have certain criteria or
+sets of information be accessible to administrative or management roles, while
+at the same time be available to the developer in a progremmatically convenient
+way.<p class="paragraph"/>With the Smartionary, required information can be put into the domain by the
+developer during the development cycle. Once in production, if any modification
+of the present data needs to be made, a maintaner (not necessarily the
+developer) is able to alter the information without the need for downtime.<p class="paragraph"/>This guide is intended to describe usage and best-practices for the plugin.
+There are no configurations necessary, however the 
+<a href="http://grails.org/doc/2.1.1/guide/single.html#dataSource" target="blank">Datasource</a> and, if
+used, the <a href="http://grails-plugins.github.io/
+grails-spring-security-core/docs/manual.1273/guide/
+5%20Configuring%20Request%20Mappings%20to%20Secure%20URLs.html#
+5.1%20Defining%20Secured%20Annotations" target="blank">Spring Core Security Plugin</a> 
+(Specifically, <code>controllerAnnotations.staticRules</code>) should be carefully tested
+to ensure the plugin is interacting with them appropriately (*this has not
+been explicitly tested*).<p class="paragraph"/><blockquote class="note">
+The term <strong class="bold">Smartionary</strong> is a bit overloaded (unfortunately).<p class="paragraph"/>When referring to <code>me.sudofu.smartionary.domain.Smartionary</code>, which is a
+<code>Domain</code> class, it will be referred to as such (i.e. <strong class="bold">Smartionary domain</strong>).<p class="paragraph"/>When referring to <code>me.sudofu.smartionary.Smartionary</code>, which is the primary way
+to use the plugin, it will be referred to simply as <strong class="bold">the Smartionary</strong> or
+<strong class="bold">Smartionary interface</strong>.
+</blockquote><p class="paragraph"/><h3>Resources</h3>
+<ol>
+<li><a href="http://grails.org/plugins/smartionary" target="blank">Grails Plugin Page</a></li>
+<li><a href="http://github.com/aaron-brown/grails-smartionary" target="blank">Source</a></li>
+</ol><p class="paragraph"/>
+
+
+<h2 id="overview">1.1 Overview</h2>
+This section will discuss the plugin's structure. There is no configuration 
+necessary. However, bear in mind the considrations of the <code>Datasource</code> and 
+<strong class="bold">Spring Core Security Plugin</strong>.<p class="paragraph"/><h3>Artifacts</h3><p class="paragraph"/><h4>Controllers</h4><p class="paragraph"/>The plugin comes with two <code>Controllers</code>:<p class="paragraph"/><div class="code"><pre>me.sudofu.smartionary.controller.SmartionaryController
+me.sudofu.smartionary.controller.SmartionaryEntryController</pre></div><p class="paragraph"/>The URIs for these controllers are:<p class="paragraph"/><div class="code"><pre>/smartionary<p class="paragraph"/>/smartionaryEntry
+/smartionary/entries</pre></div><p class="paragraph"/><h4>Domains</h4><p class="paragraph"/><blockquote class="note">
+It is not necessary to directly use the Domains. This is only provided for
+clarification purposes.<p class="paragraph"/>See <a href="../guide/single.html#using_the_smartionary_interface" class="guide">Smartionary Interface</a> for primary 
+usage.
+</blockquote><p class="paragraph"/>The plugin comes with two <code>Domains</code>:<p class="paragraph"/><div class="code"><pre>me.sudofu.smartionary.domain.Smartionary
+me.sudofu.smartionary.domain.SmartionaryEntry</pre></div><p class="paragraph"/>These domains are meant to emulate <code>Map</code> and <code>Map.Entry</code>.<p class="paragraph"/><blockquote class="note">
+<code>Smartionary</code> <strong class="bold">has many</strong> <code>SmartionaryEntries</code>, and nothing more. Therefore,
+the <code>Map</code>-like structure is limited to a single level (no nesting).<p class="paragraph"/>See <a href="../guide/single.html#guidelines" class="guide">best-practices</a> for a possible workaround.
+</blockquote><p class="paragraph"/>The following constraints apply to the Domains:
+<ul class="star">
+<li>There can be no two <code>Smartionaries</code> with the same name.</li>
+<li>Within a <code>Smartionary</code> there can be no two <code>SmartionaryEntries</code> with the &#10;same name.</li>
+</ul><p class="paragraph"/>Here is a visual structure of what this would look like:<p class="paragraph"/><div class="code"><pre>Map myMap = &#91;:&#93;<p class="paragraph"/>myMap.myValue = <span class="java&#45;quote">"foo"</span>
+  |      |        |
+  |&#45;&#45;&#45;&#45;&#45;&#45;|&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;|&#45;&#45;&#45;&#45;&#45;Smartionary.name
+         |        |
+         |&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;|&#45;&#45;&#45;&#45;&#45;SmartionaryEntry.key
+                  |&#45;&#45;&#45;&#45;&#45;SmartionaryEntry.value</pre></div><p class="paragraph"/><h3>The Smartionary Interface</h3><p class="paragraph"/>The  <em class="italic">Smartionary Interface</em>  can be found in:<p class="paragraph"/><div class="code"><pre>me.sudofu.smartionary.Smartionary</pre></div><p class="paragraph"/>It is meant to be the primary way to interact with the <code>Domains</code>, as it gives
+very useful methods that follow the design philosphy of the plugin.
+
+
+
+<h2 id="changes">1.2 Changelog</h2>
+<h3>Version 1.0.1</h3>
+<ul class="star">
+<li>Mapped the <a href="../ref/Domains/SmartionaryEntry.html" class="Domains">SmartionaryEntry</a> <strong class="bold">key</strong> field to the Database column &#10;<strong class="bold">identifier</strong>.</li>
+</ul><p class="paragraph"/><h3>Version 1.0.0</h3>
+<ul class="star">
+<li>Code Complete / Initial Release</li>
+<ul class="star">
+<li>Interaction with <strong class="bold">Spring Core Security Plugin</strong> has not been tested.</li>
+<li>Interaction with custom <code>Datasource</code> configurations (i.e. multiple &#10;datasources) has not been tested.</li>
+</ul></ul><p class="paragraph"/>
+
+
+<h1 id="using_the_smartionary_interface">2 Using the Smartionary Interface</h1>
+From a progremmatic standpoint, the plugin tries to abstract the <code>Smartionary</code>
+domain into the overloaded <code>Smartionary</code> object. The <code>Smartionary</code> object
+provides an interface that abides by the following goals:
+<ul class="star">
+<li>Be dyanamic</li>
+<ul class="star">
+<li>Automatically create <code>Domains</code> as necessary.</li>
+<li>Update <code>Domains</code> that already exist.</li>
+</ul>
+<li>Be flexible</li>
+<ul class="star">
+<li>Multiple ways to do the same thing.</li>
+<li>Attempt to reduce the number of <code>Exceptions</code> that would occur.</li>
+</ul>
+<li>Don't mind the illogical</li>
+<ul class="star">
+<li>Deleting a <code>Domain</code> that doesn't exist is just fine.</li>
+</ul>
+<li>Pretend to be a <code>Map</code></li>
+<ul class="star">
+<li>Treat interaction for the developer like they're working with a <code>Map</code></li>
+<li>Provide some <code>Map</code>-methods so they can be used without needing to work &#10;with an actual <code>Map</code>.</li>
+</ul></ul><p class="paragraph"/>
+
+
+<h2 id="setting">2.1 Setting</h2>
+Creating and updating <code>Domains</code> is done via the s<code>et()</code> method. There are
+several forms, but only the more complex (and flexible) ones will be discussed
+here.<p class="paragraph"/><blockquote class="note">
+Through all examples here use <code>Strings</code>, any <code>Object</code> can be used just like a
+<code>Map</code>. The caveat is that it gets converted to a <code>String</code> when placed in the
+<code>Domain</code>, and will be a <code>String</code> when retrieved.<p class="paragraph"/>See <a href="../guide/single.html#getting" class="guide"><code>get()</code></a> for details.
+</blockquote><p class="paragraph"/>The primary strength of <strong class="bold">Smartionary</strong> is that it can convert a <code>Map</code> directly
+into a <code>Smartionary</code> domain:<p class="paragraph"/><div class="code"><pre>Map toSmartionary = &#91;
+    a: <span class="java&#45;quote">"apple"</span>,
+    b: <span class="java&#45;quote">"banana"</span>,
+    c: <span class="java&#45;quote">"cantaloupe"</span>,
+    d: <span class="java&#45;quote">"durian"</span>
+&#93;<p class="paragraph"/>Smartionary.set(toSmartionary, 'fruits', 'A few fruits, by letter.')</pre></div><p class="paragraph"/>That is a very straightforward approach, however just like when creating a
+<code>Domain</code> object, the method signature allows you to put the <code>Map</code> directly into
+the parameter body:<p class="paragraph"/><div class="code"><pre>Smartionary.set(
+    'fruits',
+    'A few fruits, by letter',
+    a: <span class="java&#45;quote">"apple"</span>,
+    b: <span class="java&#45;quote">"banana"</span>,
+    c: <span class="java&#45;quote">"cantaloupe"</span>,
+    d: <span class="java&#45;quote">"durian"</span>)</pre></div><p class="paragraph"/>In the above sample, the  <em class="italic">description</em>  was moved to be the second positional
+parameter. This makes it a bit more readable than the explicit form.<p class="paragraph"/>In the above case, s<code>et()</code> does the following:
+<ol>
+<li>Retrieve the <code>Smartionary</code> that exists by the name of  <em class="italic">fruits</em> .</li>
+</ol>
+<ul class="star">
+<ul class="star">
+<li>If it does not exist, create it.</li>
+</ul>
+</ul>
+<ol>
+<li>Replace the values in the corresponding <code>SmartionaryEntries</code>.</li>
+</ol>
+<ul class="star">
+<ul class="star">
+<li>If it does not exist, create it.</li>
+</ul></ul><p class="paragraph"/>Therefore, the same <code>Smartionary</code> domain can be updated with a successive call,
+and a subset of values can be replaced, and others can be added:<p class="paragraph"/><div class="code"><pre>Smartionary.set(
+    'fruits',
+    c: <span class="java&#45;quote">"cherry"</span>,
+    t: <span class="java&#45;quote">"tomato"</span>,
+    w: <span class="java&#45;quote">"watermelon"</span>)</pre></div><p class="paragraph"/><blockquote class="note">
+By using this method, it is impossible to encounter the unique naming
+constraints.
+</blockquote><p class="paragraph"/><blockquote class="warning">
+Due to the nature of setting, be very mindful if you wish to only update the
+ <em class="italic">description</em> . For more information, read about 
+<a href="../guide/single.html#descriptions" class="guide">setting Smartionary descriptons</a>
+</blockquote><p class="paragraph"/><h3>Setting from JSON</h3><p class="paragraph"/>An extension of the s<code>et()</code> method is the <code>fromJson()</code> method. This provides
+a convenient way of converting a JSON string which would describe a set of
+parameters or criteria into an equivalent <code>Smartionary</code>.<p class="paragraph"/><div class="code"><pre><span class="java&#45;object">String</span> json = '&#123;<span class="java&#45;quote">"a"</span>: <span class="java&#45;quote">"apple"</span>, <span class="java&#45;quote">"b"</span>: <span class="java&#45;quote">"banana"</span>, <span class="java&#45;quote">"c"</span>: <span class="java&#45;quote">"carrot"</span>, <span class="java&#45;quote">"d"</span>: <span class="java&#45;quote">"durian"</span>&#125;'<p class="paragraph"/>Smartionary.set('fruits', json, 'A few fruits, by letter.')<p class="paragraph"/>json = '&#123;<span class="java&#45;quote">"c"</span>: <span class="java&#45;quote">"cherry"</span>, <span class="java&#45;quote">"t"</span>: <span class="java&#45;quote">"tomato"</span>, <span class="java&#45;quote">"w"</span>: <span class="java&#45;quote">"watermelon"</span>&#125;'<p class="paragraph"/>Smartionary.set('fruits', json)</pre></div><p class="paragraph"/><blockquote class="warning">
+Note that the order of the parameters differs. It is not shown here, but in
+all instances of s<code>et()</code>, the  <em class="italic">smartionaryName</em>  is the first parameter with
+the exception of the example above. This is due to the way <strong class="bold">Groovy</strong> handles
+that particular method signature.
+{warn}<p class="paragraph"/></blockquote>
+When working with JSON, an array such as the following is not supported:<p class="paragraph"/><div class="code"><pre>'&#91;<span class="java&#45;quote">"apple"</span>, <span class="java&#45;quote">"banana"</span>, <span class="java&#45;quote">"cantaloupe"</span>, <span class="java&#45;quote">"durian"</span>&#93;'</pre></div><p class="paragraph"/>This will throw an <code>IllegalArgumentException</code>.
+<blockquote class="warning">null</blockquote><p class="paragraph"/><blockquote class="note">
+Nested <code>Maps</code> and <code>Lists</code> inside the JSON will be converted to <code>Strings</code>, so
+this is not very appropriate for complex schemas.
+</blockquote>
+
+
+
+<h2 id="descriptions">2.1.1 Setting Descriptions</h2>
+There are certain considerations to bear in mind when it comes to the
+ <em class="italic">descriptions</em>  of <code>Smartionary</code> and <code>SmartionaryEntry</code>. Both <code>Domains</code> allow
+for a description, which is primarily for when looking at the view. While
+developing, it is best-practice to put some form of description with the
+instances, even though the <strong class="bold">Smartionary</strong> has no methods to retrieve them.<p class="paragraph"/><h3><code>Smartionary</code> Description</h3><p class="paragraph"/>The description for a <code>Smartionary</code> can be set using any form of the <code>set()</code> 
+method. There is no harm in omitting the description; if the domain already 
+has one, it will keep it.<p class="paragraph"/><h3><code>SmartionaryEntry</code> Description</h3><p class="paragraph"/>The description for a <code>SmartionaryEntry</code> can only be updated (via the
+<strong class="bold">Smartionary</strong>) by the <code>set()</code> methods (or <code>fromJson()</code>). The explicit methods
+are fairly starightforward, but for the named-parameter signature there is a
+specific way:<p class="paragraph"/><div class="code"><pre>Smartionary.set(
+    'fruits',
+    a: <span class="java&#45;quote">"apple"</span>,
+    b: <span class="java&#45;quote">"banana"</span>,
+    c: <span class="java&#45;quote">"cantaloupe"</span>,
+    d: <span class="java&#45;quote">"durian"</span>,
+    smartionaryDescriptions: &#91;
+        a: <span class="java&#45;quote">"Can be green, yellow, or red; sour or sweet."</span>,
+        b: 'Grows in bunches, called <span class="java&#45;quote">"hands."</span>',
+        c: <span class="java&#45;quote">"A kind of melon with a lattuce skin."</span>,
+        d: <span class="java&#45;quote">"A spiney fruit like a pineapple, that's really stinky."</span>,
+        t: <span class="java&#45;quote">"A red, fragile bulb; debated to be a vegetable."</span>
+    &#93;
+)</pre></div><p class="paragraph"/>The <code>smartionaryDescriptions</code> key is sort of a "reserved" key for this method.
+It follows a simple rule:  <em class="italic">only update the keys that appear in the outer &#10;<code>Map</code></em> . In this example, the key <code>t</code> does not appear in the outer <code>Map</code>,
+therefore, even if a <code>SmartionaryEntry</code> exists for <code>t</code>, it will not be updated.<p class="paragraph"/>The rationality behind this is two-fold:
+<ol>
+<li>Enforces awareness of value modification</li>
+<li>Prevents accidental and ambiguous behavior when dealing with <code>null</code>.</li>
+</ol><p class="paragraph"/>This behavior applies to all versions of <code>set()</code> (as well as <code>fromJson()</code>). If
+it is necessary to update only the description, it is best and safer to use the
+web-interface.<p class="paragraph"/><blockquote class="warning">
+Should you choose to update the descriptions through the <strong class="bold">Smartionary</strong>, be
+aware that if you pass <code>null</code> for the value of that key, then that is what will
+be written to the <code>Domain</code>.
+</blockquote>
+
+
+
+<h2 id="getting">2.2 Getting</h2>
+Accessing the information in a <code>Smartionary</code> domain progremmatically is done
+via the <code>get()</code> method.<p class="paragraph"/>The <code>get()</code> method  <em class="italic">does not</em>  automatically create a <code>Smartionary</code> domain if it
+does not exist (that can only be done by the <a href="../guide/single.html#setting" class="guide"><code>set()</code></a> methods).<p class="paragraph"/><div class="code"><pre>Map data = Smartionary.get('fruits')</pre></div><p class="paragraph"/>Depending on the state of the <code>Domain</code>, the following conditions apply:<p class="paragraph"/><table class="wiki-table" cellpadding="0" cellspacing="0" border="0"><tr><th><strong class="bold"><code>Smartionary</code> exists</strong></th><th><strong class="bold">Has <code>SmartionaryEntries</code></strong></th><th><strong class="bold">Returns</strong></th></tr><tr class="table-odd"><td>&#160;</td><td>&#160;</td><td><code>null</code></td></tr><tr class="table-even"><td><img border="0" class="center" src="../img//tick.png"></img></td><td>&#160;</td><td><code>&#91;:&#93;</code></td></tr><tr class="table-odd"><td><img border="0" class="center" src="../img//tick.png"></img></td><td><img border="0" class="center" src="../img//tick.png"></img></td><td><code>a=apple, b=banana, c=cantaloupe, d=durian</code></td></tr></table><p class="paragraph"/>The philosophy behind the plugin is that <code>get()</code> is used more frequently than
+<code>set()</code>. While it may be tempting to cache or somehow store the information,
+that ruins the advantages of being able to change the values of a <code>Smartionary</code>
+while in production, on-the-fly. Therefore, the following  <em class="italic">is not</em>  best
+practice:<p class="paragraph"/><blockquote class="warning">
+<div class="code"><pre>class MyClass &#123;
+    Map myInfo = Smartionary.get('myInfoParams')<p class="paragraph"/>    <span class="java&#45;keyword">private</span> <span class="java&#45;keyword">final</span> <span class="java&#45;keyword">static</span> MyInfo INSTANCE = <span class="java&#45;keyword">new</span> MyInfo()<p class="paragraph"/>    <span class="java&#45;keyword">private</span> myInfo() &#123; &#125;<p class="paragraph"/>    <span class="java&#45;keyword">static</span> getInstance() &#123; <span class="java&#45;keyword">return</span> INSTANCE &#125;
+&#125;</pre></div><p class="paragraph"/>The contents of <code>myInfo</code> can only be updated on application restart.
+</blockquote><p class="paragraph"/><h3>Getting as JSON</h3><p class="paragraph"/>Just like <code>withJson()</code> there is a method for retrieving a <code>Smartionary</code> as a
+JSON string directly. It uses the internal Groovy 
+<a href="http://groovy.codehaus.org/gapi/groovy/json/JsonBuilder.html#
+JsonBuilder%28def%29" target="blank">JsonBuilder</a> to fascilitate this:<p class="paragraph"/><div class="code"><pre><span class="java&#45;keyword">try</span> &#123;
+    Smartionary.getAsJson('fruits')
+&#125; <span class="java&#45;keyword">catch</span> (IllegalArgumentException e) &#123;
+    // The Smartionary may not exist.
+&#125; <span class="java&#45;keyword">catch</span> (JsonException e) &#123;
+    // Something went awry.
+&#125;</pre></div><p class="paragraph"/>Please note the <code>try/catch</code> statement.<p class="paragraph"/>Since the <code>JsonBuilder</code> is used, by passing <code>true</code> (or explicitly <code>false</code>) you
+can specify that the <code>String</code> should (not) be pretty-formatted:<p class="paragraph"/><div class="code"><pre><span class="java&#45;keyword">try</span> &#123;
+    Smartionary.getAsJson('fruits', <span class="java&#45;keyword">true</span>)
+&#125; <span class="java&#45;keyword">catch</span> (IllegalArgumentException e) &#123;
+    // The Smartionary may not exist.
+&#125; <span class="java&#45;keyword">catch</span> (JsonException e) &#123;
+    // Something went awry.
+&#125;</pre></div>
+
+
+
+<h2 id="map_like">2.3 Map-like Interface</h2>
+The <strong class="bold">Smartionary</strong> comes with several basic <code>Map</code>-like functions, so that some
+operations can be performed directly, rather than making it necessary to
+retrieve <code>Map</code> through <a href="../guide/single.html#getting" class="guide">getting</a><p class="paragraph"/>They are exactly like their <code>Map</code> counterpart, with one exception.<p class="paragraph"/><table class="wiki-table" cellpadding="0" cellspacing="0" border="0"><tr><th><strong class="bold">Method</strong></th><th><strong class="bold">example</strong></th></tr><tr class="table-odd"><td>contains</td><td><div class="code"><pre>Smartionary.contains('fruits', 'apple')</pre></div></td></tr><tr class="table-even"><td>containsKey</td><td><div class="code"><pre>Smartionary.containsKey('fruits', 'a')</pre></div></td></tr><tr class="table-odd"><td>size</td><td><div class="code"><pre>Smartionary.size('fruits')</pre></div></td></tr></table><p class="paragraph"/>The exception to this rule is the <code>size()</code> method:<p class="paragraph"/><table class="wiki-table" cellpadding="0" cellspacing="0" border="0"><tr><th><strong class="bold">Condition</strong></th><th><strong class="bold">Result</strong></th></tr><tr class="table-odd"><td><code>Smartionary</code> does not exist</td><td><code>-1</code></td></tr><tr class="table-even"><td><code>Smartionary</code> exists, but <code>SmartionaryEntries</code> do not</td><td><code>0</code></td></tr><tr class="table-odd"><td>Otherwise</td><td>Normal <code>size()</code> behavior for <code>Map</code>.</td></tr></table>
+
+
+
+<h1 id="guidelines">3 Guidelines and Best-Practice</h1>
+There are a few guidelines / best-practices to bear in mind while working with
+the plugin.<p class="paragraph"/><h3>Simple (Read: Limited)</h3><p class="paragraph"/>The plugin is very simple, especially in an early version. The <code>Smartionary</code>
+domain  <em class="italic">does not</em>  support nested mapping, interpreting <code>Lists</code>, or complex
+datatypes. Therefore, it is limited to the very basic datatypes.<p class="paragraph"/>That being said, here is a little trick that might at least make nested mapping
+somewhat doable:<p class="paragraph"/><div class="code"><pre>Smartionary.set(
+    'computer.officeTerm1',
+    'Specs of Office Terminal &#35;1',
+    cpu: 'Widget w12',
+    'cpu.cores': 4,
+    'cpu.speed': 2.2,
+    memory: 4096,
+    'memory.socket': 4,
+    'memory.type': 'DDR3',
+    'disk.1': 'OceanWall',
+    'disk.1.capacity': 1099515288913 
+    'disk.1.type': 'SSD',
+    'disk.1.mounted': <span class="java&#45;keyword">true</span>,
+    'disk.2.mounted': <span class="java&#45;keyword">false</span>
+    smartionaryDescriptions: &#91;
+        'cpu.speed': 'GHz',
+        'disk.1.capacity': 'In Bytes (~1 TB)',
+        'disk.2.mounted': 'Unused'
+    &#93;
+)<p class="paragraph"/>Map computerInfo = Smartionary.get('computer.officeTerm1')<p class="paragraph"/>println computerInfo.'disk.1.capacity'</pre></div><p class="paragraph"/>A bit cludgy, but doable if necessary.<p class="paragraph"/><blockquote class="note">
+<code>List</code> and nested mapping  <em class="italic">may</em>  be supported in later versions.
+</blockquote><p class="paragraph"/><h3>Normalizes</h3><p class="paragraph"/>Anything goes in, but all that comes out are <code>Strings</code>. This is powerful, as it
+means that it automatically "normalizes" all of the data; at the same time it
+may be a bit tedious as there is no way to automatically convert that data
+back when <a href="../guide/single.html#getting" class="guide">getting</a>.<p class="paragraph"/>Groovy has several <code>String</code> <a href="http://groovy.codehaus.org/groovy-jdk/
+java/lang/String.html" target="blank">operations</a> (such as <code>isInteger()</code> and <code>toInteger()</code>) that make
+converting this data back a little less painful.<p class="paragraph"/><h3>Data is Volatile</h3><p class="paragraph"/>The plugin cannot assume the type of environment that it will be used in. It
+can only try to make programming around it a little easier. However, there may
+be a case where data is accidentally altered or deleted from the <code>Domains</code>,
+which could break functionality.<p class="paragraph"/>That is not an issue with plugin, but rather the nature of the data management
+system that this plugin tries to convenience. The best that can be done (in any
+regard) is to either develope a solution that could become aware of and try to 
+mitigate the effects of entirely breaking, or use <strong class="bold">Spring Core Security Plugin</strong> 
+to make sure the web-interface is under supervision.<p class="paragraph"/>A nice idea is put information in the description that might indicate whether
+or not a certain piece of data is requried or important for key functionality,
+and how to go about handling its modification.<p class="paragraph"/><h3>Use Descriptions</h3><p class="paragraph"/>On the above note, use descriptions liberally. Descriptions can be done either
+<a href="../guide/single.html#descriptions" class="guide">by code</a> or via the web-interface. It was made to hold as
+much data as possible, and supports readibility with newlines in both viewing
+and editing in the web-interface.<p class="paragraph"/><h3>s<code>et()</code> With Care; <code>get()</code> With Abandon</h3><p class="paragraph"/>When <a href="../guide/single.html#setting" class="guide">setting</a>, be wary of the values you are using. <code>null</code> is
+a perfectly valid value, and so do not commit the folly of trying to update
+just a description of a <code>SmartionaryEntry</code> progremmatically.<p class="paragraph"/>One of the plugin's advantages is that data can be altered during runtime
+without the need to restart. Therefore, it is against this advantage to design
+a solution such that you <a href="../guide/single.html#getting" class="guide">get</a> only once. If that is the
+use-case, then there is no difference between the plugin and the
+<code>grails-app/conf/Config.groovy</code> file, or hard-coding that data.
+
+
+                    </div>
+                </td>
+                <td id="col2">
+            <div class="local clearfix">
+                <div class="local-title">
+                    <a href="../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
+                </div>
+                <div class="menu">
+                    
+                    <div class="menu-block"><h1 class="menu-title" onclick="toggleRef(this.parentNode.childNodes[1])">Controllers</h1><div class="menu-sub">
+                        
+                        
+                        <div class="menu-item"><a href="../ref/Controllers/Smartionary.html">Smartionary</a>
+                        </div>
+                        
+                        <div class="menu-item"><a href="../ref/Controllers/SmartionaryEntry.html">SmartionaryEntry</a>
+                        </div>
+                        
+                        </div>
+                    </div>
+                    
+                    <div class="menu-block"><h1 class="menu-title" onclick="toggleRef(this.parentNode.childNodes[1])">Domains</h1><div class="menu-sub">
+                        
+                        
+                        <div class="menu-item"><a href="../ref/Domains/Smartionary.html">Smartionary</a>
+                        </div>
+                        
+                        <div class="menu-item"><a href="../ref/Domains/SmartionaryEntry.html">SmartionaryEntry</a>
+                        </div>
+                        
+                        </div>
+                    </div>
+                    
+                    <div class="menu-block"><h1 class="menu-title" onclick="toggleRef(this.parentNode.childNodes[1])">Smartionary Usage</h1><div class="menu-sub">
+                        
+                        
+                        <div class="menu-item"><a href="../ref/Smartionary%20Usage/contains.html">contains</a>
+                        </div>
+                        
+                        <div class="menu-item"><a href="../ref/Smartionary%20Usage/containsKey.html">containsKey</a>
+                        </div>
+                        
+                        <div class="menu-item"><a href="../ref/Smartionary%20Usage/delete.html">delete</a>
+                        </div>
+                        
+                        <div class="menu-item"><a href="../ref/Smartionary%20Usage/fromJson.html">fromJson</a>
+                        </div>
+                        
+                        <div class="menu-item"><a href="../ref/Smartionary%20Usage/get.html">get</a>
+                        </div>
+                        
+                        <div class="menu-item"><a href="../ref/Smartionary%20Usage/getAsJson.html">getAsJson</a>
+                        </div>
+                        
+                        <div class="menu-item"><a href="../ref/Smartionary%20Usage/purge.html">purge</a>
+                        </div>
+                        
+                        <div class="menu-item"><a href="../ref/Smartionary%20Usage/purgeNull.html">purgeNull</a>
+                        </div>
+                        
+                        <div class="menu-item"><a href="../ref/Smartionary%20Usage/set.html">set</a>
+                        </div>
+                        
+                        <div class="menu-item"><a href="../ref/Smartionary%20Usage/size.html">size</a>
+                        </div>
+                        
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </td>
+            </tr>
+        </table>
+
+        <div id="footer">
+            
+            
+        </div>
+
+
+
+<script type="text/javascript" src="../js/docs.js"></script>
+
+    </body>
+</html>

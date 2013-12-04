@@ -1,0 +1,224 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <title>3 Guidelines and Best-Practice 1.0.0</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
+    <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
+    <script type="text/javascript">
+function addJsClass() {
+    var classes = document.body.className.split(" ");
+    classes.push("js");
+    document.body.className = classes.join(" ");
+}
+    </script>
+</head>
+
+<body class="body" onload="addJsClass();">
+<div id="navigation">
+    <ul>
+        <li>
+            <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
+                <a href="../guide/index.html" class="button">Table of contents</a>
+
+                <div id="nav-summary-childs" style="display:none;">
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../guide/introduction.html"><strong>1</strong><span>Introduction</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../guide/using_the_smartionary_interface.html"><strong>2</strong><span>Using the Smartionary Interface</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../guide/guidelines.html"><strong>3</strong><span>Guidelines and Best-Practice</span></a>
+                    </div>
+                    
+                </div>
+            </div>
+        </li>
+        <li class="separator selected">
+            <a id="ref-button" onclick="localToggle(); return false;" href="#">Quick Reference</a>
+        </li>
+    </ul>
+</div>
+<div id="header">
+    <div class="images clearfix">
+        
+        
+    </div>
+    <p>Facilitates externalizing a Map into a Domain, so that an app can support both programmatic and administrative modification of variable data.
+</p>
+</div>
+
+
+<table id="colset" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td id="col1">
+            <div id="main" class="corner-all">
+
+                
+                    <div class="toc-item prev-left"><a href="../guide/using_the_smartionary_interface.html">&lt;&lt; <strong>2</strong><span>Using the Smartionary Interface</span></a></div>
+                
+
+                <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
+
+                
+
+
+                <div class="project">
+                    <h1>3 Guidelines and Best-Practice - Reference Documentation</h1>
+
+                    <p><strong>Authors:</strong> Aaron Brown</p>
+
+                    <p><strong>Version:</strong> 1.0.0</p>
+
+                    
+                </div>
+
+                
+
+                
+
+<h1 id="guidelines">3 Guidelines and Best-Practice</h1>
+There are a few guidelines / best-practices to bear in mind while working with
+the plugin.<p class="paragraph"/><h3>Simple (Read: Limited)</h3><p class="paragraph"/>The plugin is very simple, especially in an early version. The <code>Smartionary</code>
+domain  <em class="italic">does not</em>  support nested mapping, interpreting <code>Lists</code>, or complex
+datatypes. Therefore, it is limited to the very basic datatypes.<p class="paragraph"/>That being said, here is a little trick that might at least make nested mapping
+somewhat doable:<p class="paragraph"/><div class="code"><pre>Smartionary.set(
+    'computer.officeTerm1',
+    'Specs of Office Terminal &#35;1',
+    cpu: 'Widget w12',
+    'cpu.cores': 4,
+    'cpu.speed': 2.2,
+    memory: 4096,
+    'memory.socket': 4,
+    'memory.type': 'DDR3',
+    'disk.1': 'OceanWall',
+    'disk.1.capacity': 1099515288913 
+    'disk.1.type': 'SSD',
+    'disk.1.mounted': <span class="java&#45;keyword">true</span>,
+    'disk.2.mounted': <span class="java&#45;keyword">false</span>
+    smartionaryDescriptions: &#91;
+        'cpu.speed': 'GHz',
+        'disk.1.capacity': 'In Bytes (~1 TB)',
+        'disk.2.mounted': 'Unused'
+    &#93;
+)<p class="paragraph"/>Map computerInfo = Smartionary.get('computer.officeTerm1')<p class="paragraph"/>println computerInfo.'disk.1.capacity'</pre></div><p class="paragraph"/>A bit cludgy, but doable if necessary.<p class="paragraph"/><blockquote class="note">
+<code>List</code> and nested mapping  <em class="italic">may</em>  be supported in later versions.
+</blockquote><p class="paragraph"/><h3>Normalizes</h3><p class="paragraph"/>Anything goes in, but all that comes out are <code>Strings</code>. This is powerful, as it
+means that it automatically "normalizes" all of the data; at the same time it
+may be a bit tedious as there is no way to automatically convert that data
+back when <a href="../guide/single.html#getting" class="guide">getting</a>.<p class="paragraph"/>Groovy has several <code>String</code> <a href="http://groovy.codehaus.org/groovy-jdk/
+java/lang/String.html" target="blank">operations</a> (such as <code>isInteger()</code> and <code>toInteger()</code>) that make
+converting this data back a little less painful.<p class="paragraph"/><h3>Data is Volatile</h3><p class="paragraph"/>The plugin cannot assume the type of environment that it will be used in. It
+can only try to make programming around it a little easier. However, there may
+be a case where data is accidentally altered or deleted from the <code>Domains</code>,
+which could break functionality.<p class="paragraph"/>That is not an issue with plugin, but rather the nature of the data management
+system that this plugin tries to convenience. The best that can be done (in any
+regard) is to either develope a solution that could become aware of and try to 
+mitigate the effects of entirely breaking, or use <strong class="bold">Spring Core Security Plugin</strong> 
+to make sure the web-interface is under supervision.<p class="paragraph"/>A nice idea is put information in the description that might indicate whether
+or not a certain piece of data is requried or important for key functionality,
+and how to go about handling its modification.<p class="paragraph"/><h3>Use Descriptions</h3><p class="paragraph"/>On the above note, use descriptions liberally. Descriptions can be done either
+<a href="../guide/single.html#descriptions" class="guide">by code</a> or via the web-interface. It was made to hold as
+much data as possible, and supports readibility with newlines in both viewing
+and editing in the web-interface.<p class="paragraph"/><h3>s<code>et()</code> With Care; <code>get()</code> With Abandon</h3><p class="paragraph"/>When <a href="../guide/single.html#setting" class="guide">setting</a>, be wary of the values you are using. <code>null</code> is
+a perfectly valid value, and so do not commit the folly of trying to update
+just a description of a <code>SmartionaryEntry</code> progremmatically.<p class="paragraph"/>One of the plugin's advantages is that data can be altered during runtime
+without the need to restart. Therefore, it is against this advantage to design
+a solution such that you <a href="../guide/single.html#getting" class="guide">get</a> only once. If that is the
+use-case, then there is no difference between the plugin and the
+<code>grails-app/conf/Config.groovy</code> file, or hard-coding that data.
+
+
+
+                <div style="clear:both;margin-top:15px;"></div>
+                
+                    <div class="toc-item prev-left"><a href="../guide/using_the_smartionary_interface.html">&lt;&lt; <strong>2</strong><span>Using the Smartionary Interface</span></a></div>
+                
+                <div style="clear:both"></div>
+            </div>
+        </td>
+        <td id="col2">
+            <div class="local clearfix">
+                <div class="local-title">
+                    <a href="../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
+                </div>
+                <div class="menu">
+                    
+                    <div class="menu-block"><h1 class="menu-title" onclick="toggleRef(this.parentNode.childNodes[1])">Controllers</h1><div class="menu-sub">
+                        
+                            
+                            <div class="menu-item"><a href="../ref/Controllers/Smartionary.html">Smartionary</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Controllers/SmartionaryEntry.html">SmartionaryEntry</a>
+                            </div>
+                            
+                            </div>
+                    </div>
+                    
+                    <div class="menu-block"><h1 class="menu-title" onclick="toggleRef(this.parentNode.childNodes[1])">Domains</h1><div class="menu-sub">
+                        
+                            
+                            <div class="menu-item"><a href="../ref/Domains/Smartionary.html">Smartionary</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Domains/SmartionaryEntry.html">SmartionaryEntry</a>
+                            </div>
+                            
+                            </div>
+                    </div>
+                    
+                    <div class="menu-block"><h1 class="menu-title" onclick="toggleRef(this.parentNode.childNodes[1])">Smartionary Usage</h1><div class="menu-sub">
+                        
+                            
+                            <div class="menu-item"><a href="../ref/Smartionary%20Usage/contains.html">contains</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Smartionary%20Usage/containsKey.html">containsKey</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Smartionary%20Usage/delete.html">delete</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Smartionary%20Usage/fromJson.html">fromJson</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Smartionary%20Usage/get.html">get</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Smartionary%20Usage/getAsJson.html">getAsJson</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Smartionary%20Usage/purge.html">purge</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Smartionary%20Usage/purgeNull.html">purgeNull</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Smartionary%20Usage/set.html">set</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Smartionary%20Usage/size.html">size</a>
+                            </div>
+                            
+                            </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div id="footer">
+    
+    
+</div>
+
+<script type="text/javascript" src="../js/docs.js"></script>
+
+</body>
+</html>

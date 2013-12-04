@@ -1,0 +1,287 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <title>2.1 Setting 1.0.0</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
+    <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
+    <script type="text/javascript">
+function addJsClass() {
+    var classes = document.body.className.split(" ");
+    classes.push("js");
+    document.body.className = classes.join(" ");
+}
+    </script>
+</head>
+
+<body class="body" onload="addJsClass();">
+<div id="navigation">
+    <ul>
+        <li>
+            <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
+                <a href="../../guide/index.html" class="button">Table of contents</a>
+
+                <div id="nav-summary-childs" style="display:none;">
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../../guide/introduction.html"><strong>1</strong><span>Introduction</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../../guide/using_the_smartionary_interface.html"><strong>2</strong><span>Using the Smartionary Interface</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../../guide/guidelines.html"><strong>3</strong><span>Guidelines and Best-Practice</span></a>
+                    </div>
+                    
+                </div>
+            </div>
+        </li>
+        <li class="separator selected">
+            <a id="ref-button" onclick="localToggle(); return false;" href="#">Quick Reference</a>
+        </li>
+    </ul>
+</div>
+<div id="header">
+    <div class="images clearfix">
+        
+        
+    </div>
+    <p>Facilitates externalizing a Map into a Domain, so that an app can support both programmatic and administrative modification of variable data.
+</p>
+</div>
+
+
+<table id="colset" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td id="col1">
+            <div id="main" class="corner-all">
+
+                
+                    <div class="toc-item prev-left"><a href="../../guide/introduction.html">&lt;&lt; <strong>1</strong><span>Introduction</span></a></div>
+                
+
+                <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
+
+                
+                    <div class="toc-item next-right"><a href="../../guide/guidelines.html"><strong>3</strong><span>Guidelines and Best-Practice</span> >></a></div>
+                
+
+
+                <div class="project">
+                    <h1>2.1 Setting - Reference Documentation</h1>
+
+                    <p><strong>Authors:</strong> Aaron Brown</p>
+
+                    <p><strong>Version:</strong> 1.0.0</p>
+
+                    
+                </div>
+
+                
+                <div id="table-of-content">
+                    <h2>Table of Contents</h2>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#descriptions"><strong>2.1</strong><span>Setting Descriptions</span></a>
+                    </div>
+                    
+                </div>
+                
+
+                
+
+<h2 id="setting">2.1 Setting</h2>
+Creating and updating <code>Domains</code> is done via the s<code>et()</code> method. There are
+several forms, but only the more complex (and flexible) ones will be discussed
+here.<p class="paragraph"/><blockquote class="note">
+Through all examples here use <code>Strings</code>, any <code>Object</code> can be used just like a
+<code>Map</code>. The caveat is that it gets converted to a <code>String</code> when placed in the
+<code>Domain</code>, and will be a <code>String</code> when retrieved.<p class="paragraph"/>See <a href="../guide/single.html#getting" class="guide"><code>get()</code></a> for details.
+</blockquote><p class="paragraph"/>The primary strength of <strong class="bold">Smartionary</strong> is that it can convert a <code>Map</code> directly
+into a <code>Smartionary</code> domain:<p class="paragraph"/><div class="code"><pre>Map toSmartionary = &#91;
+    a: <span class="java&#45;quote">"apple"</span>,
+    b: <span class="java&#45;quote">"banana"</span>,
+    c: <span class="java&#45;quote">"cantaloupe"</span>,
+    d: <span class="java&#45;quote">"durian"</span>
+&#93;<p class="paragraph"/>Smartionary.set(toSmartionary, 'fruits', 'A few fruits, by letter.')</pre></div><p class="paragraph"/>That is a very straightforward approach, however just like when creating a
+<code>Domain</code> object, the method signature allows you to put the <code>Map</code> directly into
+the parameter body:<p class="paragraph"/><div class="code"><pre>Smartionary.set(
+    'fruits',
+    'A few fruits, by letter',
+    a: <span class="java&#45;quote">"apple"</span>,
+    b: <span class="java&#45;quote">"banana"</span>,
+    c: <span class="java&#45;quote">"cantaloupe"</span>,
+    d: <span class="java&#45;quote">"durian"</span>)</pre></div><p class="paragraph"/>In the above sample, the  <em class="italic">description</em>  was moved to be the second positional
+parameter. This makes it a bit more readable than the explicit form.<p class="paragraph"/>In the above case, s<code>et()</code> does the following:
+<ol>
+<li>Retrieve the <code>Smartionary</code> that exists by the name of  <em class="italic">fruits</em> .</li>
+</ol>
+<ul class="star">
+<ul class="star">
+<li>If it does not exist, create it.</li>
+</ul>
+</ul>
+<ol>
+<li>Replace the values in the corresponding <code>SmartionaryEntries</code>.</li>
+</ol>
+<ul class="star">
+<ul class="star">
+<li>If it does not exist, create it.</li>
+</ul></ul><p class="paragraph"/>Therefore, the same <code>Smartionary</code> domain can be updated with a successive call,
+and a subset of values can be replaced, and others can be added:<p class="paragraph"/><div class="code"><pre>Smartionary.set(
+    'fruits',
+    c: <span class="java&#45;quote">"cherry"</span>,
+    t: <span class="java&#45;quote">"tomato"</span>,
+    w: <span class="java&#45;quote">"watermelon"</span>)</pre></div><p class="paragraph"/><blockquote class="note">
+By using this method, it is impossible to encounter the unique naming
+constraints.
+</blockquote><p class="paragraph"/><blockquote class="warning">
+Due to the nature of setting, be very mindful if you wish to only update the
+ <em class="italic">description</em> . For more information, read about 
+<a href="../guide/single.html#descriptions" class="guide">setting Smartionary descriptons</a>
+</blockquote><p class="paragraph"/><h3>Setting from JSON</h3><p class="paragraph"/>An extension of the s<code>et()</code> method is the <code>fromJson()</code> method. This provides
+a convenient way of converting a JSON string which would describe a set of
+parameters or criteria into an equivalent <code>Smartionary</code>.<p class="paragraph"/><div class="code"><pre><span class="java&#45;object">String</span> json = '&#123;<span class="java&#45;quote">"a"</span>: <span class="java&#45;quote">"apple"</span>, <span class="java&#45;quote">"b"</span>: <span class="java&#45;quote">"banana"</span>, <span class="java&#45;quote">"c"</span>: <span class="java&#45;quote">"carrot"</span>, <span class="java&#45;quote">"d"</span>: <span class="java&#45;quote">"durian"</span>&#125;'<p class="paragraph"/>Smartionary.set('fruits', json, 'A few fruits, by letter.')<p class="paragraph"/>json = '&#123;<span class="java&#45;quote">"c"</span>: <span class="java&#45;quote">"cherry"</span>, <span class="java&#45;quote">"t"</span>: <span class="java&#45;quote">"tomato"</span>, <span class="java&#45;quote">"w"</span>: <span class="java&#45;quote">"watermelon"</span>&#125;'<p class="paragraph"/>Smartionary.set('fruits', json)</pre></div><p class="paragraph"/><blockquote class="warning">
+Note that the order of the parameters differs. It is not shown here, but in
+all instances of s<code>et()</code>, the  <em class="italic">smartionaryName</em>  is the first parameter with
+the exception of the example above. This is due to the way <strong class="bold">Groovy</strong> handles
+that particular method signature.
+{warn}<p class="paragraph"/></blockquote>
+When working with JSON, an array such as the following is not supported:<p class="paragraph"/><div class="code"><pre>'&#91;<span class="java&#45;quote">"apple"</span>, <span class="java&#45;quote">"banana"</span>, <span class="java&#45;quote">"cantaloupe"</span>, <span class="java&#45;quote">"durian"</span>&#93;'</pre></div><p class="paragraph"/>This will throw an <code>IllegalArgumentException</code>.
+<blockquote class="warning">null</blockquote><p class="paragraph"/><blockquote class="note">
+Nested <code>Maps</code> and <code>Lists</code> inside the JSON will be converted to <code>Strings</code>, so
+this is not very appropriate for complex schemas.
+</blockquote>
+
+
+
+<h2 id="descriptions">2.1.1 Setting Descriptions</h2>
+There are certain considerations to bear in mind when it comes to the
+ <em class="italic">descriptions</em>  of <code>Smartionary</code> and <code>SmartionaryEntry</code>. Both <code>Domains</code> allow
+for a description, which is primarily for when looking at the view. While
+developing, it is best-practice to put some form of description with the
+instances, even though the <strong class="bold">Smartionary</strong> has no methods to retrieve them.<p class="paragraph"/><h3><code>Smartionary</code> Description</h3><p class="paragraph"/>The description for a <code>Smartionary</code> can be set using any form of the <code>set()</code> 
+method. There is no harm in omitting the description; if the domain already 
+has one, it will keep it.<p class="paragraph"/><h3><code>SmartionaryEntry</code> Description</h3><p class="paragraph"/>The description for a <code>SmartionaryEntry</code> can only be updated (via the
+<strong class="bold">Smartionary</strong>) by the <code>set()</code> methods (or <code>fromJson()</code>). The explicit methods
+are fairly starightforward, but for the named-parameter signature there is a
+specific way:<p class="paragraph"/><div class="code"><pre>Smartionary.set(
+    'fruits',
+    a: <span class="java&#45;quote">"apple"</span>,
+    b: <span class="java&#45;quote">"banana"</span>,
+    c: <span class="java&#45;quote">"cantaloupe"</span>,
+    d: <span class="java&#45;quote">"durian"</span>,
+    smartionaryDescriptions: &#91;
+        a: <span class="java&#45;quote">"Can be green, yellow, or red; sour or sweet."</span>,
+        b: 'Grows in bunches, called <span class="java&#45;quote">"hands."</span>',
+        c: <span class="java&#45;quote">"A kind of melon with a lattuce skin."</span>,
+        d: <span class="java&#45;quote">"A spiney fruit like a pineapple, that's really stinky."</span>,
+        t: <span class="java&#45;quote">"A red, fragile bulb; debated to be a vegetable."</span>
+    &#93;
+)</pre></div><p class="paragraph"/>The <code>smartionaryDescriptions</code> key is sort of a "reserved" key for this method.
+It follows a simple rule:  <em class="italic">only update the keys that appear in the outer &#10;<code>Map</code></em> . In this example, the key <code>t</code> does not appear in the outer <code>Map</code>,
+therefore, even if a <code>SmartionaryEntry</code> exists for <code>t</code>, it will not be updated.<p class="paragraph"/>The rationality behind this is two-fold:
+<ol>
+<li>Enforces awareness of value modification</li>
+<li>Prevents accidental and ambiguous behavior when dealing with <code>null</code>.</li>
+</ol><p class="paragraph"/>This behavior applies to all versions of <code>set()</code> (as well as <code>fromJson()</code>). If
+it is necessary to update only the description, it is best and safer to use the
+web-interface.<p class="paragraph"/><blockquote class="warning">
+Should you choose to update the descriptions through the <strong class="bold">Smartionary</strong>, be
+aware that if you pass <code>null</code> for the value of that key, then that is what will
+be written to the <code>Domain</code>.
+</blockquote>
+
+
+
+                <div style="clear:both;margin-top:15px;"></div>
+                
+                    <div class="toc-item prev-left"><a href="../../guide/introduction.html">&lt;&lt; <strong>1</strong><span>Introduction</span></a></div>
+                
+                    <div class="toc-item next-right"><a href="../../guide/guidelines.html"><strong>3</strong><span>Guidelines and Best-Practice</span> >></a></div>
+                
+                <div style="clear:both"></div>
+            </div>
+        </td>
+        <td id="col2">
+            <div class="local clearfix">
+                <div class="local-title">
+                    <a href="../../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
+                </div>
+                <div class="menu">
+                    
+                    <div class="menu-block"><h1 class="menu-title" onclick="toggleRef(this.parentNode.childNodes[1])">Controllers</h1><div class="menu-sub">
+                        
+                            
+                            <div class="menu-item"><a href="../../ref/Controllers/Smartionary.html">Smartionary</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Controllers/SmartionaryEntry.html">SmartionaryEntry</a>
+                            </div>
+                            
+                            </div>
+                    </div>
+                    
+                    <div class="menu-block"><h1 class="menu-title" onclick="toggleRef(this.parentNode.childNodes[1])">Domains</h1><div class="menu-sub">
+                        
+                            
+                            <div class="menu-item"><a href="../../ref/Domains/Smartionary.html">Smartionary</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Domains/SmartionaryEntry.html">SmartionaryEntry</a>
+                            </div>
+                            
+                            </div>
+                    </div>
+                    
+                    <div class="menu-block"><h1 class="menu-title" onclick="toggleRef(this.parentNode.childNodes[1])">Smartionary Usage</h1><div class="menu-sub">
+                        
+                            
+                            <div class="menu-item"><a href="../../ref/Smartionary%20Usage/contains.html">contains</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Smartionary%20Usage/containsKey.html">containsKey</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Smartionary%20Usage/delete.html">delete</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Smartionary%20Usage/fromJson.html">fromJson</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Smartionary%20Usage/get.html">get</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Smartionary%20Usage/getAsJson.html">getAsJson</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Smartionary%20Usage/purge.html">purge</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Smartionary%20Usage/purgeNull.html">purgeNull</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Smartionary%20Usage/set.html">set</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Smartionary%20Usage/size.html">size</a>
+                            </div>
+                            
+                            </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div id="footer">
+    
+    
+</div>
+
+<script type="text/javascript" src="../js/docs.js"></script>
+
+</body>
+</html>

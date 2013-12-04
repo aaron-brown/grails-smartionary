@@ -1,0 +1,206 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <title>2.2 Getting 1.0.0</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
+    <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
+    <script type="text/javascript">
+function addJsClass() {
+    var classes = document.body.className.split(" ");
+    classes.push("js");
+    document.body.className = classes.join(" ");
+}
+    </script>
+</head>
+
+<body class="body" onload="addJsClass();">
+<div id="navigation">
+    <ul>
+        <li>
+            <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
+                <a href="../../guide/index.html" class="button">Table of contents</a>
+
+                <div id="nav-summary-childs" style="display:none;">
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../../guide/introduction.html"><strong>1</strong><span>Introduction</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../../guide/using_the_smartionary_interface.html"><strong>2</strong><span>Using the Smartionary Interface</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../../guide/guidelines.html"><strong>3</strong><span>Guidelines and Best-Practice</span></a>
+                    </div>
+                    
+                </div>
+            </div>
+        </li>
+        <li class="separator selected">
+            <a id="ref-button" onclick="localToggle(); return false;" href="#">Quick Reference</a>
+        </li>
+    </ul>
+</div>
+<div id="header">
+    <div class="images clearfix">
+        
+        
+    </div>
+    <p>Facilitates externalizing a Map into a Domain, so that an app can support both programmatic and administrative modification of variable data.
+</p>
+</div>
+
+
+<table id="colset" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td id="col1">
+            <div id="main" class="corner-all">
+
+                
+                    <div class="toc-item prev-left"><a href="../../guide/introduction.html">&lt;&lt; <strong>1</strong><span>Introduction</span></a></div>
+                
+
+                <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
+
+                
+                    <div class="toc-item next-right"><a href="../../guide/guidelines.html"><strong>3</strong><span>Guidelines and Best-Practice</span> >></a></div>
+                
+
+
+                <div class="project">
+                    <h1>2.2 Getting - Reference Documentation</h1>
+
+                    <p><strong>Authors:</strong> Aaron Brown</p>
+
+                    <p><strong>Version:</strong> 1.0.0</p>
+
+                    
+                </div>
+
+                
+
+                
+
+<h2 id="getting">2.2 Getting</h2>
+Accessing the information in a <code>Smartionary</code> domain progremmatically is done
+via the <code>get()</code> method.<p class="paragraph"/>The <code>get()</code> method  <em class="italic">does not</em>  automatically create a <code>Smartionary</code> domain if it
+does not exist (that can only be done by the <a href="../guide/single.html#setting" class="guide"><code>set()</code></a> methods).<p class="paragraph"/><div class="code"><pre>Map data = Smartionary.get('fruits')</pre></div><p class="paragraph"/>Depending on the state of the <code>Domain</code>, the following conditions apply:<p class="paragraph"/><table class="wiki-table" cellpadding="0" cellspacing="0" border="0"><tr><th><strong class="bold"><code>Smartionary</code> exists</strong></th><th><strong class="bold">Has <code>SmartionaryEntries</code></strong></th><th><strong class="bold">Returns</strong></th></tr><tr class="table-odd"><td>&#160;</td><td>&#160;</td><td><code>null</code></td></tr><tr class="table-even"><td><img border="0" class="center" src="../img//tick.png"></img></td><td>&#160;</td><td><code>&#91;:&#93;</code></td></tr><tr class="table-odd"><td><img border="0" class="center" src="../img//tick.png"></img></td><td><img border="0" class="center" src="../img//tick.png"></img></td><td><code>a=apple, b=banana, c=cantaloupe, d=durian</code></td></tr></table><p class="paragraph"/>The philosophy behind the plugin is that <code>get()</code> is used more frequently than
+<code>set()</code>. While it may be tempting to cache or somehow store the information,
+that ruins the advantages of being able to change the values of a <code>Smartionary</code>
+while in production, on-the-fly. Therefore, the following  <em class="italic">is not</em>  best
+practice:<p class="paragraph"/><blockquote class="warning">
+<div class="code"><pre>class MyClass &#123;
+    Map myInfo = Smartionary.get('myInfoParams')<p class="paragraph"/>    <span class="java&#45;keyword">private</span> <span class="java&#45;keyword">final</span> <span class="java&#45;keyword">static</span> MyInfo INSTANCE = <span class="java&#45;keyword">new</span> MyInfo()<p class="paragraph"/>    <span class="java&#45;keyword">private</span> myInfo() &#123; &#125;<p class="paragraph"/>    <span class="java&#45;keyword">static</span> getInstance() &#123; <span class="java&#45;keyword">return</span> INSTANCE &#125;
+&#125;</pre></div><p class="paragraph"/>The contents of <code>myInfo</code> can only be updated on application restart.
+</blockquote><p class="paragraph"/><h3>Getting as JSON</h3><p class="paragraph"/>Just like <code>withJson()</code> there is a method for retrieving a <code>Smartionary</code> as a
+JSON string directly. It uses the internal Groovy 
+<a href="http://groovy.codehaus.org/gapi/groovy/json/JsonBuilder.html#
+JsonBuilder%28def%29" target="blank">JsonBuilder</a> to fascilitate this:<p class="paragraph"/><div class="code"><pre><span class="java&#45;keyword">try</span> &#123;
+    Smartionary.getAsJson('fruits')
+&#125; <span class="java&#45;keyword">catch</span> (IllegalArgumentException e) &#123;
+    // The Smartionary may not exist.
+&#125; <span class="java&#45;keyword">catch</span> (JsonException e) &#123;
+    // Something went awry.
+&#125;</pre></div><p class="paragraph"/>Please note the <code>try/catch</code> statement.<p class="paragraph"/>Since the <code>JsonBuilder</code> is used, by passing <code>true</code> (or explicitly <code>false</code>) you
+can specify that the <code>String</code> should (not) be pretty-formatted:<p class="paragraph"/><div class="code"><pre><span class="java&#45;keyword">try</span> &#123;
+    Smartionary.getAsJson('fruits', <span class="java&#45;keyword">true</span>)
+&#125; <span class="java&#45;keyword">catch</span> (IllegalArgumentException e) &#123;
+    // The Smartionary may not exist.
+&#125; <span class="java&#45;keyword">catch</span> (JsonException e) &#123;
+    // Something went awry.
+&#125;</pre></div>
+
+
+
+                <div style="clear:both;margin-top:15px;"></div>
+                
+                    <div class="toc-item prev-left"><a href="../../guide/introduction.html">&lt;&lt; <strong>1</strong><span>Introduction</span></a></div>
+                
+                    <div class="toc-item next-right"><a href="../../guide/guidelines.html"><strong>3</strong><span>Guidelines and Best-Practice</span> >></a></div>
+                
+                <div style="clear:both"></div>
+            </div>
+        </td>
+        <td id="col2">
+            <div class="local clearfix">
+                <div class="local-title">
+                    <a href="../../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
+                </div>
+                <div class="menu">
+                    
+                    <div class="menu-block"><h1 class="menu-title" onclick="toggleRef(this.parentNode.childNodes[1])">Controllers</h1><div class="menu-sub">
+                        
+                            
+                            <div class="menu-item"><a href="../../ref/Controllers/Smartionary.html">Smartionary</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Controllers/SmartionaryEntry.html">SmartionaryEntry</a>
+                            </div>
+                            
+                            </div>
+                    </div>
+                    
+                    <div class="menu-block"><h1 class="menu-title" onclick="toggleRef(this.parentNode.childNodes[1])">Domains</h1><div class="menu-sub">
+                        
+                            
+                            <div class="menu-item"><a href="../../ref/Domains/Smartionary.html">Smartionary</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Domains/SmartionaryEntry.html">SmartionaryEntry</a>
+                            </div>
+                            
+                            </div>
+                    </div>
+                    
+                    <div class="menu-block"><h1 class="menu-title" onclick="toggleRef(this.parentNode.childNodes[1])">Smartionary Usage</h1><div class="menu-sub">
+                        
+                            
+                            <div class="menu-item"><a href="../../ref/Smartionary%20Usage/contains.html">contains</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Smartionary%20Usage/containsKey.html">containsKey</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Smartionary%20Usage/delete.html">delete</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Smartionary%20Usage/fromJson.html">fromJson</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Smartionary%20Usage/get.html">get</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Smartionary%20Usage/getAsJson.html">getAsJson</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Smartionary%20Usage/purge.html">purge</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Smartionary%20Usage/purgeNull.html">purgeNull</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Smartionary%20Usage/set.html">set</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Smartionary%20Usage/size.html">size</a>
+                            </div>
+                            
+                            </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div id="footer">
+    
+    
+</div>
+
+<script type="text/javascript" src="../js/docs.js"></script>
+
+</body>
+</html>
