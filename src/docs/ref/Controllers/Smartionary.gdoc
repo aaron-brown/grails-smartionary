@@ -1,0 +1,9 @@
+h3. Purpose
+
+Scaffolded / Administrative access for maintaining information.
+
+h3. URL Mappings
+
+{code}
+/smartionary
+{code}

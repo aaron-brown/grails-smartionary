@@ -1,0 +1,23 @@
+h3. Purprose
+
+Emulates a @Map@.
+
+h3. Fields
+
+{table}
+*Name* | *Description*
+
+@name@ | \
+The name by which to identify the information
+
+@description@ | \
+(Optional) A human-readable description to help explain the collection's \
+purpose or instructions on how to maintain it
+
+@entries@ | \
+An alphabetically-sorted list of [SmartionaryEntry|Domains] Objects.
+{table}
+
+h3. Constraints
+
+* *name* cannot be @null@.

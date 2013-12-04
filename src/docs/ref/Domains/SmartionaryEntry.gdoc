@@ -1,0 +1,27 @@
+h3. Purprose
+
+Emulates a key-value pair association (A @Map.Entry@).
+
+h3. Fields
+
+{table}
+*Name* | *Description*
+
+@key@ | \
+The unique *key* (or identifier) by which the value is identified
+
+@value@ | \
+The *value* associated to a key
+
+@description@ | \
+(Optional) A human-readable description to help explain the value's purpose \
+or instructions on how to maintain it
+
+@smartionary@ | \
+The [Smartionary|Domains] that this *SmartionaryEntry* belongs to.
+{table}
+
+h3. Constraints
+
+* A *key* is unique per @Smartionary@.
+* *key* cannot be @null@, but @null@ is a valid *value*.
