@@ -16,8 +16,11 @@
 package me.sudofu.smartionary
 
 import groovy.json.JsonBuilder
-import groovy.json.JsonException
 import groovy.json.JsonSlurper
+import groovy.json.JsonException
+
+import org.codehaus.groovy.runtime.typehandling.GroovyCastException
+
 import me.sudofu.smartionary.domain.Smartionary as SmartionaryDomain
 import me.sudofu.smartionary.domain.SmartionaryEntry
 

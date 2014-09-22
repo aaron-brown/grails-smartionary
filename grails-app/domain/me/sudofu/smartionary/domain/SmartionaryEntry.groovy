@@ -34,7 +34,7 @@ class SmartionaryEntry implements Comparable<SmartionaryEntry> {
 	String value
 
 	/**
-	 * Describes the purpose of the <code>value</code> or where it is
+	 * Describes the purpose of the <code>value</code> or  where it is
 	 * used.
 	 */
 	String description
