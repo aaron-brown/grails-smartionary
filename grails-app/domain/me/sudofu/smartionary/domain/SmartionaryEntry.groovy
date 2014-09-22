@@ -23,42 +23,62 @@ import me.sudofu.smartionary.domain.Smartionary
  * @author  Aaron Brown
  */
 class SmartionaryEntry implements Comparable<SmartionaryEntry> {
-    /**
-     * The key by which the entry is accessed.
-     */
-    String key
+	/**
+	 * The key by which the entry is accessed.
+	 */
+	String key
 
-    /**
-     * The value of the key (normalized as a String)
-     */
-    String value
+	/**
+	 * The value of the key (normalized as a String)
+	 */
+	String value
 
-    /**
-     * Describes the purpose of the <code>value</code> or where it is
-     * used.
-     */
-    String description
+	/**
+	 * Describes the purpose of the <code>value</code> or  where it is
+	 * used.
+	 */
+	String description
 
-    static belongsTo = [ smartionary: Smartionary ]
+	/**
+	 * Describe the version of the key.
+	 */
+	int keyVersion
 
-    static constraints = {
-        key         (blank: false, unique: 'smartionary')
-        value       (nullable: true, size: 1..8000)
-        description (nullable: true, size: 1..8000)
-        smartionary ()
-    }
+	/**
+	 * Describes who updated the key value.
+	 */
+	String updatedBy
 
-    static mapping = {
-        key         column: 'identifier'
-        value       type: "text"
-        description type: "text"
-    }
+	/**
+	 * Describe whether the key is active or not.
+	 */
+	boolean active
 
-    int compareTo(SmartionaryEntry obj) {
-        key.compareTo(obj.key)
-    }
+	static belongsTo = [ smartionary: Smartionary ]
 
-    String toString() {
-        return key
-    }
+	static constraints = {
+		key         (blank: false, unique: ['smartionary', 'keyVersion'])
+		value       (nullable: true, size: 1..8000)
+		description (nullable: true, size: 1..8000)
+		updatedBy   (nullable: true, size: 1..8000)
+		smartionary ()
+	}
+
+	static mapping = {
+		key         column: 'identifier'
+		value       type: "text"
+		description type: "text"
+	}
+
+	int compareTo(SmartionaryEntry obj) {
+		if(key.compareTo(obj.key) == 0) {
+			return keyVersion.compareTo(obj.keyVersion)
+		} else{
+			return key.compareTo(obj.key)
+		}
+	}
+
+	String toString() {
+		return key
+	}
 }

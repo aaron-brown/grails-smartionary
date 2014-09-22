@@ -467,12 +467,12 @@ class Smartionary {
      *
      * An optional description to set with the object.
      */
-    static void set(String smartionaryName, String key, value, String entryDescription = null, String smartionaryDescription = null) {
+    static void set(String smartionaryName, String key, value, String entryDescription = null, String smartionaryDescription = null, String updatedBy = null) {
 
         // Get Smartionary, or create if necessary.
         SmartionaryDomain domain = getCreateDomain(smartionaryName, smartionaryDescription)
 
-        _set(domain, key, value, entryDescription)
+        _set(domain, key, value, entryDescription, updatedBy)
 
         // TODO: Explicitly declare exceptions thrown on this failure.
         domain.save(failOnError: true)
@@ -704,27 +704,26 @@ class Smartionary {
      *
      * An optional description to set with the object.
      */
-    static private void _set(SmartionaryDomain domain, String key, value, String description = null) {
+    static private void _set(SmartionaryDomain domain, String key, value, String description = null, String updatedBy = null) {
 
         // Search for the particular entry.
-        SmartionaryEntry entry = domain.entries.find { key == it.key }
+        SmartionaryEntry oldEntry = domain.entries.find { key == it.key && it.active == true }
 
         // Create it if it does not exist.
-        if (entry == null) {
-            entry = new SmartionaryEntry(
+        SmartionaryEntry newEntry = new SmartionaryEntry(
                 key: key,
                 value: (value as String),
-                description: description
-            )
+                description: description,
+                updatedBy: updatedBy,
+                keyVersion : 1,
+                active : true
+                )
 
-            domain.addToEntries(entry)
+        if (oldEntry != null) {
+            oldEntry.active = false
+            newEntry.keyVersion = oldEntry.keyVersion + 1
         }
-        else {
-            // Groovy implicitly calls toString() if present.
-            //
-            // If not, then the class's runtime identity is used.
-            entry.value = value
-            entry.description = description
-        }
+
+        domain.addToEntries(newEntry)
     }
 }
