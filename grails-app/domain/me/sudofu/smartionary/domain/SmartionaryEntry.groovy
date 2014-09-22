@@ -71,12 +71,12 @@ class SmartionaryEntry implements Comparable<SmartionaryEntry> {
 	}
 
 	int compareTo(SmartionaryEntry obj) {
-        if(key.compareTo(obj.key) == 0) {
-            return keyVersion.compareTo(obj.keyVersion)
-        } else{
-            return key.compareTo(obj.key)
-        }
-    }
+		if(key.compareTo(obj.key) == 0) {
+			return keyVersion.compareTo(obj.keyVersion)
+		} else{
+			return key.compareTo(obj.key)
+		}
+	}
 
 	String toString() {
 		return key
