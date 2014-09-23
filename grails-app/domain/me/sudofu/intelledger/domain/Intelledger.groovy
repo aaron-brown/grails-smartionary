@@ -70,4 +70,13 @@ class Intelledger {
 
         return m
     }
+    
+    /**
+     * This method will return all the active entries
+     * 
+     * @return List<IntelledgerEntry> - List of all the active entries
+     */
+    public List<IntelledgerEntry> getActiveEntries() {
+        return entries?.findAll { it.active }
+    }
 }

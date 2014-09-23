@@ -118,11 +118,11 @@ class Intelledger {
             return -1
         }
 
-        if (domain.entries == null) {
+        if (domain.activeEntries == null) {
             return 0
         }
 
-        return domain.entries.size()
+        return domain.activeEntries.size()
     }
 
     /**

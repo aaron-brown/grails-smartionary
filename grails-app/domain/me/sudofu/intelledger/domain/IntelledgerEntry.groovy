@@ -42,7 +42,7 @@ class IntelledgerEntry implements Comparable<IntelledgerEntry> {
     /**
      * This describes the version of the key.
      */
-    int keyVersion
+    Integer version
     
     /**
      * This tells who changed the key value.
@@ -52,12 +52,12 @@ class IntelledgerEntry implements Comparable<IntelledgerEntry> {
     /**
      * This describes whether the key is active or not.
      */
-    boolean active
+    Boolean active
 
     static belongsTo = [ intelledger: Intelledger ]
 
     static constraints = {
-        key         (blank: false, unique: ['intelledger', 'keyVersion'])
+        key         (blank: false, unique: ['intelledger', 'version'])
         value       (nullable: true, size: 1..8000)
         description (nullable: true, size: 1..8000)
         changeId   (nullable: true, size: 1..8000)
@@ -68,12 +68,12 @@ class IntelledgerEntry implements Comparable<IntelledgerEntry> {
         key         column: 'identifier'
         value       type: "text"
         description type: "text"
-        changeId    type: "text"
+        changeId    type: "text"        version     column: 'entry_version'
     }
 
     int compareTo(IntelledgerEntry obj) {
         if(key.compareTo(obj.key) == 0) {
-            return keyVersion.compareTo(obj.keyVersion)
+            return version.compareTo(obj.version)
         } else {
             return key.compareTo(obj.key)
         }
