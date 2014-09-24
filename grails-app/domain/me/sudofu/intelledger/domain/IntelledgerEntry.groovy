@@ -1,7 +1,9 @@
-package me.sudofu.intelledger.domain
-import me.sudofu.intelledger.domain.Intelledger
+package me.sudofu.intelledger.domain
+
+import me.sudofu.intelledger.domain.Intelledger
+
 /*
- * Copyright 2013 Aaron Brown
+ * Copyright 2014 Aaron Brown
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +17,6 @@ import me.sudofu.intelledger.domain.Intelledger
  * implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-
 
 /**
  * Emulates a {@link java.util.Map.Entry Map Entry}.
@@ -38,19 +39,19 @@ class IntelledgerEntry implements Comparable<IntelledgerEntry> {
      * used.
      */
     String description
-    
+
     /**
-     * This describes the version of the key.
+     * The version of the entry, to keep track of change history.
      */
     Integer version
-    
+
     /**
-     * This tells who changed the key value.
+     * Generic field for implementing a change identifier methodology.
      */
     String changeId
-    
+
     /**
-     * This describes whether the key is active or not.
+     * The active status of the entry.
      */
     Boolean active
 
@@ -60,27 +61,42 @@ class IntelledgerEntry implements Comparable<IntelledgerEntry> {
         key         (blank: false, unique: ['intelledger', 'version'])
         value       (nullable: true, size: 1..8000)
         description (nullable: true, size: 1..8000)
-        changeId   (nullable: true, size: 1..8000)
-        intelledger ()
+        version     (nullable: false)
+        changeId    (blank: false, nullable: false, size: 1..8000)
+        active      (nullable: false)
     }
 
     static mapping = {
         key         column: 'identifier'
-        value       type: "text"
-        description type: "text"
-        changeId    type: "text"        version     column: 'entry_version'
+        value       type: 'text'
+        description type: 'text'
+        changeId    type: 'text'
+        version     column: 'entry_version'
     }
 
     int compareTo(IntelledgerEntry obj) {
-        if(key.compareTo(obj.key) == 0) {
+        if (key.compareTo(obj.key) == 0) {
             return version.compareTo(obj.version)
-        } else {
+        }
+        else {
             return key.compareTo(obj.key)
         }
     }
 
     String toString() {
         return key
+    }
+
+    /**
+     * Determine if the entry is inactive.
+     *
+     * @return
+     *
+     * <code>true</code> if-and-only-if <code>active</code> is
+     * <code>false</code>.
+     */
+    boolean getInactive() {
+        return (! active)
     }
 }
 

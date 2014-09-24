@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Aaron Brown
+ * Copyright 2014 Aaron Brown
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  */
 package me.sudofu.intelledger.domain
 
-
 /**
  * Emulates a {@link java.util.Map Map}.
  *
@@ -23,20 +22,20 @@ package me.sudofu.intelledger.domain
  */
 class Intelledger {
     /**
-     * The name of the Smartionary, which is a mnemonic for what the
-     * collection represents.
+     * The name of the <b><code>Intelledger</code></b>, which is a
+     * mnemonic for what the collection represents.
      */
     String name
 
     /**
-     * A description for the <code>Smartionary</code> object, and what
+     * A description for the <b><code>Intelledger</code></b>, and what
      * data it might pertain to.
      */
     String description
 
     /**
-     * Specify the <code>Entry</code> Objects as a
-     * <code>SortedSet</code>
+     * Specify the <b><code>IntelledgerEntry</code></b> relationship as
+     * a <code>SortedSet</code>
      */
     SortedSet entries
 
@@ -56,27 +55,82 @@ class Intelledger {
     /**
      * This method will return all the active keys and its values.
      *
-     * @return Map - Map of active keys and values.
+     * @return
+     *
+     * A <code>Map</code> constructed of the <b>active</b>
+     * <code>entries</code>.
      */
     Map toMap() {
         Map m = [:]
 
-        entries.each {
-            if (it.active) {
-                m[it.key] = it.value
-            }
+        getActiveEntries().each {
+            m[it.key] = it.value
         }
-
 
         return m
     }
-    
+
     /**
-     * This method will return all the active entries
-     * 
-     * @return List<IntelledgerEntry> - List of all the active entries
+     * Retrieve <b>active</b> <code>entries</code>.
+     *
+     * @return
+     *
+     * A <code>List</code> of <code>entries</code> that are set as
+     * <b>active</b>.
      */
     public List<IntelledgerEntry> getActiveEntries() {
-        return entries?.findAll { it.active }
+        return entries?.findAll { it.active } as List
     }
+
+    /**
+     * Retrieve the lattermost version for each of the
+     * <code>entries</code>.
+     *
+     * @return
+     *
+     * A <code>List</code> of the lattermost version of each entry,
+     * regardless of <b>active</b> status.
+     */
+    public List<IntelledgerEntry> getLatestVersionEntries() {
+        List<IntelledgerEntry> versionedEntries = []
+
+        entries.keySet().each { entryKey ->
+            IntelledgerEntry entry = findLatestVersionOf(entryKey)
+
+            if (entry) {
+                versionedEntires << entry
+            }
+        }
+
+        return (versionedEntries ?: null)
+    }
+
+    /**
+     * Retrieve all <code>entries</code>.
+     *
+     * @return
+     *
+     * A <code>List</code> of all <code>entries</code> associated,
+     * regardless of <b>active</b> status.
+     */
+    public List<IntelledgerEntry> getEntries() {
+        return entries
+    }
+
+    /**
+     * Retrieve the lattermost version of an entry.
+     *
+     * @param   key
+     *
+     * The entry key to query for.
+     *
+     * @return
+     *
+     * The <b><code>IntelledgerEntry</code></b> with the given key,
+     * which the lattermost version of that set (if the key exists).
+     */
+    public IntelledgerEntry findLastVersionOf(String key) {
+        return entries?.findAll { it.key == key }?.sort()[-1]
+    }
+
 }
