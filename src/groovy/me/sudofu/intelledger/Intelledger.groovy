@@ -144,14 +144,14 @@ class Intelledger {
      * exists, and it is associated with a <code>IntelledgerEntry</code>
      * in which the <code>value</code> field matches that which was passed.
      */
-    static boolean containsActive(String intelledgerName, value) {
+    static boolean contains(String intelledgerName, value) {
         IntelledgerDomain domain = getDomain(intelledgerName)
 
-        if (domain == null || !domain.entries) {
+        if (domain == null || !domain.activeEntries) {
             return false
         }
 
-        return domain.entries*.value.contains(value as String)
+        return domain.activeEntries*.value.contains(value as String)
     }
 
     /**
@@ -172,14 +172,14 @@ class Intelledger {
      * exists, and it is associated with a <code>SmartionaryEntry</code>
      * in which the <code>key</code> field matches that which was passed.
      */
-    static boolean containsActiveKey(String intelledgerName, String key) {
+    static boolean containsKey(String intelledgerName, String key) {
         IntelledgerDomain domain = getDomain(intelledgerName)
 
-        if (domain == null || !domain.entries) {
+        if (domain == null || !domain.activeEntries) {
             return false
         }
 
-        return domain.entries*.key.contains(key)
+        return domain.activeEntries*.key.contains(key)
     }
 
     /**
@@ -200,7 +200,7 @@ class Intelledger {
      * so it may be necessary to convert these values to other built-in
      * datatypes (i.e. <code>Integer</code>) as desired / necessary.
      */
-    static Map getActiveEntries(String intelledgerName) {
+    static Map get(String intelledgerName) {
         IntelledgerDomain intelledger = getDomain(intelledgerName)
 
         // Same behavior as a domain.
@@ -231,7 +231,7 @@ class Intelledger {
      * <code>Intelledger</code> datastructure; or <code>null</code>.
      */
     static String get(String intelledgerName, String key) {
-        Map intelledger = getActiveEntries(intelledgerName)
+        Map intelledger = getEntries(intelledgerName)
 
         // Treat it like a Map.
         if (intelledger == null) {
@@ -519,7 +519,7 @@ class Intelledger {
      * The <code>IntelledgerEntry.key</code> of the
      * <code>IntelledgerEntry</code> Object to delete.
      */
-    static void deleteActiveEntry(String intelledgerName, String key) {
+    static void deleteEntry(String intelledgerName, String key) {
         IntelledgerDomain domain = getDomain(intelledgerName)
 
         if (domain == null) {

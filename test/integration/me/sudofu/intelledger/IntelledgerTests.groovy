@@ -62,7 +62,7 @@ class IntelledgerTests extends GroovyTestCase {
     @Test
     void testSetWithoutEntries() {
         Intelledger.set('foo')
-        Map m = Intelledger.getActiveEntries('foo')
+        Map m = Intelledger.getEntries('foo')
         assertNotNull(m)
         assertTrue(m.isEmpty())
         IntelledgerDomain domain = IntelledgerDomain.findByName('foo')
@@ -71,7 +71,7 @@ class IntelledgerTests extends GroovyTestCase {
         assertNull(domain.description)
         assertNull(domain.entries)
         Intelledger.set('foo', 'intelledgerDescription')
-        m = Intelledger.getActiveEntries('foo')
+        m = Intelledger.getEntries('foo')
         assertNotNull(m)
         assertTrue(m.isEmpty())
         domain = IntelledgerDomain.findByName('foo')
