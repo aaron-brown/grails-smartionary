@@ -43,14 +43,22 @@ class IntelledgerTests extends GroovyTestCase {
 
     @Test
     void testSetDuplicateKeys() {
-        Intelledger.set('4.0.1')
+        Intelledger.set('foo')
 
-        IntelledgerDomain domain = IntelledgerDomain.findByName('4.0.1')
-        Intelledger.set(domain.name, "build.number", "234568", null, null, "anil")
-        Intelledger.set(domain.name, "build.number", "234569", null, null, "anil")
+        Map result
+        IntelledgerDomain domain = IntelledgerDomain.findByName('foo')
+        Intelledger.set(domain.name, 'jon-doe', "foo", "bar", null, null)
 
-        Set values = Intelledger.getValues(domain.name, "build.number")
-        assertEquals(values.size(), 2)
+        assertEquals(1, Intelledger.size(domain.name))
+
+        result = Intelledger.get(domain.name)
+        assertNotNull(result)
+        assertEquals('bar', result.foo)
+
+        Intelledger.set(domain.name, 'jon-doe', "foo", "baz", null, null)
+        result = Intelledger.get(domain.name)
+        assertNotNull(result)
+        assertEquals('baz', result.foo)
     }
 
     @Test
@@ -61,19 +69,31 @@ class IntelledgerTests extends GroovyTestCase {
 
     @Test
     void testSetWithoutEntries() {
+        Map result
+        assertNull(result)
+
         Intelledger.set('foo')
-        Map m = Intelledger.getEntries('foo')
-        assertNotNull(m)
-        assertTrue(m.isEmpty())
-        IntelledgerDomain domain = IntelledgerDomain.findByName('foo')
+
+        result = Intelledger.get('foo')
+        assertNotNull(result)
+        assertTrue(result.isEmpty())
+
+        IntelledgerDomain domain
+        assertNull(domain)
+
+        domain = IntelledgerDomain.findByName('foo')
+
         assertNotNull(domain)
         assertEquals('foo', domain.name)
         assertNull(domain.description)
         assertNull(domain.entries)
+
         Intelledger.set('foo', 'intelledgerDescription')
-        m = Intelledger.getEntries('foo')
-        assertNotNull(m)
-        assertTrue(m.isEmpty())
+
+        result = Intelledger.get('foo')
+        assertNotNull(result)
+        assertTrue(result.isEmpty())
+
         domain = IntelledgerDomain.findByName('foo')
         assertNotNull(domain)
         assertEquals('foo', domain.name)

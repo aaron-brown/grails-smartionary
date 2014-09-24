@@ -83,42 +83,30 @@ class Intelledger {
     }
 
     /**
-     * Retrieve the lattermost version for each of the
+     * Retrieve the lattermost generation for each of the
      * <code>entries</code>.
      *
      * @return
      *
-     * A <code>List</code> of the lattermost version of each entry,
+     * A <code>List</code> of the lattermost generation of each entry,
      * regardless of <b>active</b> status.
      */
-    public List<IntelledgerEntry> getLatestVersionEntries() {
-        List<IntelledgerEntry> versionedEntries = []
+    public List<IntelledgerEntry> getLatestGenerationsEntries() {
+        List<IntelledgerEntry> latestGenerations = []
 
         entries.keySet().each { entryKey ->
             IntelledgerEntry entry = findLatestVersionOf(entryKey)
 
             if (entry) {
-                versionedEntires << entry
+                latestGenerations << entry
             }
         }
 
-        return (versionedEntries ?: null)
+        return (latestGenerations ?: null)
     }
 
     /**
-     * Retrieve all <code>entries</code>.
-     *
-     * @return
-     *
-     * A <code>List</code> of all <code>entries</code> associated,
-     * regardless of <b>active</b> status.
-     */
-    public List<IntelledgerEntry> getEntries() {
-        return entries
-    }
-
-    /**
-     * Retrieve the lattermost version of an entry.
+     * Retrieve the lattermost generation of an entry.
      *
      * @param   key
      *
@@ -127,10 +115,16 @@ class Intelledger {
      * @return
      *
      * The <b><code>IntelledgerEntry</code></b> with the given key,
-     * which the lattermost version of that set (if the key exists).
+     * which the lattermost generation of that set (if the key exists).
      */
-    public IntelledgerEntry findLastVersionOf(String key) {
-        return entries?.findAll { it.key == key }?.sort()[-1]
+    public IntelledgerEntry findLastGenerationOf(String key) {
+        List<IntelledgerEntry> generations = entries?.findAll { it.key == key } as List
+
+        if (generations) {
+            return generations.sort()[-1]
+        }
+
+        return null
     }
 
 }

@@ -1,7 +1,7 @@
 /*
  * Copyright 2014 Aaron Brown
  *
- * Licensed under the Apache License, Version 2.0 (the "License")
+ * Licensed under the Apache License, Generation 2.0 (the "License")
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -31,7 +31,7 @@ import me.sudofu.intelledger.domain.IntelledgerEntry
  * <p>
  * <b><code>Intelledger</code></b> provides a flexible and progremmatic
  * interface for storing information in a <b>Grails</b> Domain that
- * mimics the structure of a single-level <code>Map</code> with key versioning.
+ * mimics the structure of a single-level <code>Map</code> with key generationing.
  * And at a time only one key will be active among duplicate keys.
  * <p>
  *
@@ -247,7 +247,7 @@ class Intelledger {
     }
 
     /**
-     * Retrieve all versioned entries for a specific <code>key</code>.
+     * Retrieve all generationed entries for a specific <code>key</code>.
      *
      * @param   intelledgerName
      *
@@ -262,7 +262,7 @@ class Intelledger {
      * @return
      *
      * All of the <code>entries</code> that are identified by the
-     * <code>key</code>, regardless of <b>version</b> and <b>active</b>
+     * <code>key</code>, regardless of <b>generation</b> and <b>active</b>
      * status.
      */
     static List<IntelledgerEntry> getAudit(String intelledgerName, String key) {
@@ -511,7 +511,7 @@ class Intelledger {
      *
      * <p>
      * No row deletion is performed; this solely marks the lattermost
-     * version of the current entry inactive.
+     * generation of the current entry inactive.
      * </p>
      *
      * @param   intelledgerName
@@ -552,7 +552,7 @@ class Intelledger {
      *
      * <p>
      * No row deletion is performed; this solely marks the lattermost
-     * version of the current entry inactive.
+     * generation of the current entry inactive.
      * </p>
      *
      * @param   intelledgerName
@@ -600,7 +600,7 @@ class Intelledger {
      *
      * <p>
      * No row deletion is performed; this solely marks the lattermost
-     * version of the current entry inactive.
+     * generation of the current entry inactive.
      * </p>
      *
      * @param   intelledgerName
@@ -642,7 +642,7 @@ class Intelledger {
      *
      * <p>
      * No row deletion is performed; this solely marks the lattermost
-     * version of the current entry inactive.
+     * generation of the current entry inactive.
      * </p>
      *
      * @param   intelledgerName
@@ -744,7 +744,7 @@ class Intelledger {
      *
      * An optional description to set with the object.
      */
-    static private void _set(IntelledgerDomain domain, String key, String changeId, value, String description = null) {
+    static private void _set(IntelledgerDomain domain, String changeId, String key, value, String description = null) {
         // Search for the particular entry.
         IntelledgerEntry oldEntry = domain.activeEntries.find { it.key == key }
 
@@ -759,7 +759,7 @@ class Intelledger {
             value: (value as String),
             description: description,
             changeId: changeId,
-            keyVersion: determineNextVersion(domain, key),
+            generation: determineNextGeneration(domain, key),
             active: true
         )
 
@@ -797,7 +797,7 @@ class Intelledger {
             value: entry.value,
             description: entry.description,
             changeId: changeId,
-            keyVersion: determineNextVersion(domain, entry.key),
+            generation: determineNextGeneration(domain, entry.key),
             active: false
         )
 
@@ -806,7 +806,7 @@ class Intelledger {
     }
 
     /**
-     * Determine the next version number of an entry, for predictive or
+     * Determine the next generation number of an entry, for predictive or
      * insertion purposes.
      *
      * @param   intelledger
@@ -820,16 +820,16 @@ class Intelledger {
      * @return
      *
      * If an entry with the key exists, it will return (regardless of
-     * <b>active</b> status) the lattermost version number of that entry
+     * <b>active</b> status) the lattermost generation number of that entry
      * <i>plus</i> one (1) (minimum value of two (2)); otherwise, it
-     * will return one (1), as the initial version of the currently
+     * will return one (1), as the initial generation of the currently
      * non-existant key.
      */
-    private static int determineNextVersion(IntelledgerDomain domain, String key) {
-        IntelledgerEntry entry = domain.findLastVersionOf(key)
+    private static int determineNextGeneration(IntelledgerDomain domain, String key) {
+        IntelledgerEntry entry = domain.findLastGenerationOf(key)
 
         if (entry) {
-            return (entry.version + 1)
+            return (entry.generation + 1)
         }
 
         return 1

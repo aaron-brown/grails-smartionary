@@ -41,9 +41,9 @@ class IntelledgerEntry implements Comparable<IntelledgerEntry> {
     String description
 
     /**
-     * The version of the entry, to keep track of change history.
+     * The generation of the entry, to keep track of change history.
      */
-    Integer version
+    Integer generation
 
     /**
      * Generic field for implementing a change identifier methodology.
@@ -58,10 +58,10 @@ class IntelledgerEntry implements Comparable<IntelledgerEntry> {
     static belongsTo = [ intelledger: Intelledger ]
 
     static constraints = {
-        key         (blank: false, unique: ['intelledger', 'version'])
+        key         (blank: false, unique: ['intelledger', 'generation'])
         value       (nullable: true, size: 1..8000)
         description (nullable: true, size: 1..8000)
-        version     (nullable: false)
+        generation  (nullable: false)
         changeId    (blank: false, nullable: false, size: 1..8000)
         active      (nullable: false)
     }
@@ -71,12 +71,11 @@ class IntelledgerEntry implements Comparable<IntelledgerEntry> {
         value       type: 'text'
         description type: 'text'
         changeId    type: 'text'
-        version     column: 'entry_version'
     }
 
     int compareTo(IntelledgerEntry obj) {
-        if (key.compareTo(obj.key) == 0) {
-            return version.compareTo(obj.version)
+        if (key.compareTo(obj.key) == 0 && generation && obj.generation) {
+            return generation.compareTo(obj.generation)
         }
         else {
             return key.compareTo(obj.key)
