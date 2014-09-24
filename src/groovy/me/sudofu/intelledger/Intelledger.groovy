@@ -43,6 +43,7 @@ import me.sudofu.intelledger.domain.IntelledgerEntry
  * Intelledger.set(
  *     'myIntelledger',
  *     'This is a sample Intelledger instantiation.',
+ *     'someUser',
  *     myFirstElement: 'foo',
  *     mySecondElement: 2,
  *     myThirdElement: new Date(),
@@ -541,14 +542,18 @@ class Intelledger {
     }
 
     /**
-     * Delete an series of <code>IntelledgerEntry</code> objects from a
-     * <code>Intelledger</code>.
+     * Render an entry effectively deleted.
      *
      * <p>
      * No impact if called on a non-existant <code>Intelledger</code>,
      * or if the <b><code>key</code></b> is not associated to an
      * existing one.
      * <p>
+     *
+     * <p>
+     * No row deletion is performed; this solely marks the lattermost
+     * version of the current entry inactive.
+     * </p>
      *
      * @param   intelledgerName
      *
@@ -585,13 +590,17 @@ class Intelledger {
     }
 
     /**
-     * Delete any <code>IntelledgerEntry</code> objects associated to
-     * a <code>Intelledger</code> that have <code>null</code> values.
+     * Render an entry effectively deleted.
      *
      * <p>
-     * No impact if the <code>Intelledger</code> does not exist, or if
-     * none of its <code>IntelledgerEntry</code> objects have
-     * <code>null</code> values.
+     * No impact if called on a non-existant <code>Intelledger</code>,
+     * or if the <b><code>key</code></b> is not associated to an
+     * existing one.
+     * <p>
+     *
+     * <p>
+     * No row deletion is performed; this solely marks the lattermost
+     * version of the current entry inactive.
      * </p>
      *
      * @param   intelledgerName
@@ -625,12 +634,15 @@ class Intelledger {
     }
 
     /**
-     * Delete <b>all</b> <code>IntelledgerEntry</code> objects associated
-     * to a <code>Intelledger</code>, leaving the <code>Intelledger</code>
-     * empty.
+     * Render an entry effectively deleted.
      *
      * <p>
-     * No impact if the <code>Intelledger</code> does not exist.
+     * No impact if called on a non-existant <code>Intelledger</code>.
+     * <p>
+     *
+     * <p>
+     * No row deletion is performed; this solely marks the lattermost
+     * version of the current entry inactive.
      * </p>
      *
      * @param   intelledgerName
