@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Aaron Brown
+ * Copyright 2014 Aaron Brown
  *
  * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
@@ -54,11 +54,11 @@ import me.sudofu.intelledger.domain.IntelledgerEntry
  * )
  * </code></pre>
  *
- * The <code>Smartionary</code> can then retrieve the Domain as a
+ * The <code>Intelledger</code> can then retrieve the Domain as a
  * <code>Map</code> later like so:
  *
  * <code><pre>
- * Map myElements = Smartionary.get('mySmartionary')
+ * Map myElements = Intelledger.get('myIntelledger')
  *
  * println myElements.myFirstElement
  * </code></pre>
@@ -75,7 +75,7 @@ import me.sudofu.intelledger.domain.IntelledgerEntry
  *
  * <p>
  * Descriptions can be omitted or included as desired. The
- * <b><code>Smartionary</code></b> does not interface with retrieving
+ * <b><code>Intelledger</code></b> does not interface with retrieving
  * descriptions, as that meant more for when observing the views
  * (i.e. administratively). In the
  * {@link #set(Map, String, String} method, the
@@ -98,8 +98,9 @@ import me.sudofu.intelledger.domain.IntelledgerEntry
 class Intelledger {
 
     /**
-     * Retrieve the number of active <code>IntelledgerEntry</code> objects are
-     * associated with a <code>Intelledger</code>.
+     * Retrieve the number of <i>active</i>
+     * <code>IntelledgerEntry</code> objects that are associated with an
+     * <code>Intelledger</code>.
      *
      * @param   intelledgerName
      *
@@ -126,8 +127,8 @@ class Intelledger {
     }
 
     /**
-     * Check if the <code>Intelledger</code> contains a
-     * <code>IntelledgerEntry</code> by a given value and which is active.
+     * Check if the <code>Intelledger</code> contains an <i>active</i>
+     * <code>IntelledgerEntry</code> by a given value.
      *
      * @param   intelledgerName
      *
@@ -142,7 +143,8 @@ class Intelledger {
      *
      * <code>true</code> if and only if the <code>Intelledger</code>
      * exists, and it is associated with a <code>IntelledgerEntry</code>
-     * in which the <code>value</code> field matches that which was passed.
+     * in which the <code>value</code> field matches that which was passed,
+     * <i>and</i> that matching entry is <b>active</b>.
      */
     static boolean contains(String intelledgerName, value) {
         IntelledgerDomain domain = getDomain(intelledgerName)
@@ -155,7 +157,7 @@ class Intelledger {
     }
 
     /**
-     * Check if the <code>Intelledger</code> contains an active
+     * Check if the <code>Intelledger</code> contains an <i>active</i>
      * <code>IntelledgerEntry</code> by a given key.
      *
      * @param   intelledgerName
@@ -168,9 +170,10 @@ class Intelledger {
      *
      * @return
      *
-     * <code>true</code> if and only if the <code>Smartionary</code>
-     * exists, and it is associated with a <code>SmartionaryEntry</code>
-     * in which the <code>key</code> field matches that which was passed.
+     * <code>true</code> if and only if the <code>Intelledger</code>
+     * exists, and it is associated with a <code>IntelledgerEntry</code>
+     * in which the <code>key</code> field matches that which was passed,
+     * <i>and</i> that entry is <b>active</b>.
      */
     static boolean containsKey(String intelledgerName, String key) {
         IntelledgerDomain domain = getDomain(intelledgerName)
@@ -183,8 +186,9 @@ class Intelledger {
     }
 
     /**
-     * Retrieve a <code>Intelledger</code> domain and convert all of its active
-     * <code>IntelledgerEntries</code> into a <code>Map</code>.
+     * Retrieve a <code>Intelledger</code> domain and convert all of its
+     * <i>active</i> <code>IntelledgerEntries</code> into a
+     * <code>Map</code>.
      *
      * @param   intelledgerName
      *
@@ -231,7 +235,7 @@ class Intelledger {
      * <code>Intelledger</code> datastructure; or <code>null</code>.
      */
     static String get(String intelledgerName, String key) {
-        Map intelledger = getEntries(intelledgerName)
+        Map intelledger = get(intelledgerName)
 
         // Treat it like a Map.
         if (intelledger == null) {
@@ -242,8 +246,7 @@ class Intelledger {
     }
 
     /**
-     * Retrieve a specific active <code>IntelledgerEntry.value</code> from a
-     * <code>Intelledger</code>.
+     * Retrieve all versioned entries for a specific <code>key</code>.
      *
      * @param   intelledgerName
      *
@@ -257,10 +260,11 @@ class Intelledger {
      *
      * @return
      *
-     * The appropriate value for the given <code>key</code> in the
-     * <code>Intelledger</code> datastructure; or <code>null</code>.
+     * All of the <code>entries</code> that are identified by the
+     * <code>key</code>, regardless of <b>version</b> and <b>active</b>
+     * status.
      */
-    static Set<IntelledgerEntry> getValues(String intelledgerName, String key) {
+    static List<IntelledgerEntry> getAudit(String intelledgerName, String key) {
         IntelledgerDomain intelledger = getDomain(intelledgerName)
 
         // Same behavior as a domain.
@@ -319,6 +323,10 @@ class Intelledger {
      * exists by that name, it will be created.
      * </p>
      *
+     * @param   changeId
+     *
+     * The Change ID to apply to the changes.
+     *
      * @param   json
      *
      * This JSON <code>Map</code> will correspond to
@@ -343,10 +351,10 @@ class Intelledger {
      * instances of <b><code>String</code></b>; also inherited from
      * {@link groovy.json.JsonSlurper JsonSlurper}.
      */
-    static void fromJson(String intelledgerName, String json, String intelledgerDescription = null) throws IllegalArgumentException {
+    static void fromJson(String intelledgerName, String changeId, String json, String intelledgerDescription = null) throws IllegalArgumentException {
         try {
             Map entries = new JsonSlurper().parseText(json)
-            set(entries, intelledgerName, intelledgerDescription)
+            set(entries, intelledgerName, changeId, intelledgerDescription)
         }
         catch (GroovyCastException) {
             throw new IllegalArgumentException("The JSON could not be converted to a Map.")
@@ -402,6 +410,10 @@ class Intelledger {
      * <code>Intelledger</code> Object; or, if no <code>Intelledger</code>
      * exists by that name, it will be created.
      *
+     * @param   changeId
+     *
+     * The Change ID to apply to the changes.
+     *
      * @param   intelledgerDesription
      *
      * An optional description to set with the object.
@@ -414,7 +426,7 @@ class Intelledger {
      * <code>entries.intelledgerDescriptions</code> field are not
      * instances of <b><code>String</code></b>.
      */
-    static void set(Map<String, Object> entries, String intelledgerName, String intelledgerDesription = null) throws IllegalArgumentException {
+    static void set(Map<String, Object> entries, String intelledgerName, String changeId, String intelledgerDesription = null) throws IllegalArgumentException {
         if (entries.any { k, v -> !(k instanceof String) }) {
             throw new IllegalArgumentException("One or more keys in the 'entries' Map is not a String.")
         }
@@ -423,13 +435,13 @@ class Intelledger {
             throw new IllegalArgumentException("One or more descriptions in the 'entries.intelledgerDescriptions' field is not a String.")
         }
 
-        // Get Smartionary, or create if necessary.
+        // Get Intelledger, or create if necessary.
         IntelledgerDomain domain = getCreateDomain(intelledgerName, intelledgerDesription)
 
         // Omit the smartionaryDescription key so that it does not get
-        // added to the Smartionary.
+        // added to the Intelledger.
         entries.subMap(entries.keySet() - 'intelledgerDescriptions').each { key, value ->
-            _set(domain, key, value, entries.intelledgerDescriptions?."${key}")
+            _set(domain, changeId, key, value, entries.intelledgerDescriptions?."${key}")
         }
 
         // TODO: Explicitly declare exceptions thrown on this failure.
@@ -455,6 +467,10 @@ class Intelledger {
      * <code>Intelledger</code> Object; or, if no <code>Intelledger</code>
      * exists by that name, it will be created.
      *
+     * @param   changeId
+     *
+     * The Change ID to apply to the change.
+     *
      * @param   key
      *
      * The <code>IntelledgerEntry.key</code> identifier to set the value
@@ -472,37 +488,19 @@ class Intelledger {
      *
      * An optional description to set with the object.
      */
-    static void set(String intelledgerName, String key, value, String entryDescription = null, String intelledgerDesription = null, String changeId = null) {
+    static void set(String intelledgerName, String changeId, String key, value, String entryDescription = null, String intelledgerDesription = null) {
 
         // Get Intelledger, or create if necessary.
         IntelledgerDomain domain = getCreateDomain(intelledgerName, intelledgerDesription)
 
-        _set(domain, key, value, entryDescription, changeId)
+        _set(domain, changeId, key, value, entryDescription)
 
         // TODO: Explicitly declare exceptions thrown on this failure.
         domain.save(failOnError: true)
     }
 
     /**
-     * Delete a <code>Intelledger</code> (and its
-     * <code>IntelledgerEntries</code>).
-     *
-     * <p>No impact if called on a non-existant <code>Intelledger</code>.<p>
-     *
-     * @param   intelledgerName
-     *
-     * The Name of the <code>Intelledger</code> Object to delete; will
-     * also delete the <code>IntelledgerEntry</code> Objects associated
-     * with it.
-     */
-    static void delete(String intelledger) {
-        IntelledgerDomain domain = getDomain(intelledger)
-
-        domain?.delete(flush: true)
-    }
-
-    /**
-     * Delete an Active <code>IntelledgerEntry</code> from a <code>Intelledger</code>.
+     * Render an entry effectively deleted.
      *
      * <p>
      * No impact if called on a non-existant <code>Intelledger</code>,
@@ -510,16 +508,25 @@ class Intelledger {
      * existing one.
      * <p>
      *
+     * <p>
+     * No row deletion is performed; this solely marks the lattermost
+     * version of the current entry inactive.
+     * </p>
+     *
      * @param   intelledgerName
      *
      * The <code>Intelledger</code> to act upon.
+     *
+     * @param   changeId
+     *
+     * The Change ID to apply to the change.
      *
      * @param   key
      *
      * The <code>IntelledgerEntry.key</code> of the
      * <code>IntelledgerEntry</code> Object to delete.
      */
-    static void deleteEntry(String intelledgerName, String key) {
+    static void delete(String intelledgerName, String changeId, String key) {
         IntelledgerDomain domain = getDomain(intelledgerName)
 
         if (domain == null) {
@@ -529,48 +536,7 @@ class Intelledger {
         IntelledgerEntry entry = domain.entries.find { it.key == key && it.active}
 
         if (entry != null) {
-            domain.removeFromEntries(entry)
-            entry.delete()
-            domain.save(flush: true)
-        }
-    }
-
-    /**
-     * Delete all <code>IntelledgerEntry</code> related to the key, from a <code>Intelledger</code>.
-     *
-     * <p>
-     * No impact if called on a non-existant <code>Intelledger</code>,
-     * or if the <b><code>key</code></b> is not associated to an
-     * existing one.
-     * <p>
-     *
-     * @param   intelledgerName
-     *
-     * The <code>Intelledger</code> to act upon.
-     *
-     * @param   key
-     *
-     * The <code>IntelledgerEntry.key</code> of the
-     * <code>IntelledgerEntry</code> Object to delete.
-     */
-    static void deleteAllKeyEntries(String intelledgerName, String key) {
-        IntelledgerDomain domain = getDomain(intelledgerName)
-
-        if (domain == null) {
-            return
-        }
-
-        List<IntelledgerEntry> entries = domain.entries.findAll { it.key == key}
-
-        if (entries != null && entries.size() > 0) {
-            entries.each { entry ->
-                domain.removeFromEntries(entry)
-                entry.delete()
-            }
-        }
-
-        if (domain.isDirty('entries')) {
-            domain.save(flush: true)
+            _delete(entry, changeId)
         }
     }
 
@@ -588,12 +554,16 @@ class Intelledger {
      *
      * The <code>Intelledger</code> to act upon.
      *
+     * @param   changeId
+     *
+     * The Change ID to apply to the changes.
+     *
      * @param   keys
      *
      * The <code>IntelledgerEntry.key</code> of the
      * <code>IntelledgerEntry</code> Objects to delete.
      */
-    static void deleteActive(String intelledgerName, String... keys) {
+    static void delete(String intelledgerName, String changeId, String... keys) {
         IntelledgerDomain domain = getDomain(intelledgerName)
 
         if (domain == null) {
@@ -605,8 +575,7 @@ class Intelledger {
             IntelledgerEntry entry = domain.entries.find { it.key == key && it.active}
 
             if (entry != null) {
-                domain.removeFromEntries(entry)
-                entry.delete()
+                _delete(entry, changeId)
             }
         }
 
@@ -628,26 +597,31 @@ class Intelledger {
      * @param   intelledgerName
      *
      * The Name of the <code>Intelledger</code> to act on.
+     *
+     * @param   changeId
+     *
+     * The Change ID to apply to the changes.
      */
-    static void purgeNulls(String intelledgerName) {
+    static void purgeNulls(String intelledgerName, String changeId) {
         IntelledgerDomain domain = getDomain(intelledgerName)
 
         if (domain == null) {
             return
         }
 
-        Set nullEntries = domain.entries.findAll { it.value == null }
+        Set nullEntries = domain.entries.findAll { it.value == null && it.active }
 
         if (nullEntries.isEmpty()) {
             return
         }
 
         nullEntries.each {
-            domain.removeFromEntries(it)
-            it.delete()
+            _delete(entry, changeId)
         }
 
-        domain.save(flush: true)
+        if (domain.isDirty('entries')) {
+            domain.save(flush: true)
+        }
     }
 
     /**
@@ -662,15 +636,21 @@ class Intelledger {
      * @param   intelledgerName
      *
      * The Name of the <code>Intelledger</code> to act on.
+     *
+     * @param   changeId
+     *
+     * The Change ID to apply to the changes.
      */
-    static void purge(String intelledgerName) {
+    static void purge(String intelledgerName, String changeId) {
         IntelledgerDomain domain = getDomain(intelledgerName)
 
         if (domain == null || !domain.entries) {
             return
         }
 
-        domain.entries.clear()
+        domain.activeEntries.each { entry ->
+            _delete(entry, changeId)
+        }
 
         domain.save(flush: true)
     }
@@ -733,7 +713,11 @@ class Intelledger {
      *
      * @param   domain
      *
-     * The <code>Smartionary</code> object to act on.
+     * The <code>Intelledger</code> object to act on.
+     *
+     * @param   changeId
+     *
+     * The Change ID to apply to the changes.
      *
      * @param   key
      *
@@ -748,43 +732,94 @@ class Intelledger {
      *
      * An optional description to set with the object.
      */
-    static private void _set(IntelledgerDomain domain, String key, value, String description = null, String changeId = null) {
+    static private void _set(IntelledgerDomain domain, String key, String changeId, value, String description = null) {
         // Search for the particular entry.
-        IntelledgerEntry oldEntry = domain.entries.find { key == it.key && it.active == true }
+        IntelledgerEntry oldEntry = domain.activeEntries.find { it.key == key }
 
-        // Create it if it does not exist.
-        IntelledgerEntry newEntry = new IntelledgerEntry(
-                key: key,
-                value: (value as String),
-                description: description,
-                changeId: changeId,
-                keyVersion : 1,
-                active : true
-                )
-
-        if (oldEntry != null) {
-            // Deactivate the old and existing key value pair.
+        // Mark old entry inactive.
+        if (oldEntry) {
             oldEntry.active = false
-
-            // Set the key version of the latest entry to old keyversion +1
-            newEntry.keyVersion = oldEntry.keyVersion + 1
-        } else {
-            // Need to find the latest version among the deactivated ones, if there is no active keys are existed.
-            Set<IntelledgerEntry> deactivatedEntries = domain.entries.findAll { key == it.key }
-
-            int maxKeyVersion = 0
-
-            deactivatedEntries.each { deactivateEntry ->
-
-                if (maxKeyVersion < deactivateEntry.keyVersion) {
-                    maxKeyVersion = deactivateEntry.keyVersion
-                }
-
-            }
-
-            newEntry.keyVersion = maxKeyVersion + 1
         }
 
+        // Create the new entry.
+        IntelledgerEntry newEntry = new IntelledgerEntry(
+            key: key,
+            value: (value as String),
+            description: description,
+            changeId: changeId,
+            keyVersion: determineNextVersion(domain, key),
+            active: true
+        )
+
         domain.addToEntries(newEntry)
+        domain.save(failOnError: true)
+    }
+
+    /**
+     * Render an entry effectively deleted.
+     *
+     * <p>
+     * This does not actually delete the entry, but rather marks the
+     * entry as inactive, and creates a new inactive entry with the
+     * <code>changeId</code> applied, such that a historical record is
+     * made of what entity "deleted" the entry.
+     * </p>
+     *
+     * @param   entry
+     *
+     * The entry to be deleted.
+     *
+     * @param   changeId
+     *
+     * The Change ID to apply to this change.
+     */
+    static private void _delete(IntelledgerEntry entry, String changeId) {
+        IntelledgerDomain domain = entry.intelledger
+
+        // Mark the current entry inactive.
+        entry.active = false
+
+        // Create the new inactive entry with the updated Change ID.
+        IntelledgerEntry newEntry = new IntelledgerEntry(
+            key: entry.key,
+            value: entry.value,
+            description: entry.description,
+            changeId: changeId,
+            keyVersion: determineNextVersion(domain, entry.key),
+            active: false
+        )
+
+        domain.addToEntries(newEntry)
+        domain.save(failOnError: true)
+    }
+
+    /**
+     * Determine the next version number of an entry, for predictive or
+     * insertion purposes.
+     *
+     * @param   intelledger
+     *
+     * The <b><code>Intelledger</code></b> Object to work on.
+     *
+     * @param   key
+     *
+     * The entry key to query for.
+     *
+     * @return
+     *
+     * If an entry with the key exists, it will return (regardless of
+     * <b>active</b> status) the lattermost version number of that entry
+     * <i>plus</i> one (1) (minimum value of two (2)); otherwise, it
+     * will return one (1), as the initial version of the currently
+     * non-existant key.
+     */
+    private static int determineNextVersion(IntelledgerDomain domain, String key) {
+        IntelledgerEntry entry = domain.findLastVersionOf(key)
+
+        if (entry) {
+            return (entry.version + 1)
+        }
+
+        return 1
     }
 }
