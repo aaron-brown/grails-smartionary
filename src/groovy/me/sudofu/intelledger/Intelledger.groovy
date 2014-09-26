@@ -273,7 +273,7 @@ class Intelledger {
             return null
         }
 
-        return intelledger.entries.findAll { it.key == key }
+        return intelledger.entries.findAll { it.key == key } as List
     }
     /**
      * Set a <code>Intelledger</code> without interfering with or
