@@ -25,6 +25,11 @@ import me.sudofu.intelledger.domain.Intelledger
  */
 class IntelledgerEntry implements Comparable<IntelledgerEntry> {
     /**
+     * The Date the entry was created.
+     */
+    Date dateCreated
+
+    /**
      * The key by which the entry is accessed.
      */
     String key
