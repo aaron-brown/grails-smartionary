@@ -96,7 +96,7 @@ grailsPublish {
 publishing {
     repositories {
         maven {
-            url MAVEN_REPO
+            url System.getenv(MAVEN_REPO)
             credentials {
                 username System.getenv(MAVEN_USERNAME)
                 password System.getenv(MAVEN_PASSWORD)
