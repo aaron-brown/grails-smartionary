@@ -15,68 +15,78 @@
  */
 package me.sudofu.smartionary.domain
 
-import static org.junit.Assert.*
-
+import grails.test.mixin.integration.Integration
+import grails.transaction.Rollback
 import me.sudofu.smartionary.domain.SmartionaryEntry as Entry
+import spock.lang.Specification
 
-import org.junit.Before
-import org.junit.Test
-
-class SmartionaryEntryTests {
-
+@Integration
+@Rollback
+class SmartionaryEntrySpec extends Specification {
     Smartionary smartionary
 
-    @Before
-    void setUp() {
-        smartionary = new Smartionary( name: "footionary" )
-        smartionary.save(flush: true)
+    def setupData() {
+        smartionary = new Smartionary(name: "footionary")
+        smartionary.save(failOnError: true, flush: true)
     }
 
-    @Test
-    void testSimpleEntry() {
+    def 'Test simple entry'() {
+        setup:
+        setupData()
         Entry entry = new Entry(
             key: "foo",
             value: "bar",
             description: "baz")
 
+        when:
         smartionary.addToEntries(entry)
-        assertTrue(entry.validate())
 
-        assertEquals("foo", entry.key)
-        assertEquals("bar", entry.value)
-        assertEquals("baz", entry.description)
+        then:
+        entry.validate()
+
+        entry.key == "foo"
+        entry.value == "bar"
+        entry.description == "baz"
     }
 
-    @Test
-    void testUniqueConstraint() {
+    def 'Test unique constraint'() {
+        setup:
+        setupData()
+
+        when:
         Entry entry = new Entry(
             key: "foo",
             value: "bar",
             description: "baz")
-
         smartionary.addToEntries(entry)
-        assertTrue(entry.validate())
 
-        assertEquals("foo", entry.key)
-        assertEquals("bar", entry.value)
-        assertEquals("baz", entry.description)
+        then:
+        entry.validate()
 
-        smartionary.save(flush: true)
+        entry.key == "foo"
+        entry.value == "bar"
+        entry.description == "baz"
 
+        when:
+        smartionary.save(failOnError: true, flush: true)
         Entry duplicateEntry = new Entry(
             key: "foo",
             value: "bar",
             description: "baz")
-
         smartionary.addToEntries(duplicateEntry)
-        assertFalse(duplicateEntry.validate())
 
+        then:
+        !duplicateEntry.validate()
+
+        when:
         duplicateEntry.key = "foo2"
         smartionary.addToEntries(duplicateEntry)
-        assertTrue(entry.validate())
 
-        assertEquals("foo2", duplicateEntry.key)
-        assertEquals("bar", duplicateEntry.value)
-        assertEquals("baz", duplicateEntry.description)
+        then:
+        entry.validate()
+
+        duplicateEntry.key == "foo2"
+        duplicateEntry.value == "bar"
+        duplicateEntry.description == "baz"
     }
 }

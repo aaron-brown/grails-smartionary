@@ -1,10 +1,6 @@
-*.iws
-.settings
-/*.zip
-/plugin.xml
-*.log
-/cobertura.ser
+*.iml
+build/
+.gradle/
+.idea/
 .DS_Store
-/target
-/out
-/web-app
+classes/

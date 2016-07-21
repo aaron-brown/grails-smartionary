@@ -16,13 +16,11 @@
 package me.sudofu.smartionary
 
 import groovy.json.JsonBuilder
-import groovy.json.JsonSlurper
 import groovy.json.JsonException
-
-import org.codehaus.groovy.runtime.typehandling.GroovyCastException
-
+import groovy.json.JsonSlurper
 import me.sudofu.smartionary.domain.Smartionary as SmartionaryDomain
 import me.sudofu.smartionary.domain.SmartionaryEntry
+import org.codehaus.groovy.runtime.typehandling.GroovyCastException
 
 /**
  * The primary progremmatic interface for
@@ -77,7 +75,7 @@ import me.sudofu.smartionary.domain.SmartionaryEntry
  * <b><code>Smartionary</code></b> does not interface with retrieving
  * descriptions, as that meant more for when observing the views
  * (i.e. administratively). In the
- * {@link #set(Map, String, String} method, the
+ * {@see # set ( Map < String , Object > , String , String } method , the
  * <code>smartionaryDescriptions</code> is a "reserved" keyword for
  * telling the method to use entries in that key that have the same key
  * as the outer level to include as descriptions. It ignores any keys
@@ -100,7 +98,7 @@ class Smartionary {
      * Retrieve the number of <code>SmartionaryEntry</code> objects are
      * associated with a <code>Smartionary</code>.
      *
-     * @param   smartionaryName
+     * @param smartionaryName
      *
      * The name of the <code>Smartionary</code> to check.
      *
@@ -128,11 +126,11 @@ class Smartionary {
      * Check if the <code>Smartionary</code> contains a
      * <code>SmartionaryEntry</code> by a given value.
      *
-     * @param   smartionaryName
+     * @param smartionaryName
      *
      * The name of the <code>Smartionary</code> to check.
      *
-     * @param   value
+     * @param value
      *
      * The <code>SmartionaryEntry.value</code> to check for (converted
      * to <code>String</code>).
@@ -157,11 +155,11 @@ class Smartionary {
      * Check if the <code>Smartionary</code> contains a
      * <code>SmartionaryEntry</code> by a given key.
      *
-     * @param   smartionaryName
+     * @param smartionaryName
      *
      * The name of the <code>Smartionary</code> to check.
      *
-     * @param   key
+     * @param key
      *
      * The <code>SmartionaryEntry.key</code> to check for.
      *
@@ -185,7 +183,7 @@ class Smartionary {
      * Retrieve a <code>Smartionary</code> domain and convert all of its
      * <code>SmartionaryEntries</code> into a <code>Map</code>.
      *
-     * @param   smartionaryName
+     * @param smartionaryName
      *
      * The name of the <code>Smartionary</code> to get.
      *
@@ -214,12 +212,12 @@ class Smartionary {
      * Retrieve a specific <code>SmartionaryEntry.value</code> from a
      * <code>Smartionary</code>.
      *
-     * @param   smartionaryName
+     * @param smartionaryName
      *
      * The name of the <code>Smartionary</code> to retrieve the value
      * from.
      *
-     * @param   key
+     * @param key
      *
      * The <code>SmartionaryEntry.key</code> identifier to retrieve the
      * value of.
@@ -243,11 +241,11 @@ class Smartionary {
     /**
      * Retrieve a <code>Smartionary</code> as JSON.
      *
-     * @param   smartionaryName
+     * @param smartionaryName
      *
      * The name of the <code>Smartionary</code> to retrieve as JSON.
      *
-     * @param   pretty
+     * @param pretty
      *
      * Optionally specify whether or not to return pretty-formatted
      * JSON through {@link groovy.json.JsonBuilder#toPrettyString()}.
@@ -269,13 +267,13 @@ class Smartionary {
      * Set a <code>Smartionary</code> without interfering with or
      * creating any entries.
      *
-     * @param   smartionaryName
+     * @param smartionaryName
      *
      * The <code>Smartionary.name</code> of an existing
      * <code>Smartionary</code> Object; or, if no <code>Smartionary</code>
      * exists by that name, it will be created.
      *
-     * @param   smartionaryDesription
+     * @param smartionaryDesription
      *
      * An optional description to set with the object.
      */
@@ -306,7 +304,7 @@ class Smartionary {
      * {@link java.lang.Long#toString() long-timestamp} date.
      * <p>
      *
-     * @param   smartionaryName
+     * @param smartionaryName
      *
      * <p>
      * The <code>Smartionary.name</code> of an existing
@@ -314,7 +312,7 @@ class Smartionary {
      * exists by that name, it will be created.
      * </p>
      *
-     * @param   json
+     * @param json
      *
      * This JSON <code>Map</code> will correspond to
      * <code>SmartionaryEntry</code> Objects. The keys will correspond to
@@ -325,11 +323,11 @@ class Smartionary {
      * the keys and values will be converted to
      * {@link java.lang.String Strings}.
      *
-     * @param   smartionaryDesription
+     * @param smartionaryDesription
      *
      * An optional description to set with the object.
      *
-     * @throws  IllegalArgumentException
+     * @throws IllegalArgumentException
      *
      * Thrown if any of the keys in the <code>entries</code>
      * <b><code>Map</code></b> are not instances of <b><code>String</code></b>,
@@ -340,10 +338,10 @@ class Smartionary {
      */
     static void fromJson(String smartionaryName, String json, String smartionaryDescription = null) throws IllegalArgumentException {
         try {
-            Map entries = new JsonSlurper().parseText(json)
+            Map entries = (Map)new JsonSlurper().parseText(json)
             set(entries, smartionaryName, smartionaryDescription)
         }
-        catch (GroovyCastException) {
+        catch (GroovyCastException ignored) {
             throw new IllegalArgumentException("The JSON could not be converted to a Map.")
         }
     }
@@ -381,7 +379,7 @@ class Smartionary {
      * {@link java.lang.Long#toString() long-timestamp} date.
      * <p>
      *
-     * @param   entries
+     * @param entries
      *
      * This <code>Map</code> will correspond to <code>SmartionaryEntry</code>
      * Objects. The keys will correspond to <code>SmartionaryEntry.key</code>
@@ -391,17 +389,17 @@ class Smartionary {
      * <code>Map</code>); <b>Note</b> that the keys and values will be
      * converted to {@link java.lang.String Strings}.
      *
-     * @param   smartionaryName
+     * @param smartionaryName
      *
      * The <code>Smartionary.name</code> of an existing
      * <code>Smartionary</code> Object; or, if no <code>Smartionary</code>
      * exists by that name, it will be created.
      *
-     * @param   smartionaryDesription
+     * @param smartionaryDesription
      *
      * An optional description to set with the object.
      *
-     * @throws  IllegalArgumentException
+     * @throws IllegalArgumentException
      *
      * Thrown if any of the keys in the <code>entries</code>
      * <b><code>Map</code></b> are not instances of <b><code>String</code></b>,
@@ -414,7 +412,7 @@ class Smartionary {
             throw new IllegalArgumentException("One or more keys in the 'entries' Map is not a String.")
         }
 
-        if (entries.smartionaryDescriptions.any {k, v -> !(v instanceof String) }) {
+        if (entries.smartionaryDescriptions.any { k, v -> !(v instanceof String) }) {
             throw new IllegalArgumentException("One or more descriptions in the 'entries.smartionaryDescriptions' field is not a String.")
         }
 
@@ -444,26 +442,26 @@ class Smartionary {
      * {@link java.lang.Long#toString() long-timestamp} date.
      * <p>
      *
-     * @param   smartionaryName
+     * @param smartionaryName
      *
      * The <code>Smartionary.name</code> of an existing
      * <code>Smartionary</code> Object; or, if no <code>Smartionary</code>
      * exists by that name, it will be created.
      *
-     * @param   key
+     * @param key
      *
      * The <code>SmartionaryEntry.key</code> identifier to set the value
      * of (created if it does not exist).
      *
-     * @param   value
+     * @param value
      *
      * The <code>SmartionaryEntry.value</code> to set.
      *
-     * @param   entryDesription
+     * @param entryDesription
      *
      * An optional description to set with the object.
      *
-     * @param   smartionaryDesription
+     * @param smartionaryDesription
      *
      * An optional description to set with the object.
      */
@@ -484,7 +482,7 @@ class Smartionary {
      *
      * <p>No impact if called on a non-existant <code>Smartionary</code>.<p>
      *
-     * @param   smartionaryName
+     * @param smartionaryName
      *
      * The Name of the <code>Smartionary</code> Object to delete; will
      * also delete the <code>SmartionaryEntry</code> Objects associated
@@ -493,7 +491,7 @@ class Smartionary {
     static void delete(String smartionaryName) {
         SmartionaryDomain domain = getDomain(smartionaryName)
 
-		  domain?.delete(flush: true)
+        domain?.delete(flush: true)
     }
 
     /**
@@ -505,11 +503,11 @@ class Smartionary {
      * existing one.
      * <p>
      *
-     * @param   smartionaryName
+     * @param smartionaryName
      *
      * The <code>Smartionary</code> to act upon.
      *
-     * @param   key
+     * @param key
      *
      * The <code>SmartionaryEntry.key</code> of the
      * <code>SmartionaryEntry</code> Object to delete.
@@ -540,11 +538,11 @@ class Smartionary {
      * existing one.
      * <p>
      *
-     * @param   smartionaryName
+     * @param smartionaryName
      *
      * The <code>Smartionary</code> to act upon.
      *
-     * @param   keys
+     * @param keys
      *
      * The <code>SmartionaryEntry.key</code> of the
      * <code>SmartionaryEntry</code> Objects to delete.
@@ -581,7 +579,7 @@ class Smartionary {
      * <code>null</code> values.
      * </p>
      *
-     * @param   smartionaryName
+     * @param smartionaryName
      *
      * The Name of the <code>Smartionary</code> to act on.
      */
@@ -617,7 +615,7 @@ class Smartionary {
      * No impact if the <code>Smartionary</code> does not exist.
      * </p>
      *
-     * @param   smartionaryName
+     * @param smartionaryName
      *
      * The Name of the <code>Smartionary</code> to act on.
      */
@@ -636,7 +634,7 @@ class Smartionary {
     /**
      * Retrieve a <code>Smartionary</code> domain Object by name.
      *
-     * @param   smartionaryName
+     * @param smartionaryName
      *
      * The Name of the <code>Smartionary</code> to act on.
      *
@@ -652,13 +650,13 @@ class Smartionary {
      * Retrieve a <code>Smartionary</code> object by name, or
      * create one if it does not exist.
      *
-     * @param   smartionaryName
+     * @param smartionaryName
      *
      * The <code>Smartionary.name</code> of an existing
      * <code>Smartionary</code> Object; or, if no <code>Smartionary</code>
      * exists by that name, it will be created.
      *
-     * @param   smartionaryDesription
+     * @param smartionaryDesription
      *
      * An optional description to set with the object.
      */
@@ -687,20 +685,20 @@ class Smartionary {
      * {@link java.lang.Long#toString() long-timestamp} date.
      * <p>
      *
-     * @param   domain
+     * @param domain
      *
      * The <code>Smartionary</code> object to act on.
      *
-     * @param   key
+     * @param key
      *
      * The <code>SmartionaryEntry.key</code> identifier to set the value
      * of (created if it does not exist).
      *
-     * @param   value
+     * @param value
      *
      * The <code>SmartionaryEntry.value</code> to set.
      *
-     * @param   desription
+     * @param desription
      *
      * An optional description to set with the object.
      */
