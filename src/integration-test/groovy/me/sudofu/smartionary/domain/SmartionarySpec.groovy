@@ -15,105 +15,122 @@
  */
 package me.sudofu.smartionary.domain
 
-import static org.junit.Assert.*
-
+import grails.test.mixin.integration.Integration
+import grails.transaction.Rollback
 import me.sudofu.smartionary.domain.SmartionaryEntry as Entry
+import spock.lang.Specification
 
-import org.junit.Test
-
-class SmartionaryTests {
-
-    @Test
-    void testSimpleSmartionary() {
+@Integration
+@Rollback
+class SmartionarySpec extends Specification {
+    def 'Test simple smartionary'() {
+        setup:
         Smartionary smartionary = new Smartionary(
             name: 'foo',
             description: 'bar')
 
-        assertTrue(smartionary.validate())
+        expect:
+        smartionary.validate()
 
-        smartionary.save(flush: true)
-
+        when:
+        smartionary.save(failOnError: true, flush: true)
         smartionary = Smartionary.findByName('foo')
-        assertNotNull(smartionary)
-        assertEquals('foo', smartionary.name)
-        assertEquals('bar', smartionary.description)
-        assertNull(smartionary.entries)
+
+        then:
+        smartionary != null
+        smartionary.name == 'foo'
+        smartionary.description == 'bar'
+        !smartionary.entries
     }
 
-    @Test
-    void testUniqueConstraint() {
+    def 'Test unique constraint'() {
+        setup:
         Smartionary smartionary = new Smartionary(
             name: 'foo',
             description: 'bar')
 
-        assertTrue(smartionary.validate())
+        expect:
+        smartionary.validate()
 
-        smartionary.save(flush: true)
-
+        when:
+        smartionary.save(failOnError: true, flush: true)
         smartionary = new Smartionary(name: 'foo')
 
-        assertFalse(smartionary.validate())
+        then:
+        !smartionary.validate()
 
+        when:
         smartionary.name = 'foo2'
 
-        assertTrue(smartionary.validate())
+        then:
+        smartionary.validate()
     }
 
-    @Test
-    void testAddEntry() {
+    def 'Test add entry'() {
+        setup:
         Smartionary smartionary = new Smartionary(
             name: 'foo',
             description: 'bar')
 
-        assertTrue(smartionary.validate())
+        expect:
+        smartionary.validate()
 
+        when:
         Entry entry = new Entry(
             key: 'foo',
             value: 'bar',
             description: 'baz')
-
         smartionary.addToEntries(entry)
 
-        assertTrue(smartionary.validate())
+        then:
+        smartionary.validate()
 
-        smartionary.save(flush: true)
-
+        when:
+        smartionary.save(failOnError: true, flush: true)
         smartionary = Smartionary.findByName('foo')
 
-        assertNotNull(smartionary)
-        assertNotNull(smartionary.entries)
-        assertEquals(1, smartionary.entries.size())
+        then:
+        smartionary != null
+        smartionary.entries != null
+        smartionary.entries.size() == 1
     }
 
-    @Test
-    void testToMap() {
+    def 'Test to map'() {
+        setup:
         Smartionary smartionary = new Smartionary(
             name: 'foo',
             description: 'bar')
 
-        assertTrue(smartionary.validate())
+        expect:
+        smartionary.validate()
 
+        when:
         Map smartionaryMap = smartionary.toMap()
 
-        assertNotNull(smartionaryMap)
-        assertTrue(smartionaryMap.isEmpty())
+        then:
+        smartionaryMap != null
+        smartionaryMap.isEmpty()
 
+        when:
         Entry entry = new Entry(
             key: 'foo',
             value: 'bar',
             description: 'baz')
-
         smartionary.addToEntries(entry)
 
-        assertTrue(smartionary.validate())
+        then:
+        smartionary.validate()
 
-        assertNotNull(smartionary)
-        assertNotNull(smartionary.entries)
-        assertEquals(1, smartionary.entries.size())
+        smartionary != null
+        smartionary.entries != null
+        smartionary.entries.size() == 1
 
+        when:
         smartionaryMap = smartionary.toMap()
-        assertNotNull(smartionaryMap)
-        assertFalse(smartionaryMap.isEmpty())
-        assertEquals([foo: 'bar'], smartionaryMap)
+
+        then:
+        smartionaryMap != null
+        !smartionaryMap.isEmpty()
+        smartionaryMap == [foo: 'bar']
     }
 }
